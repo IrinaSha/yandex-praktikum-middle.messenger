@@ -1,0 +1,23 @@
+@font-face {
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/Inter-Medium.woff2") format("woff2");
+  font-family: "Inter";
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.pnl {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+}
+
+/*# sourceMappingURL=styles.css.map */

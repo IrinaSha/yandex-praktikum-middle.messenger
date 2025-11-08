@@ -1,0 +1,18 @@
+@use 'fonts';
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.pnl {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: max-content;
+  height: max-content;
+
+  display: flex;
+  flex-direction: column;
+}
