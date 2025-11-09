@@ -9,10 +9,16 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-
   width: max-content;
   height: max-content;
-
   display: flex;
   flex-direction: column;
+  align-items: center;
+
+  &-container__bordered {
+    padding: 50px 30px 30px 30px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.14);
+  }
 }

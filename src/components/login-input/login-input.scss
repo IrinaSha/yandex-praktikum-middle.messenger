@@ -1,0 +1,24 @@
+.text {
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.login-input {
+  font-size: 40px;
+  line-height: 40px;
+
+  &-label {
+    color: #999999;
+  }
+}
+
+.error-info {
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.nav-container {
+  margin-top: 69px;
+  font-size: 11px;
+}

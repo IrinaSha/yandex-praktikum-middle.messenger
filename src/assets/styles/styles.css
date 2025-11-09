@@ -4,7 +4,6 @@
   src: url("../fonts/Inter-Medium.woff2") format("woff2");
   font-family: "Inter";
 }
-
 body {
   font-family: "Inter", sans-serif;
 }
@@ -18,6 +17,13 @@ body {
   height: max-content;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+.pnl-container__bordered {
+  padding: 50px 30px 30px 30px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.14);
 }
 
 /*# sourceMappingURL=styles.css.map */

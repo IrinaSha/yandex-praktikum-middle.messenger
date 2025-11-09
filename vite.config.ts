@@ -14,7 +14,11 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, 'src/index.html'),
                 error500: resolve(__dirname, 'src/pages/error-500.html'),
-                error400: resolve(__dirname, 'src/pages/error-400.html')
+                error400: resolve(__dirname, 'src/pages/error-400.html'),
+                login: resolve(__dirname, 'src/pages/login.html'),
+                registration: resolve(__dirname, 'src/pages/registration.html'),
+                chats: resolve(__dirname, 'src/pages/chats.html'),
+                userProfile: resolve(__dirname, 'src/pages/user-profile.html')
             }
         }
     },
@@ -27,6 +31,8 @@ export default defineConfig({
                 errorText400: 'Не туда попали',
                 errorCode500: '500',
                 errorText500: 'Мы уже фиксим',
+                navToRegistrationText: 'Нет аккаунта?',
+                navToChatsText: 'Войти',
             },
         })
     ]
