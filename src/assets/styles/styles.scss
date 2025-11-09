@@ -42,6 +42,13 @@ body {
     &-registration {
       margin-bottom: 47px;
     }
+
+    &-profile {
+      width: 510px;
+
+      flex-direction: column;
+      align-items: start;
+    }
   }
 
   &-btn-container {
@@ -54,4 +61,8 @@ body {
   font-size: 11px;
   line-height: 11px;
   text-decoration: none;
+
+  &-exit {
+    color: #ff0000;
+  }
 }

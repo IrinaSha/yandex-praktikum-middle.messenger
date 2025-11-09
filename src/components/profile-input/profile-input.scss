@@ -1,0 +1,59 @@
+.profile-input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &-inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-title {
+    color: #1e1e1e;
+    font-size: 13px;
+    margin-bottom: 9px;
+  }
+
+  &-border {
+    height: 1px;
+    margin-top: 7px;
+    background-color: #eaeaea;
+  }
+
+  &-form {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &-text {
+    color: #999999;
+    font-size: 13px;
+    line-height: 13px;
+    text-align: right;
+    flex: 1;
+  }
+
+  &-value {
+    border: none;
+    outline: none;
+    width: 100%;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:focus-visible {
+      border: none;
+      outline: none;
+    }
+  }
+
+  &-label-error {
+    color: #ff2f2f;
+    font-size: 8px;
+    line-height: 8px;
+    margin-top: 7px;
+  }
+}

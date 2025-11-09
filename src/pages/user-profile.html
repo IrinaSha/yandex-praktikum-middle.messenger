@@ -4,15 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="stylesheet" href="../assets/styles/styles.scss">
+    <link rel="stylesheet" href="../components/profile-input/profile-input.scss">
+    <link rel="stylesheet" href="../components/flat-button/flat-button.scss">
     <title>Мессенджер. Профиль</title>
 </head>
 <body>
 <main>
-    <div class="pnl pnl-container__bordered">
-        <h1>Профиль пользователя. Раздел в разработке</h1>
+    <div class="pnl">
+        <img src="../assets/img/avatarDefault.png"  alt="Аватар по умолчанию">
+        <span class="pnl-title">{{fname}}</span>
+        <div class="pnl-props-container pnl-props-container-profile">
+            {{> profile-input/profile-input labelText=lblEmailText name='email' inputType='text' value=email }}
+            {{> profile-input/profile-input labelText=lblLoginText name='login' inputType='text' value=login }}
+            {{> profile-input/profile-input labelText=lblFNameText name='first_name' inputType='text' value=fname }}
+            {{> profile-input/profile-input labelText=lblSNameText name='second_name' inputType='text' value=sname}}
+            {{> profile-input/profile-input labelText=lblDisplayNameText name='display_name' inputType='text' value=dname }}
+            {{> profile-input/profile-input labelText=lblPhoneText name='phone' inputType='text' value=phone }}
+
+
+        {{#if changePassword}}
+            {{> profile-input/profile-input labelText=lblOldPasswordText name='oldPassword' inputType='password'  }}
+            {{> profile-input/profile-input labelText=lblNewPasswordText name='newPassword' inputType='password'  }}
+        {{/if}}
+
+        {{> flat-button/flat-button btnText=btnChangeInfoText }}
+        {{> flat-button/flat-button btnText=btnChangePwdText }}
         <nav>
-            <a href="../index.html">На главную</a>
+            <a class="link link-exit" href="../index.html">{{exitText}}</a>
         </nav>
+        </div>
     </div>
 </main>
 </body>
