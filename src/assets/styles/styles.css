@@ -19,11 +19,39 @@ body {
   flex-direction: column;
   align-items: center;
 }
-.pnl-container__bordered {
+.pnl__bordered {
   padding: 50px 30px 30px 30px;
   border-radius: 12px;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.14);
+}
+.pnl-title {
+  color: #1e1e1e;
+  font-size: 20px;
+  line-height: 20px;
+  margin-bottom: 40px;
+}
+.pnl-props-container {
+  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pnl-props-container-login {
+  margin-bottom: 139px;
+}
+.pnl-props-container-registration {
+  margin-bottom: 47px;
+}
+.pnl-btn-container {
+  margin-bottom: 14px;
+}
+
+.link {
+  color: #3369f3;
+  font-size: 11px;
+  line-height: 11px;
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=styles.css.map */

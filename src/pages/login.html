@@ -4,13 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="stylesheet" href="../assets/styles/styles.scss">
+    <link rel="stylesheet" href="../components/login-input/login-input.scss">
+    <link rel="stylesheet" href="../components/button/button.scss">
     <title>Мессенджер. Авторизация</title>
 </head>
 <body>
 <main>
-    <div class="pnl pnl-container__bordered">
+    <div class="pnl pnl__bordered">
+        <span class="pnl-title">{{loginTitle}}</span>
+        <div class="pnl-props-container pnl-props-container-login">
+            {{> login-input/login-input labelText=loginLabelText name='login' inputType='text' errorText=loginErrorText }}
+            {{> login-input/login-input labelText=pwdLabelText name='password' inputType='password' }}
+        </div>
+        <div class="pnl-btn-container">
+            {{> button/button btnText = btnLoginText }}
+        </div>
         <nav>
-            <a href="./registration.html">{{navToRegistrationText}}</a>
+            <a class="link" href="./registration.html">{{navToRegistrationText}}</a>
         </nav>
     </div>
 </main>

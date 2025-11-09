@@ -1,0 +1,10 @@
+<div class="input-container">
+    <label for="{{name}}" class="input-container-title">{{labelText}}</label>
+    <form>
+        <input id="{{name}}" name="{{name}}" type="{{inputType}}" class="input-container-value">
+    </form>
+    <div class="input-container-border"></div>
+    {{#if noValid}}
+        <span class="input-container-label-error">{{errorText}}</span>
+    {{/if}}
+</div>

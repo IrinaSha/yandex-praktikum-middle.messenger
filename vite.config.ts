@@ -31,8 +31,14 @@ export default defineConfig({
                 errorText400: 'Не туда попали',
                 errorCode500: '500',
                 errorText500: 'Мы уже фиксим',
+                loginTitle: 'Вход',
+                btnLoginText: 'Авторизоваться',
                 navToRegistrationText: 'Нет аккаунта?',
                 navToChatsText: 'Войти',
+                loginLabelText: 'Логин',
+                pwdLabelText: 'Пароль',
+                loginErrorText: 'Неверный логин',
+                noValid: true,
             },
         })
     ]
