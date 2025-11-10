@@ -3,17 +3,17 @@
   flex-direction: column;
 }
 .input-container-title {
-  color: #999999;
+  color: var(--secondary-text);
   font-size: 9px;
   margin-bottom: 9px;
 }
 .input-container-border {
   height: 1px;
   margin-top: 7px;
-  background-color: #3369F3;
+  background-color: var(--primary-blue);
 }
 .input-container-value {
-  color: #1e1e1e;
+  color: var(--primary-text);
   font-size: 13px;
   line-height: 13px;
   width: 280px;
@@ -25,7 +25,7 @@
   outline: none;
 }
 .input-container-label-error {
-  color: #ff2f2f;
+  color: var(--primary-error);
   font-size: 8px;
   line-height: 8px;
   margin-top: 7px;

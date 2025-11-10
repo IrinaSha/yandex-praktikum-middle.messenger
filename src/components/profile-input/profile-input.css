@@ -10,22 +10,17 @@
   align-items: center;
 }
 .profile-input-container-title {
-  color: #1e1e1e;
+  color: var(--primary-title);
   font-size: 13px;
   margin-bottom: 9px;
 }
 .profile-input-container-border {
   height: 1px;
   margin-top: 7px;
-  background-color: #eaeaea;
-}
-.profile-input-container-form {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
+  background-color: var(--primary-border);
 }
 .profile-input-container-text {
-  color: #999999;
+  color: var(--secondary-text);
   font-size: 13px;
   line-height: 13px;
   text-align: right;
@@ -35,13 +30,16 @@
   border: none;
   outline: none;
   width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
 }
 .profile-input-container-value:hover, .profile-input-container-value:focus, .profile-input-container-value:active, .profile-input-container-value:focus-visible {
   border: none;
   outline: none;
 }
 .profile-input-container-label-error {
-  color: #ff2f2f;
+  color: var(--primary-error);
   font-size: 8px;
   line-height: 8px;
   margin-top: 7px;

@@ -11,7 +11,7 @@
   }
 
   &-title {
-    color: #1e1e1e;
+    color: var(--primary-title);
     font-size: 13px;
     margin-bottom: 9px;
   }
@@ -19,17 +19,11 @@
   &-border {
     height: 1px;
     margin-top: 7px;
-    background-color: #eaeaea;
-  }
-
-  &-form {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
+    background-color: var(--primary-border);
   }
 
   &-text {
-    color: #999999;
+    color: var(--secondary-text);
     font-size: 13px;
     line-height: 13px;
     text-align: right;
@@ -40,6 +34,9 @@
     border: none;
     outline: none;
     width: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
 
     &:hover,
     &:focus,
@@ -51,7 +48,7 @@
   }
 
   &-label-error {
-    color: #ff2f2f;
+    color: var(--primary-error);
     font-size: 8px;
     line-height: 8px;
     margin-top: 7px;

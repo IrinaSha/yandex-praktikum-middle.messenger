@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="stylesheet" href="../assets/styles/styles.scss">
+    <link rel="stylesheet" href="../assets/styles/variables.scss">
     <link rel="stylesheet" href="../components/login-input/login-input.scss">
     <link rel="stylesheet" href="../components/button/button.scss">
     <title>Мессенджер. Авторизация</title>
@@ -12,16 +13,16 @@
 <main>
     <div class="pnl pnl__bordered">
         <span class="pnl-title">{{loginTitle}}</span>
-        <div class="pnl-props-container pnl-props-container-login">
-            {{> login-input/login-input labelText=lblLoginText name='login' inputType='text' errorText=loginErrorText }}
-            {{> login-input/login-input labelText=lblPwdText name='password' inputType='password' }}
-        </div>
-        <div class="pnl-btn-container">
-            {{> button/button btnText = btnLoginText }}
-        </div>
-        <nav>
-            <a class="link" href="./registration.html">{{navToRegistrationText}}</a>
-        </nav>
+        <form>
+            <div class="pnl-props-container pnl-props-container-login">
+                {{> login-input/login-input labelText=lblLoginText name='login' inputType='text' errorText=loginErrorText }}
+                {{> login-input/login-input labelText=lblPwdText name='password' inputType='password' }}
+            </div>
+            <div class="pnl-btn-container">
+                {{> button/button btnText = btnLoginText type='submit' }}
+            </div>
+        </form>
+        <a class="link" href="./registration.html">{{navToRegistrationText}}</a>
     </div>
 </main>
 </body>

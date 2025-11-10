@@ -6,12 +6,12 @@
   border-top: 0;
   border-left: 0;
   border-right: 0;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--primary-border);
   background-color: transparent;
   text-align: left;
 }
 .flat-btn-title {
-  color: #3369f3;
+  color: var(--primary-blue-background);
   font-size: 13px;
   line-height: 13px;
   text-align: start;

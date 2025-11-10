@@ -18,12 +18,12 @@ body {
   &__bordered {
     padding: 50px 30px 30px 30px;
     border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.14);
+    background-color: var(--primary-background);
+    box-shadow: var(--primary-shadow);
   }
 
   &-title {
-    color: #1e1e1e;
+    color: var(--primary-title);
     font-size: 20px;
     line-height: 20px;
     margin-bottom: 40px;
@@ -45,9 +45,8 @@ body {
 
     &-profile {
       width: 510px;
-
-      flex-direction: column;
-      align-items: start;
+      margin-bottom: 15px;
+      align-items: stretch;
     }
   }
 
@@ -57,12 +56,18 @@ body {
 }
 
 .link {
-  color: #3369f3;
+  color: var(--primary-link);
   font-size: 11px;
   line-height: 11px;
   text-decoration: none;
 
   &-exit {
-    color: #ff0000;
+    color: var(--primary-accent);
   }
+}
+
+.profile-avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items:center;
 }
