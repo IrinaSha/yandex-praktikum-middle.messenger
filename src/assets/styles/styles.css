@@ -67,5 +67,23 @@ body {
   flex-direction: column;
   align-items: center;
 }
+.profile-avatar-container-image-container {
+  position: relative;
+}
+.profile-avatar-container-image {
+  object-fit: cover;
+  border-radius: 50%;
+}
+.profile-avatar-container-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
 
 /*# sourceMappingURL=styles.css.map */
