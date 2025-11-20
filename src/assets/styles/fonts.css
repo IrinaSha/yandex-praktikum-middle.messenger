@@ -1,0 +1,9 @@
+@font-face {
+  font-style: normal;
+  font-weight: 200 700;
+  src: url("../fonts/Inter-Medium.woff2") format("woff2");
+  font-family: "Golos Text";
+  font-display: swap;
+}
+
+/*# sourceMappingURL=fonts.css.map */

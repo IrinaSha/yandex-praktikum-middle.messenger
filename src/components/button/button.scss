@@ -1,0 +1,15 @@
+.btn-container {
+  background-color: var(--primary-blue);
+  padding: 12px 70px;
+  align-items: center;
+  border-radius: 12px;
+  border: 0;
+  cursor: pointer;
+  width: 280px;
+
+  &-title {
+    color: var(--primary-invertedText);
+    font-size: 13px;
+    line-height: 13px;
+  }
+}

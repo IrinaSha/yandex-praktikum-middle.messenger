@@ -1,0 +1,34 @@
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+.input-container-title {
+  color: var(--secondary-text);
+  font-size: 9px;
+  margin-bottom: 9px;
+}
+.input-container-border {
+  height: 1px;
+  margin-top: 7px;
+  background-color: var(--primary-blue);
+}
+.input-container-value {
+  color: var(--primary-text);
+  font-size: 13px;
+  line-height: 13px;
+  width: 280px;
+  border: none;
+  outline: none;
+}
+.input-container-value:hover, .input-container-value:focus, .input-container-value:active, .input-container-value:focus-visible {
+  border: none;
+  outline: none;
+}
+.input-container-label-error {
+  color: var(--primary-error);
+  font-size: 8px;
+  line-height: 8px;
+  margin-top: 7px;
+}
+
+/*# sourceMappingURL=login-input.css.map */
