@@ -8,7 +8,7 @@ body {
   font-family: "Inter", sans-serif;
 }
 
-.pnl {
+.app {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -19,36 +19,36 @@ body {
   flex-direction: column;
   align-items: center;
 }
-.pnl__bordered {
+.app__bordered {
   padding: 50px 30px 30px 30px;
   border-radius: 12px;
   background-color: var(--primary-background);
   box-shadow: var(--primary-shadow);
 }
-.pnl-title {
+.app-title {
   color: var(--primary-title);
   font-size: 20px;
   line-height: 20px;
   margin-bottom: 40px;
 }
-.pnl-props-container {
+.app-props-container {
   gap: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.pnl-props-container-login {
+.app-props-container-login {
   margin-bottom: 139px;
 }
-.pnl-props-container-registration {
+.app-props-container-registration {
   margin-bottom: 47px;
 }
-.pnl-props-container-profile {
+.app-props-container-profile {
   width: 510px;
   margin-bottom: 15px;
   align-items: stretch;
 }
-.pnl-btn-container {
+.app-btn-container {
   margin-bottom: 14px;
 }
 
