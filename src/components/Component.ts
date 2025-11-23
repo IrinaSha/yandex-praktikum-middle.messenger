@@ -12,7 +12,7 @@ export class Component {
     };
 
     _props: any;
-    _children: any;
+    _children: Component;
     _id: string = '';
     _element?: HTMLElement;
     _meta: any = null;
@@ -34,7 +34,7 @@ export class Component {
         this._id = makeUUID();
 
         const { children, props } = this._getChildren(propsAndChildren);
-        this._children = children;
+        this._children = this._makePropsProxy(children);
         this._props = this._makePropsProxy({ ...props, __id: this._id });
 
         const eventBus = new EventBus();
@@ -71,16 +71,42 @@ export class Component {
             return;
         }
 
-        Object.assign(this._props, nextProps);
+        const propsAndChildren = this._getChildren(nextProps);
+
+        if (Object.values(propsAndChildren?.props).length) {
+            Object.assign(this._props, propsAndChildren?.props);
+        }
+
+        if (Object.values(propsAndChildren?.children).length) {
+            Object.assign(this._props, propsAndChildren?.children);
+        }
     };
 
     render(tmpl = ''): DocumentFragment {
-        const htmlString = Handlebars.compile(tmpl)(this._props);
+        return this.compile(tmpl, this._props);
+    }
 
-        const template = document.createElement('template');
-        template.innerHTML = htmlString.trim();
+    compile(tmpl: string, props: any) {
+        const propsAndStubs = { ...props };
 
-        return template.content;
+        Object.entries(this._children).forEach(([key, child]: any) => {
+            propsAndStubs[key] = `<div data-id="${child._id}"></div>`
+        });
+
+        const fragment = this._createDocumentElement('template');
+        if (!fragment) {
+            return '';
+        }
+
+        fragment.innerHTML = Handlebars.compile(tmpl)(propsAndStubs);//Templator.compile(template, propsAndStubs);
+
+        Object.values(this._children).forEach(child => {
+            const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
+
+            stub.replaceWith(child.getContent());
+        });
+
+        return fragment.content;
     }
 
     getContent(): HTMLElement | undefined {
@@ -97,6 +123,10 @@ export class Component {
 
     dispatchComponentDidMount() {
         this._eventBus().emit(Component.EVENTS.FLOW_CDM);
+
+        if (Object.keys(this._children).length) {
+            this._eventBus().emit(Component.EVENTS.FLOW_RENDER);
+        }
     }
 
     _getChildren(propsAndChildren: any): PropsAndChildren {
@@ -129,6 +159,8 @@ export class Component {
 
     _componentDidMount() {
         this.componentDidMount();
+
+        Object.values(this._children).forEach((child: any) => child.dispatchComponentDidMount());
     }
 
     _componentDidUpdate(oldProps: any, newProps: any) {
@@ -176,7 +208,7 @@ export class Component {
         );
     }
 
-    _createDocumentElement(tagName: string) {
+    _createDocumentElement(tagName: string): any {
         const element = document.createElement(tagName);
 
         element.setAttribute('data-id', this._id);

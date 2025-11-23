@@ -6,6 +6,7 @@ import './components/button/button.scss'
 import './components/flat-button/flat-button.scss'
 import './components/nav/nav.scss'
 
+import { Page } from './components/page/page.ts';
 import { Nav } from './components/nav/nav.ts';
 import { render } from './services/utils.ts';
 
@@ -44,9 +45,20 @@ const nav = new Nav(
     }
 );
 
-render('.app', nav);
+const page = new Page(
+    'div',
+    {
+        attrs: {
+            class: 'page'
+        },
+        nav: nav,
+        title: 'Заголовок'
+    }
+);
 
-/*setTimeout(() => {
+render('.app', page);
+
+setTimeout(() => {
 nav.setProps({items: [
     { url: '/pages/error-400.html', title: 'Ошибка 4**' },
     { url: '/pages/error-500.html', title: 'Ошибка 5*55555*' },
@@ -54,4 +66,7 @@ nav.setProps({items: [
     { url: '/pages/registration.html', title: 'Регистрация' },
     { url: '/pages/chats.html', title: 'Чаты' },
     { url: '/pages/user-profile.html', title: 'Профиль пользователя' },
-]})}, 1000);*/
+]})}, 1000);
+
+setTimeout(() => {
+    page.setProps({title: 'Новый заголовок'})}, 3000);
