@@ -12,7 +12,7 @@ export class Nav extends Component {
         return super.render(tmpl);
     }
 
-    _addEvents() {
+    /*_addEvents() {
         const { events = {} } = this._props;
 
         this._element?.querySelectorAll('a').forEach((item: any) => {
@@ -26,9 +26,9 @@ export class Nav extends Component {
 
                 e.preventDefault();
                 e.stopPropagation();
-            });*/
+            });
         });
 
         //super._addEvents();
-    }
+    }*/
 }

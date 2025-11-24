@@ -6,41 +6,30 @@ import './components/button/button.scss'
 import './components/flat-button/flat-button.scss'
 import './components/nav/nav.scss'
 
+import { render } from './services/utils.ts';
 import { Page } from './components/page/page.ts';
 import { Nav } from './components/nav/nav.ts';
-import { render } from './services/utils.ts';
+import { Link } from './components/link/link.ts';
+
+const linkClick = (e: Event) => {
+    console.log('link clicked, params: ', e);
+};
 
 const nav = new Nav(
     {
         attrs: {
             class: 'nav'
         },
-        items: [
-            { url: '/pages/error-400.html', title: 'Ошибка 4**' },
-            { url: '/pages/error-500.html', title: 'Ошибка 5**' },
-            { url: '/pages/login.html', title: 'Авторизация' },
-            { url: '/pages/registration.html', title: 'Регистрация' },
-            { url: '/pages/chats.html', title: 'Чаты' },
-            { url: '/pages/user-profile.html', title: 'Профиль пользователя' },
+        links: [
+            new Link('li', { url: '/pages/error-400.html', title: 'Ошибка 4**' }),
+            new Link('li', { url: '/pages/error-500.html', title: 'Ошибка 5**' }),
+            new Link('li', { url: '/pages/login.html', title: 'Авторизация' }),
+            new Link('li', { url: '/pages/registration.html', title: 'Регистрация' }),
+            new Link('li', { url: '/pages/chats.html', title: 'Чаты' }),
+            new Link('li', { url: '/pages/user-profile.html', title: 'Профиль пользователя' })
         ],
         events: {
-            click: (e: Event) => {
-                console.log('link clicked');
-
-                //e.preventDefault();
-               // e.stopPropagation();
-
-                /*const target = e.target as HTMLElement;
-
-                if (target?.getAttribute('href')) {
-                    console.log('link clicked');
-
-                    e.preventDefault();
-                    e.stopPropagation();
-                } else {
-                    console.log('no link clicked');
-                }/*/
-            }
+            click: linkClick
         }
     }
 );
@@ -58,7 +47,7 @@ const page = new Page(
 
 render('.app', page);
 
-setTimeout(() => {
+/*setTimeout(() => {
 nav.setProps({items: [
     { url: '/pages/error-400.html', title: 'Ошибка 4**' },
     { url: '/pages/error-500.html', title: 'Ошибка 5*55555*' },
@@ -72,4 +61,4 @@ setTimeout(() => {
         //page.setProps({title: 'Заголовок'});
         page.setProps({title: 'Заголовок1', title2: '111'})
     },
-    3000);
+    3000);*/
