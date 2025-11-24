@@ -71,6 +71,9 @@ export class Component {
             return;
         }
 
+        this._setUpdate = false;
+        const oldVal = { ...this._props };
+
         const propsAndChildren = this._getChildren(nextProps);
 
         if (Object.values(propsAndChildren?.props).length) {
@@ -79,6 +82,12 @@ export class Component {
 
         if (Object.values(propsAndChildren?.children).length) {
             Object.assign(this._props, propsAndChildren?.children);
+        }
+
+        if (this._setUpdate) {
+            this._eventBus().emit(Component.EVENTS.FLOW_CDU, oldVal, nextProps);
+
+            this._setUpdate = false;
         }
     };
 
@@ -129,7 +138,7 @@ export class Component {
         }
     }
 
-    _getChildren(propsAndChildren: any): PropsAndChildren {
+    private _getChildren(propsAndChildren: any): PropsAndChildren {
         const children: Record<string, Component> = {};
         const props: Record<string, any> = {};
 
@@ -144,34 +153,34 @@ export class Component {
         return { children, props };
     }
 
-    _registerEvents(eventBus: EventBus) {
+    private _registerEvents(eventBus: EventBus) {
         eventBus.on(Component.EVENTS.INIT, this.init.bind(this));
         eventBus.on(Component.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Component.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Component.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
-    _createResources() {
+    private _createResources() {
         const { tagName } = this._meta;
 
         this._element = this._createDocumentElement(tagName);
     }
 
-    _componentDidMount() {
+    private _componentDidMount() {
         this.componentDidMount();
 
         Object.values(this._children).forEach((child: any) => child.dispatchComponentDidMount());
     }
 
-    _componentDidUpdate(oldProps: any, newProps: any) {
-        const response = this.componentDidUpdate(oldProps, newProps);
+    private _componentDidUpdate(oldProps: any, newProps: any) {
+        const isUpdated = this.componentDidUpdate(oldProps, newProps);
 
-        if (response) {
+        if (isUpdated) {
             this._render();
         }
     }
 
-    _render() {
+    private _render() {
         this._removeEvents();
 
         const block = this.render();
@@ -185,7 +194,7 @@ export class Component {
         this._addEvents();
     }
 
-    _makePropsProxy(props: any) {
+    private _makePropsProxy(props: any) {
         const self = this;
 
         return new Proxy(props, {
@@ -194,10 +203,12 @@ export class Component {
                     return typeof value === 'function' ? value.bind(target) : value;
                 },
                 set(target, prop, newValue) {
-                    const old = {...target};
+                    //const old = {...target};
+
                     target[prop] = newValue;
 
-                    self._eventBus().emit(Component.EVENTS.FLOW_CDU, old, target);
+                    self._setUpdate = true;
+                    //self._eventBus().emit(Component.EVENTS.FLOW_CDU, old, target);
 
                     return true;
                 },
@@ -208,7 +219,7 @@ export class Component {
         );
     }
 
-    _createDocumentElement(tagName: string): any {
+    private _createDocumentElement(tagName: string): any {
         const element = document.createElement(tagName);
 
         element.setAttribute('data-id', this._id);
@@ -216,7 +227,7 @@ export class Component {
         return element;
     }
 
-    _addAttributes() {
+    private _addAttributes() {
         const {attrs = {}} = this._props;
 
         Object.entries(attrs).forEach(([key, value]) => {
@@ -224,7 +235,7 @@ export class Component {
         });
     }
 
-    _addEvents() {
+    private _addEvents() {
         const {events = {}} = this._props;
 
         Object.keys(events).forEach(eventName => {
@@ -232,7 +243,7 @@ export class Component {
         });
     }
 
-    _removeEvents() {
+    private _removeEvents() {
         const {events = {}} = this._props;
 
         Object.keys(events).forEach(eventName => {

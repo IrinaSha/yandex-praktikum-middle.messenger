@@ -7,4 +7,8 @@ export class Page extends Component {
 
         return super.render(tmpl);
     }
+
+    /*componentDidUpdate(oldProps: any, newProps: any): boolean {
+        return oldProps['title'] !== newProps['title'];
+    }*/
 }

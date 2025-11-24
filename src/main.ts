@@ -69,4 +69,7 @@ nav.setProps({items: [
 ]})}, 1000);
 
 setTimeout(() => {
-    page.setProps({title: 'Новый заголовок'})}, 3000);
+        //page.setProps({title: 'Заголовок'});
+        page.setProps({title: 'Заголовок1', title2: '111'})
+    },
+    3000);
