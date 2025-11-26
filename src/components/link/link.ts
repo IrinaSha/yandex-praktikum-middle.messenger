@@ -1,4 +1,4 @@
-import { Component } from '../Component.ts';
+import { Component } from '../component.ts';
 import { tmpl } from './tmpl.ts';
 
 export class Link extends Component {

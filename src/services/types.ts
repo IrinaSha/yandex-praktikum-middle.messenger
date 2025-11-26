@@ -1,4 +1,4 @@
-import type { Component } from '../components/Component.ts';
+import { Component } from '../components/component.ts';
 
 export type EventsTypes = Record<string, Callback[]>;
 
@@ -11,3 +11,10 @@ export type PropsAndChildren = {
 }
 
 export type PropsValue = string | number | boolean | null | undefined | symbol | object | [];
+
+export type HttpOptions = {
+    headers: any;
+    method: any;
+    data: any;
+    timeout: number;
+}

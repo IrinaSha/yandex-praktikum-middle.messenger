@@ -1,7 +1,9 @@
+import '../../assets/styles/styles.scss'
+
 import { Component } from '../component.ts';
 import { tmpl } from './tmpl.ts';
 
-export class Page extends Component {
+export class Layout extends Component {
     render(): DocumentFragment {
         console.log('Page render');
 
@@ -9,6 +11,6 @@ export class Page extends Component {
     }
 
     componentDidUpdate(oldProps: any, newProps: any): boolean {
-        return oldProps['title'] !== newProps['title'];
+        return oldProps['text'] !== newProps['text'];
     }
 }

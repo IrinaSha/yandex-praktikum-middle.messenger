@@ -6,59 +6,50 @@ import './components/button/button.scss'
 import './components/flat-button/flat-button.scss'
 import './components/nav/nav.scss'
 
-import { render } from './services/utils.ts';
-import { Page } from './components/page/page.ts';
+import { Component } from './components/component.ts';
+import { Layout } from './components/layout/layout.ts';
 import { Nav } from './components/nav/nav.ts';
 import { Link } from './components/link/link.ts';
+import { View } from './view/view.ts';
 
-const linkClick = (e: Event) => {
-    console.log('link clicked, params: ', e);
-};
+export class MainView extends View {
+    createContent(): Component {
+        const linkClick = (e: Event) => {
+            console.log('link clicked, params: ', e);
+        };
 
-const nav = new Nav(
-    {
-        attrs: {
-            class: 'nav'
-        },
-        links: [
-            new Link('li', { url: '/pages/error-400.html', title: 'Ошибка 4**' }),
-            new Link('li', { url: '/pages/error-500.html', title: 'Ошибка 5**' }),
-            new Link('li', { url: '/pages/login.html', title: 'Авторизация' }),
-            new Link('li', { url: '/pages/registration.html', title: 'Регистрация' }),
-            new Link('li', { url: '/pages/chats.html', title: 'Чаты' }),
-            new Link('li', { url: '/pages/user-profile.html', title: 'Профиль пользователя' })
-        ],
-        events: {
-            click: linkClick
-        }
+        const nav = new Nav(
+            {
+                attrs: {
+                    class: 'nav'
+                },
+                links: [
+                    new Link('li', { url: '/pages/page-error400/page.html', title: 'Ошибка 4**' }),
+                    new Link('li', { url: '/pages/page-error500/page.html', title: 'Ошибка 5**' }),
+                    new Link('li', { url: '/pages/page-login/page.html', title: 'Авторизация' }),
+                    new Link('li', { url: '/pages/registration.html', title: 'Регистрация' }),
+                    new Link('li', { url: '/pages/page-chat/page.html', title: 'Чаты' }),
+                    new Link('li', { url: '/pages/user-profile.html', title: 'Профиль пользователя' })
+                ],
+                events: {
+                    click: linkClick
+                }
+            }
+        );
+
+        return new Layout(
+            'div',
+            {
+                attrs: {
+                    class: 'layout'
+                },
+                title: 'Главная страница',
+                nav: nav,
+            }
+        );
     }
-);
+}
 
-const page = new Page(
-    'div',
-    {
-        attrs: {
-            class: 'page'
-        },
-        nav: nav,
-        title: 'Заголовок'
-    }
-);
+const view = new MainView();
 
-render('.app', page);
-
-/*setTimeout(() => {
-nav.setProps({items: [
-    { url: '/pages/error-400.html', title: 'Ошибка 4**' },
-    { url: '/pages/error-500.html', title: 'Ошибка 5*55555*' },
-    { url: '/pages/login.html', title: 'Авторизация' },
-    { url: '/pages/registration.html', title: 'Регистрация' },
-    { url: '/pages/chats.html', title: 'Чаты' },
-    { url: '/pages/user-profile.html', title: 'Профиль пользователя' },
-]})}, 1000);
-
-setTimeout(() => {
-        //page.setProps({title: 'Заголовок'});
-        page.setProps({title: 'Заголовок1', title2: '111'})
-    },
-    3000);*/
+view.renderPage();
