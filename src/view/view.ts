@@ -1,12 +1,12 @@
-import { Component } from '../components/component.ts';
-import { render } from '../services/utils.ts';
+import { Component } from '../components/component';
+import { render } from '../services/utils';
 
 export abstract class View {
-    public renderPage(): void {
-        const content = this.createContent();
+  public renderPage(): void {
+    const content = this.createContent();
 
-        render('.app', content);
-    }
+    render('.app', content);
+  }
 
-    public abstract createContent(): Component;
+  public abstract createContent(): Component;
 }

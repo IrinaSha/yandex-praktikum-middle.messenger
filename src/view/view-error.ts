@@ -1,39 +1,42 @@
-import { ErrorBlock } from '../components/error-block/error-block.ts';
-import { Link } from '../components/link/link.ts';
-import { View } from './view.ts';
-import { Component } from '../components/component.ts';
+import { ErrorBlock } from '../components/error-block/error-block';
+import { Link } from '../components/link/link';
+import { View } from './view';
+import { Component } from '../components/component';
 
 export class ErrorView extends View {
-    private readonly errorCode: string;
-    private readonly errorText: string
+  private readonly errorCode: string;
 
-    constructor(errorCode: string, errorText: string) {
-        super();
+  private readonly errorText: string;
 
-        this.errorCode = errorCode;
-        this.errorText = errorText;
-    }
+  constructor(errorCode: string, errorText: string) {
+    super();
 
-    createContent(): Component {
-        const link = new Link('span',
-            {
-                attrs: {
-                    class: "nav-container text"
-                },
-                url: '../../index.html',
-                title: 'Назад',
-            });
+    this.errorCode = errorCode;
+    this.errorText = errorText;
+  }
 
-        return new ErrorBlock(
-            'div',
-            {
-                attrs: {
-                    class: 'pnl'
-                },
-                errorCode: this.errorCode,
-                errorText: this.errorText,
-                link: link,
-            }
-        );
-    }
+  createContent(): Component {
+    const link = new Link(
+      'span',
+      {
+        attrs: {
+          class: 'nav-container text',
+        },
+        url: '../../index.html',
+        title: 'Назад',
+      },
+    );
+
+    return new ErrorBlock(
+      'div',
+      {
+        attrs: {
+          class: 'pnl',
+        },
+        errorCode: this.errorCode,
+        errorText: this.errorText,
+        link,
+      },
+    );
+  }
 }

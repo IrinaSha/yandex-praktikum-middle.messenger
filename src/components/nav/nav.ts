@@ -1,18 +1,16 @@
-import { Component } from '../component.ts';
-import { tmpl } from './tmpl.ts';
+import { Component } from '../component';
+import { tmpl } from './tmpl';
 
 export class Nav extends Component {
-    constructor(props: any) {
-        super('nav', props);
-    }
+  constructor(props: any) {
+    super('nav', props);
+  }
 
-    render(): DocumentFragment {
-        console.log('Nav render');
+  render(): DocumentFragment {
+    return super.render(tmpl);
+  }
 
-        return super.render(tmpl);
-    }
-
-    /*_addEvents() {
+  /* _addEvents() {
         const { events = {} } = this._props;
 
         this._element?.querySelectorAll('a').forEach((item: any) => {
@@ -30,5 +28,5 @@ export class Nav extends Component {
         });
 
         //super._addEvents();
-    }*/
+    } */
 }

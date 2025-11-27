@@ -1,14 +1,12 @@
-import { Component } from '../component.ts';
-import { tmpl } from './tmpl.ts';
+import { Component } from '../component';
+import { tmpl } from './tmpl';
 
 export class Link extends Component {
-    render(): DocumentFragment {
-        console.log('Page render');
+  render(): DocumentFragment {
+    return super.render(tmpl);
+  }
 
-        return super.render(tmpl);
-    }
-
-    /*componentDidUpdate(oldProps: any, newProps: any): boolean {
+  /* componentDidUpdate(oldProps: any, newProps: any): boolean {
         return oldProps['title'] !== newProps['title'];
-    }*/
+    } */
 }

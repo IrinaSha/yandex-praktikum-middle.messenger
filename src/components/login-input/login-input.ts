@@ -1,13 +1,11 @@
-import './login-input.scss'
-import '../../assets/styles/variables.scss'
+import './login-input.scss';
+import '../../assets/styles/variables.scss';
 
-import { Component } from '../component.ts';
-import { tmpl } from './tmpl.ts';
+import { Component } from '../component';
+import { tmpl } from './tmpl';
 
 export class InputComponent extends Component {
-    render(): DocumentFragment {
-        console.log('InputComponent render');
-
-        return super.render(tmpl);
-    }
+  render(): DocumentFragment {
+    return super.render(tmpl);
+  }
 }
