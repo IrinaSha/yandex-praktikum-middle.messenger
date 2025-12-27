@@ -86,6 +86,18 @@ export class LoginView extends View {
       validationType: 'name',
     });
 
+    const phoneInput = new InputWithValidComponent('div', {
+      attrs: {
+        class: 'input-container',
+      },
+      name: 'phone',
+      inputType: 'text',
+      errorText: 'Неверный телефон',
+      labelText: 'Телефон',
+      noValid: false,
+      validationType: 'phone',
+    });
+
     const pwdInput = new InputWithValidComponent('div', {
       attrs: {
         class: 'input-container',
@@ -94,6 +106,18 @@ export class LoginView extends View {
       inputType: 'password',
       errorText: 'Неверный пароль',
       labelText: 'Пароль',
+      noValid: false,
+      validationType: 'password',
+    });
+
+    const pwdInputConfirm = new InputWithValidComponent('div', {
+      attrs: {
+        class: 'input-container',
+      },
+      name: 'confirm_password',
+      inputType: 'password',
+      errorText: 'Неверный пароль',
+      labelText: 'Пароль (еще раз)',
       noValid: false,
       validationType: 'password',
     });
@@ -113,7 +137,7 @@ export class LoginView extends View {
       attrs: {
         class: 'login-form',
       },
-      inputs: [emailInput, fNameInput, loginInput, sNameInput, pwdInput],
+      inputs: [emailInput, fNameInput, loginInput, sNameInput, phoneInput, pwdInput, pwdInputConfirm],
       button: sendButton,
       onSubmit: (data: Record<string, string>, isValid: boolean) => {
         if (isValid) {
