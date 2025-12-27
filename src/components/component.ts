@@ -11,7 +11,7 @@ export class Component {
     FLOW_RENDER: 'flow:render',
   };
 
-  private _props: any;
+  _props: any;
 
   private _children: Component;
 
@@ -26,10 +26,6 @@ export class Component {
   private _eventBus: () => EventBus;
 
   private _setUpdate = false;
-
-  /* get element(): HTMLElement | undefined {
-    return this.element;
-  } */
 
   constructor(tagName = 'div', propsAndChildren = {}) {
     this._meta = { tagName, propsAndChildren };
@@ -69,6 +65,10 @@ export class Component {
       content.style.display = 'none';
     }
   }
+
+  /*updateProperty = (property: any) => {
+    this._props.find((prop) => prop)
+  }*/
 
   setProps = (nextProps: any) => {
     if (!nextProps) {
@@ -245,9 +245,9 @@ export class Component {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop, newValue) {
-        // const old = {...target};
-
         target[prop] = newValue;
+
+        console.log('newValue = ', newValue);
 
         self._setUpdate = true;
 

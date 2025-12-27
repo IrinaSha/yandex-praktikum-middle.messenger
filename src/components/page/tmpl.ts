@@ -4,4 +4,5 @@ export const tmpl = `
 {{{inputPwd}}}
 {{{sendButton}}}
 {{{link}}}
+{{{inputNewLogin}}}
 `;

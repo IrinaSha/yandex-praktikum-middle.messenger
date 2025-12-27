@@ -18,3 +18,14 @@ export type HttpOptions = {
   data: any;
   timeout: number;
 };
+
+export type ValidationType = 'login' | 'password' | 'email' | 'phone' | 'name';
+
+export type InputWithValidProps = {
+  name: string;
+  labelText: string;
+  inputType: string;
+  value: string;
+  errorText: string;
+  validationType: ValidationType;
+};

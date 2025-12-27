@@ -7,11 +7,25 @@ import { Link } from '../../components/link/link';
 import { Page } from '../../components/page/page';
 import { Button } from '../../components/button/button';
 import { InputComponent } from '../../components/login-input/login-input';
+import { Validator } from '../../services/validator';
+import { InputWithValidComponent } from '../../components/input-with-valid/input-with-valid';
 
 export class LoginView extends View {
+  validator: Validator;
+
+  constructor() {
+    super();
+
+    this.validator = new Validator();
+  }
+
   createContent(): Component {
     const linkClick = (e: Event) => {
       console.log('login link clicked, params: ', e);
+    };
+
+    const btnClick = (e: Event) => {
+      console.log('blur btn clicked, params: ', e);
     };
 
     const link = new Link(
@@ -28,7 +42,7 @@ export class LoginView extends View {
       },
     );
 
-    const sendButton = new Button(
+    const sendButton = new Button (
       'button',
       {
         attrs: {
@@ -36,19 +50,9 @@ export class LoginView extends View {
           type: 'submit',
         },
         btnText: 'Авторизоваться',
-      },
-    );
-
-    const inputLogin = new InputComponent(
-      'div',
-      {
-        attrs: {
-          class: 'input-container',
+        events: {
+          blur: btnClick
         },
-        name: 'login',
-        inputType: 'text',
-        errorText: 'Неверный логин',
-        labelText: 'Логин',
       },
     );
 
@@ -65,6 +69,30 @@ export class LoginView extends View {
       },
     );
 
+    const loginInput = new InputWithValidComponent('div', {
+      attrs: {
+        class: 'input-container',
+      },
+      name: 'login',
+      inputType: 'text',
+      errorText: 'Неверный логин',
+      labelText: 'Логин',
+      noValid: false,
+      validationType: 'login',
+    });
+
+    const pwdInput = new InputWithValidComponent('div', {
+      attrs: {
+        class: 'input-container',
+      },
+      name: 'password',
+      inputType: 'password',
+      errorText: 'Неверный пароль!!',
+      labelText: 'Пароль',
+      noValid: false,
+      validationType: 'password',
+    });
+
     return new Page(
       'div',
       {
@@ -73,8 +101,8 @@ export class LoginView extends View {
         },
         title: 'Вход',
         // form: form,
-        inputLogin,
-        inputPwd,
+        inputLogin: loginInput,
+        inputPwd: pwdInput,
         link,
         sendButton,
       },
