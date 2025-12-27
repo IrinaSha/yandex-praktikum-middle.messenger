@@ -27,7 +27,7 @@ export class MainView extends View {
           new Link('li', { url: '/pages/page-error400/page.html', title: 'Ошибка 4**' }),
           new Link('li', { url: '/pages/page-error500/page.html', title: 'Ошибка 5**' }),
           new Link('li', { url: '/pages/page-login/page.html', title: 'Авторизация' }),
-          new Link('li', { url: '/pages/registration.html', title: 'Регистрация' }),
+          new Link('li', { url: '/pages/page-registration/page.html', title: 'Регистрация' }),
           new Link('li', { url: '/pages/page-chat/page.html', title: 'Чаты' }),
           new Link('li', { url: '/pages/user-profile.html', title: 'Профиль пользователя' }),
         ],

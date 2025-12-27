@@ -19,7 +19,7 @@ export type HttpOptions = {
   timeout: number;
 };
 
-export type ValidationType = 'login' | 'password' | 'email' | 'phone' | 'name';
+export type ValidationType = 'login' | 'password' | 'email' | 'phone' | 'name' | 'message';
 
 export type InputWithValidProps = {
   name: string;

@@ -24,17 +24,7 @@ export class InputWithValidComponent extends Component {
     const processBlur = (validationType: ValidationType) => (e: Event) => {
       const target = e.target as HTMLInputElement | null;
       const value = target ? target.value : '';
-
-      let isValid = false;
-
-      switch (validationType) {
-        case 'login':
-          isValid = validator.validateLogin(value);
-          break;
-        case 'password':
-          isValid = validator.validatePassword(value);
-          break;
-      }
+      const isValid = this.validator.checkValid(value, validationType);
 
       this.setProps({ noValid: !isValid });
     };
@@ -60,29 +50,18 @@ export class InputWithValidComponent extends Component {
     this.inputElement = inputElement;
   }
 
-  // Получить значение инпута
   getValue(): string {
     const inputEl = this.inputElement.getContent() as HTMLInputElement;
     return inputEl ? inputEl.value : '';
   }
 
-  // Валидировать инпут
   validate(): boolean {
     const value = this.getValue();
     const validationType = this._props.validationType;
-
-    let isValid = false;
-
-    switch (validationType) {
-      case 'login':
-        isValid = this.validator.validateLogin(value);
-        break;
-      case 'password':
-        isValid = this.validator.validatePassword(value);
-        break;
-    }
+    const isValid = this.validator.checkValid(value, validationType);
 
     this.setProps({ noValid: !isValid });
+
     return isValid;
   }
 

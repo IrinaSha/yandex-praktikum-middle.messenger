@@ -21,7 +21,7 @@ export class LoginView extends View {
 
   createContent(): Component {
     const linkClick = (e: Event) => {
-      console.log('login link clicked, params: ', e);
+      console.log('link clicked, params: ', e);
     };
 
     const link = new Link(
@@ -30,13 +30,37 @@ export class LoginView extends View {
         attrs: {
           class: 'nav-container text',
         },
-        url: '../page-registration/page.html',
-        title: 'Нет аккаунта?',
+        url: '../../pages/chats.html',
+        title: 'Войти',
         events: {
           click: linkClick,
         },
       },
     );
+
+    const emailInput = new InputWithValidComponent('div', {
+      attrs: {
+        class: 'input-container',
+      },
+      name: 'email',
+      inputType: 'text',
+      errorText: 'Неверный email',
+      labelText: 'Почта',
+      noValid: false,
+      validationType: 'email',
+    });
+
+    const fNameInput = new InputWithValidComponent('div', {
+      attrs: {
+        class: 'input-container',
+      },
+      name: 'first_name',
+      inputType: 'text',
+      errorText: 'Неверное имя пользователя',
+      labelText: 'Имя',
+      noValid: false,
+      validationType: 'name',
+    });
 
     const loginInput = new InputWithValidComponent('div', {
       attrs: {
@@ -48,6 +72,18 @@ export class LoginView extends View {
       labelText: 'Логин',
       noValid: false,
       validationType: 'login',
+    });
+
+    const sNameInput = new InputWithValidComponent('div', {
+      attrs: {
+        class: 'input-container',
+      },
+      name: 'second_name',
+      inputType: 'text',
+      errorText: 'Неверная фамилия пользователя',
+      labelText: 'Фамилия',
+      noValid: false,
+      validationType: 'name',
     });
 
     const pwdInput = new InputWithValidComponent('div', {
@@ -69,7 +105,7 @@ export class LoginView extends View {
           class: 'btn-container',
           type: 'submit',
         },
-        btnText: 'Авторизоваться',
+        btnText: 'Зарегистрироваться',
       },
     );
 
@@ -77,13 +113,13 @@ export class LoginView extends View {
       attrs: {
         class: 'login-form',
       },
-      inputs: [loginInput, pwdInput],
+      inputs: [emailInput, fNameInput, loginInput, sNameInput, pwdInput],
       button: sendButton,
       onSubmit: (data: Record<string, string>, isValid: boolean) => {
         if (isValid) {
-          console.log('Форма валидна. Данные:', data);
+          console.log('Данные:', data);
         } else {
-          console.log('Форма невалидна');
+          console.log('Данные содержат ошибки');
         }
       }
     });
@@ -94,7 +130,7 @@ export class LoginView extends View {
         attrs: {
           class: 'pnl pnl__bordered',
         },
-        title: 'Вход',
+        title: 'Регистрация',
         form: form,
         link: link,
       },
