@@ -6,9 +6,9 @@ import { Component } from '../../components/component';
 import { Link } from '../../components/link/link';
 import { Page } from '../../components/page/page';
 import { Button } from '../../components/button/button';
-import { InputComponent } from '../../components/login-input/login-input';
 import { Validator } from '../../services/validator';
 import { InputWithValidComponent } from '../../components/input-with-valid/input-with-valid';
+import { Form } from '../../components/form/form';
 
 export class LoginView extends View {
   validator: Validator;
@@ -24,10 +24,6 @@ export class LoginView extends View {
       console.log('login link clicked, params: ', e);
     };
 
-    const btnClick = (e: Event) => {
-      console.log('blur btn clicked, params: ', e);
-    };
-
     const link = new Link(
       'span',
       {
@@ -39,33 +35,6 @@ export class LoginView extends View {
         events: {
           click: linkClick,
         },
-      },
-    );
-
-    const sendButton = new Button (
-      'button',
-      {
-        attrs: {
-          class: 'btn-container',
-          type: 'submit',
-        },
-        btnText: 'Авторизоваться',
-        events: {
-          blur: btnClick
-        },
-      },
-    );
-
-    const inputPwd = new InputComponent(
-      'div',
-      {
-        attrs: {
-          class: 'input-container',
-        },
-        name: 'password',
-        inputType: 'password',
-        errorText: 'Неверный пароль',
-        labelText: 'Пароль',
       },
     );
 
@@ -87,10 +56,36 @@ export class LoginView extends View {
       },
       name: 'password',
       inputType: 'password',
-      errorText: 'Неверный пароль!!',
+      errorText: 'Неверный пароль',
       labelText: 'Пароль',
       noValid: false,
       validationType: 'password',
+    });
+
+    const sendButton = new Button (
+      'button',
+      {
+        attrs: {
+          class: 'btn-container',
+          type: 'submit',
+        },
+        btnText: 'Авторизоваться',
+      },
+    );
+
+    const form = new Form('form', {
+      attrs: {
+        class: 'login-form',
+      },
+      inputs: [loginInput, pwdInput],
+      button: sendButton,
+      onSubmit: (data: Record<string, string>, isValid: boolean) => {
+        if (isValid) {
+          console.log('Форма валидна. Данные:', data);
+        } else {
+          console.log('Форма невалидна');
+        }
+      }
     });
 
     return new Page(
@@ -100,11 +95,8 @@ export class LoginView extends View {
           class: 'pnl pnl__bordered',
         },
         title: 'Вход',
-        // form: form,
-        inputLogin: loginInput,
-        inputPwd: pwdInput,
-        link,
-        sendButton,
+        form: form,
+        link: link,
       },
     );
   }
