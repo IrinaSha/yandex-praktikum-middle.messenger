@@ -25,9 +25,11 @@ export type InputWithValidProps = {
   name: string;
   labelText: string;
   inputType: string;
-  value?: string;
-  errorText: string;
+  value?: any;
+  errorText?: string;
   validationType: ValidationType;
   noValid?: boolean,
   attrs?: any,
+  profileEditUserInfo?: boolean,
+  visible?: boolean;
 };

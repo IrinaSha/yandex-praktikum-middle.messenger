@@ -1,0 +1,5 @@
+export const tmpl = `
+<button class="flat-btn-container">
+    <span class="flat-btn-title">{{btnText}}</span>
+</button>
+`;

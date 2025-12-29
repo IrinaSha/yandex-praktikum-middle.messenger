@@ -38,7 +38,7 @@ export class LoginView extends View {
       },
     );
 
-    const emailInput = new InputWithValidComponent('div', {
+    const emailInput = new InputWithValidComponent('div', 'input-container-value', {
       attrs: {
         class: 'input-container',
       },
@@ -50,7 +50,7 @@ export class LoginView extends View {
       validationType: 'email',
     });
 
-    const fNameInput = new InputWithValidComponent('div', {
+    const fNameInput = new InputWithValidComponent('div', 'input-container-value', {
       attrs: {
         class: 'input-container',
       },
@@ -62,7 +62,7 @@ export class LoginView extends View {
       validationType: 'name',
     });
 
-    const loginInput = new InputWithValidComponent('div', {
+    const loginInput = new InputWithValidComponent('div', 'input-container-value', {
       attrs: {
         class: 'input-container',
       },
@@ -74,7 +74,7 @@ export class LoginView extends View {
       validationType: 'login',
     });
 
-    const sNameInput = new InputWithValidComponent('div', {
+    const sNameInput = new InputWithValidComponent('div', 'input-container-value', {
       attrs: {
         class: 'input-container',
       },
@@ -86,7 +86,7 @@ export class LoginView extends View {
       validationType: 'name',
     });
 
-    const phoneInput = new InputWithValidComponent('div', {
+    const phoneInput = new InputWithValidComponent('div', 'input-container-value', {
       attrs: {
         class: 'input-container',
       },
@@ -98,7 +98,7 @@ export class LoginView extends View {
       validationType: 'phone',
     });
 
-    const pwdInput = new InputWithValidComponent('div', {
+    const pwdInput = new InputWithValidComponent('div', 'input-container-value', {
       attrs: {
         class: 'input-container',
       },
@@ -110,7 +110,7 @@ export class LoginView extends View {
       validationType: 'password',
     });
 
-    const pwdInputConfirm = new InputWithValidComponent('div', {
+    const pwdInputConfirm = new InputWithValidComponent('div', 'input-container-value', {
       attrs: {
         class: 'input-container',
       },
@@ -152,7 +152,7 @@ export class LoginView extends View {
       'div',
       {
         attrs: {
-          class: 'pnl pnl__bordered',
+          class: 'app pnl-props-container-profile',
         },
         title: 'Регистрация',
         form: form,

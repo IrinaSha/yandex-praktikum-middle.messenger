@@ -1,5 +1,6 @@
 import { Component } from '../component';
 import { tmpl } from './tmpl';
+import './page.scss';
 
 export class Page extends Component {
   render(): DocumentFragment {

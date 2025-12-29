@@ -1,4 +1,4 @@
-import './flat-button.scss';
+import './button.scss';
 import '../../assets/styles/variables.scss';
 
 import { Component } from '../component';

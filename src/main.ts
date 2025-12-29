@@ -28,7 +28,7 @@ export class MainView extends View {
           new Link('li', { url: '/pages/page-login/page.html', title: 'Авторизация' }),
           new Link('li', { url: '/pages/page-registration/page.html', title: 'Регистрация' }),
           new Link('li', { url: '/pages/page-chat/page.html', title: 'Чаты' }),
-          new Link('li', { url: '/pages/user-profile.html', title: 'Профиль пользователя' }),
+          new Link('li', { url: '/pages/page-profile/page.html', title: 'Профиль пользователя' }),
         ],
         events: {
           click: linkClick,

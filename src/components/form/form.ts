@@ -7,6 +7,7 @@ interface FormProps {
   attrs?: Record<string, string>;
   inputs?: InputWithValidComponent[];
   button?: Component;
+  showSubmit?: boolean;
   onSubmit?: (data: Record<string, string>, isValid: boolean) => void;
 }
 

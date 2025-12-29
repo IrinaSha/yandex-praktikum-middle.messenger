@@ -11,7 +11,7 @@ export class InputWithValidComponent extends Component {
   validator: Validator;
   inputElement: InputElement;
 
-  constructor(tagName = 'div', propsAndChildren: InputWithValidProps = {
+  constructor(tagName = 'div', inputClass = 'input-container-value', propsAndChildren: InputWithValidProps = {
     name: '',
     labelText: '',
     inputType: '',
@@ -31,7 +31,7 @@ export class InputWithValidComponent extends Component {
 
     const inputElement = new InputElement('input', {
       attrs: {
-        class: 'input-container-value',
+        class: inputClass,
         id: propsAndChildren.name,
         name: propsAndChildren.name,
         type: propsAndChildren.inputType
@@ -66,6 +66,10 @@ export class InputWithValidComponent extends Component {
   }
 
   render(): DocumentFragment {
+    return super.render(tmpl);
+  }
+
+  renderTemplate(tmpl: string): DocumentFragment {
     return super.render(tmpl);
   }
 }
