@@ -20,21 +20,14 @@ export class LoginView extends View {
   }
 
   createContent(): Component {
-    const linkClick = (e: Event) => {
-      console.log('link clicked, params: ', e);
-    };
-
     const link = new Link(
       'span',
       {
         attrs: {
           class: 'nav-container text',
         },
-        url: '../../pages/chats.html',
+        url: '../page-chats/page.html',
         title: 'Войти',
-        events: {
-          click: linkClick,
-        },
       },
     );
 
@@ -122,7 +115,7 @@ export class LoginView extends View {
       validationType: 'password',
     });
 
-    const sendButton = new Button (
+    const sendButton = new Button(
       'button',
       {
         attrs: {
@@ -137,7 +130,15 @@ export class LoginView extends View {
       attrs: {
         class: 'login-form',
       },
-      inputs: [emailInput, fNameInput, loginInput, sNameInput, phoneInput, pwdInput, pwdInputConfirm],
+      inputs: [
+        emailInput,
+        fNameInput,
+        loginInput,
+        sNameInput,
+        phoneInput,
+        pwdInput,
+        pwdInputConfirm,
+      ],
       button: sendButton,
       onSubmit: (data: Record<string, string>, isValid: boolean) => {
         if (isValid) {
@@ -145,7 +146,7 @@ export class LoginView extends View {
         } else {
           console.log('Данные содержат ошибки');
         }
-      }
+      },
     });
 
     return new Page(
@@ -155,8 +156,8 @@ export class LoginView extends View {
           class: 'app pnl-props-container-profile',
         },
         title: 'Регистрация',
-        form: form,
-        link: link,
+        form,
+        link,
       },
     );
   }

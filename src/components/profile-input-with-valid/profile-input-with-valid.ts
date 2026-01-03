@@ -6,14 +6,13 @@ import { tmpl } from './tmpl';
 import type { InputWithValidProps } from '../../services/types';
 
 export class ProfileInputWithValidComponent extends InputWithValidComponent {
-
   constructor(tagName = 'div', propsAndChildren: InputWithValidProps = {
     name: '',
     labelText: '',
     inputType: '',
     value: '',
     errorText: '',
-    validationType: 'login'
+    validationType: 'login',
   }) {
     super(tagName, 'profile-input-container-text profile-input-container-value', propsAndChildren);
   }

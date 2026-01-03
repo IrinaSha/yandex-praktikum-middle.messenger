@@ -10,7 +10,7 @@ import { Validator } from '../../services/validator';
 import { InputWithValidComponent } from '../../components/input-with-valid/input-with-valid';
 import { Form } from '../../components/form/form';
 
-export class LoginView extends View {
+export class ChatsView extends View {
   validator: Validator;
 
   constructor() {
@@ -26,8 +26,8 @@ export class LoginView extends View {
         attrs: {
           class: 'nav-container text',
         },
-        url: '../page-registration/page.html',
-        title: 'Нет аккаунта?',
+        url: '/',
+        title: 'Назад',
       },
     );
 
@@ -35,24 +35,12 @@ export class LoginView extends View {
       attrs: {
         class: 'input-container',
       },
-      name: 'login',
+      name: 'message',
       inputType: 'text',
-      errorText: 'Неверный логин',
-      labelText: 'Логин',
+      errorText: 'Сообщение не может быть пустым',
+      labelText: 'Сообщение',
       noValid: false,
-      validationType: 'login',
-    });
-
-    const pwdInput = new InputWithValidComponent('div', 'input-container-value', {
-      attrs: {
-        class: 'input-container',
-      },
-      name: 'password',
-      inputType: 'password',
-      errorText: 'Неверный пароль',
-      labelText: 'Пароль',
-      noValid: false,
-      validationType: 'password',
+      validationType: 'message',
     });
 
     const sendButton = new Button(
@@ -62,7 +50,7 @@ export class LoginView extends View {
           class: 'btn-container',
           type: 'submit',
         },
-        btnText: 'Авторизоваться',
+        btnText: 'Отправить',
       },
     );
 
@@ -70,8 +58,9 @@ export class LoginView extends View {
       attrs: {
         class: 'login-form',
       },
-      inputs: [loginInput, pwdInput],
+      inputs: [loginInput],
       button: sendButton,
+      showSubmit: true,
       onSubmit: (data: Record<string, string>, isValid: boolean) => {
         if (isValid) {
           console.log('Данные:', data);
@@ -87,7 +76,7 @@ export class LoginView extends View {
         attrs: {
           class: 'pnl pnl__bordered',
         },
-        title: 'Вход',
+        title: 'Сообщения',
         form,
         link,
       },
@@ -95,6 +84,6 @@ export class LoginView extends View {
   }
 }
 
-const view = new LoginView();
+const view = new ChatsView();
 
 view.renderPage();

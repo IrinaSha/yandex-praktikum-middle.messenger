@@ -13,10 +13,6 @@ import { View } from './view/view';
 
 export class MainView extends View {
   createContent(): Component {
-    const linkClick = (e: Event) => {
-      console.log('link clicked, params: ', e);
-    };
-
     const nav = new Nav(
       {
         attrs: {
@@ -27,12 +23,9 @@ export class MainView extends View {
           new Link('li', { url: '/pages/page-error500/page.html', title: 'Ошибка 5**' }),
           new Link('li', { url: '/pages/page-login/page.html', title: 'Авторизация' }),
           new Link('li', { url: '/pages/page-registration/page.html', title: 'Регистрация' }),
-          new Link('li', { url: '/pages/page-chat/page.html', title: 'Чаты' }),
+          new Link('li', { url: '/pages/page-chats/page.html', title: 'Чаты' }),
           new Link('li', { url: '/pages/page-profile/page.html', title: 'Профиль пользователя' }),
         ],
-        events: {
-          click: linkClick,
-        },
       },
     );
 

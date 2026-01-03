@@ -8,6 +8,11 @@ export class Page extends Component {
   }
 
   componentDidUpdate(oldProps: any, newProps: any): boolean {
-    return oldProps.title !== newProps.title;
+    return (
+      oldProps.title !== newProps.title
+      || oldProps.hideForm !== newProps.hideForm
+      || oldProps.hideEditButtons !== newProps.hideEditButtons
+      || oldProps.hideFormPassword !== newProps.hideFormPassword
+    );
   }
 }

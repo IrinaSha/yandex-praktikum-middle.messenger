@@ -16,11 +16,6 @@ export class ErrorView extends View {
   }
 
   createContent(): Component {
-    const linkClick = (e: Event) => {
-      debugger;
-      console.log('href!!!!, params: ', e);
-    };
-
     const link = new Link(
       'span',
       {
@@ -29,9 +24,6 @@ export class ErrorView extends View {
         },
         url: '/',
         title: 'Назад',
-        events: [
-          { click: linkClick }
-        ]
       },
     );
 

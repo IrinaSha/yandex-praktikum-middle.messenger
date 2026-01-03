@@ -7,25 +7,24 @@ import { Link } from '../../components/link/link';
 import { Page } from '../../components/page/page';
 import { Button } from '../../components/button/button';
 import { Form } from '../../components/form/form';
-import { ProfileInputWithValidComponent } from '../../components/profile-input-with-valid/profile-input-with-valid';
+import {
+  ProfileInputWithValidComponent,
+} from '../../components/profile-input-with-valid/profile-input-with-valid';
 import { FlatButton } from '../../components/flat-button/flat-button';
+import {AvatarInput} from '../../components/avatar-input/avatar-input.ts';
 
 export class LoginView extends View {
-  private profileEditUserInfo: boolean = false;
   private profileInputs: ProfileInputWithValidComponent[] = [];
-  private passwordEditFormVisible = true;
+
+  private pwdInputs: ProfileInputWithValidComponent[] = [];
+
   private page?: Page;
+
   private form?: Form;
 
-  constructor() {
-    super();
-  }
+  private formPwd?: Form;
 
   createContent(): Component {
-    const linkClick = (e: Event) => {
-      console.log('link clicked, params: ', e);
-    };
-
     const link = new Link(
       'span',
       {
@@ -34,9 +33,6 @@ export class LoginView extends View {
         },
         url: '/',
         title: 'Выйти',
-        events: {
-          click: linkClick,
-        },
       },
     );
 
@@ -51,7 +47,7 @@ export class LoginView extends View {
       noValid: false,
       validationType: 'email',
       value: 'pochta@yandex.ru',
-      profileEditUserInfo: this.profileEditUserInfo,
+      profileEditUserInfo: false,
     });
 
     const loginInput = new ProfileInputWithValidComponent('div', {
@@ -65,7 +61,7 @@ export class LoginView extends View {
       noValid: false,
       validationType: 'login',
       value: 'Irina666',
-      profileEditUserInfo: this.profileEditUserInfo,
+      profileEditUserInfo: false,
     });
 
     const fNameInput = new ProfileInputWithValidComponent('div', {
@@ -79,7 +75,7 @@ export class LoginView extends View {
       noValid: false,
       validationType: 'name',
       value: 'Ирина',
-      profileEditUserInfo: this.profileEditUserInfo,
+      profileEditUserInfo: false,
     });
 
     const sNameInput = new ProfileInputWithValidComponent('div', {
@@ -93,7 +89,7 @@ export class LoginView extends View {
       noValid: false,
       validationType: 'name',
       value: 'Шаблий',
-      profileEditUserInfo: this.profileEditUserInfo,
+      profileEditUserInfo: false,
     });
 
     const displayNameInput = new ProfileInputWithValidComponent('div', {
@@ -107,7 +103,7 @@ export class LoginView extends View {
       noValid: false,
       validationType: 'name',
       value: 'Ирина (как в чате)',
-      profileEditUserInfo: this.profileEditUserInfo,
+      profileEditUserInfo: false,
     });
 
     const phoneInput = new ProfileInputWithValidComponent('div', {
@@ -121,22 +117,36 @@ export class LoginView extends View {
       noValid: false,
       validationType: 'phone',
       value: '88888888888',
-      profileEditUserInfo: this.profileEditUserInfo,
+      profileEditUserInfo: false,
     });
 
-    /*const pwdInput = new InputWithValidComponent('div', 'input-container-value', {
+    const pwdOldInput = new ProfileInputWithValidComponent('div', {
+      attrs: {
+        class: 'input-container',
+      },
+      name: 'old_password',
+      inputType: 'password',
+      errorText: 'Неверный пароль',
+      labelText: 'Старый пароль',
+      noValid: false,
+      validationType: 'password',
+      profileEditUserInfo: true,
+    });
+
+    const pwdInput = new ProfileInputWithValidComponent('div', {
       attrs: {
         class: 'input-container',
       },
       name: 'password',
       inputType: 'password',
       errorText: 'Неверный пароль',
-      labelText: 'Пароль',
+      labelText: 'Новый пароль',
       noValid: false,
       validationType: 'password',
+      profileEditUserInfo: true,
     });
 
-    const pwdInputConfirm = new InputWithValidComponent('div', 'input-container-value', {
+    const pwdInputConfirm = new ProfileInputWithValidComponent('div', {
       attrs: {
         class: 'input-container',
       },
@@ -146,7 +156,14 @@ export class LoginView extends View {
       labelText: 'Пароль (еще раз)',
       noValid: false,
       validationType: 'password',
-    });*/
+      profileEditUserInfo: true,
+    });
+
+    this.pwdInputs = [
+      pwdOldInput,
+      pwdInput,
+      pwdInputConfirm,
+    ];
 
     this.profileInputs = [
       emailInput,
@@ -167,16 +184,18 @@ export class LoginView extends View {
         click: (e: Event) => {
           e.preventDefault();
 
-          this.profileEditUserInfo = true;
-
-          this.page?.setProps({ hideEditButtons: true });
+          this.page?.setProps({
+            hideForm: false,
+            hideEditButtons: true,
+            hideFormPassword: true,
+          });
           this.form?.setProps({ showSubmit: true });
 
-          this.profileInputs.forEach(input => {
+          this.profileInputs.forEach((input) => {
             input.setProps({ profileEditUserInfo: true });
           });
-        }
-      }
+        },
+      },
     });
 
     const editPassword = new FlatButton('button', {
@@ -190,14 +209,18 @@ export class LoginView extends View {
         click: (e: Event) => {
           e.preventDefault();
 
-          this.page?.setProps({ hideEditButtons: true });
-          this.form?.setProps({ showSubmit: true });
+          this.page?.setProps({
+            hideForm: true,
+            hideEditButtons: true,
+            hideFormPassword: false,
+          });
 
-        }
-      }
+          this.formPwd?.setProps({ showSubmit: true });
+        },
+      },
     });
 
-    const sendButton = new Button (
+    const sendButton = new Button(
       'button',
       {
         attrs: {
@@ -208,10 +231,80 @@ export class LoginView extends View {
       },
     );
 
+    const sendButtonPwd = new Button(
+      'button',
+      {
+        attrs: {
+          class: 'btn-container',
+          type: 'submit',
+        },
+        btnText: 'Сохранить',
+      },
+    );
+
+    this.formPwd = new Form('form', {
+      attrs: {
+        class: 'login-form',
+      },
+      inputs: [pwdOldInput, pwdInput, pwdInputConfirm],
+      button: sendButtonPwd,
+      showSubmit: false,
+      onSubmit: (data: Record<string, string>, isValid: boolean) => {
+        if (isValid) {
+          console.log('Данные:', data);
+
+          this.page?.setProps({
+            hideForm: false,
+            hideEditButtons: false,
+            hideFormPassword: true,
+          });
+          this.formPwd?.setProps({ showSubmit: false });
+
+          this.pwdInputs.forEach((input) => {
+            input.setProps({ profileEditUserInfo: false });
+          });
+        } else {
+          console.log('Данные содержат ошибки');
+        }
+      },
+    });
+
+    const customAvatar = new AvatarInput('div', 'avatar-container', {
+      labelText: 'Изменить аватар',
+      inputId: 'customAvatarInput',
+      accept: 'image/png, image/jpeg, image/jpg',
+      onChange: (file) => {
+        if (!file) {
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Файл слишком большой. Максимальный размер: 5 МБ');
+          customAvatar.clearFile();
+          return;
+        }
+
+        if (!file.type.startsWith('image/')) {
+          alert('Пожалуйста, выберите изображение');
+          customAvatar.clearFile();
+          return;
+        }
+      },
+      events: {
+        click: () => {
+          console.log('Клик по контейнеру аватара');
+        },
+      },
+      attrs: {
+        'data-testid': 'avatar-input',
+      },
+    });
+
     this.form = new Form('form', {
       attrs: {
         class: 'login-form',
       },
+      avatar: customAvatar,
       inputs: [emailInput, fNameInput, loginInput, sNameInput, displayNameInput, phoneInput],
       button: sendButton,
       showSubmit: false,
@@ -219,17 +312,20 @@ export class LoginView extends View {
         if (isValid) {
           console.log('Данные:', data);
 
-          this.profileEditUserInfo = false;
-          this.page?.setProps({ hideEditButtons: false }); // показываем кнопки обратно
-          this.form?.setProps({ showSubmit: false }); // скрываем кнопку сохранения
+          this.page?.setProps({
+            hideForm: false,
+            hideEditButtons: false,
+            hideFormPassword: true,
+          });
+          this.form?.setProps({ showSubmit: false });
 
-          this.profileInputs.forEach(input => {
-            input.setProps({ profileEditUserInfo: false }); // выключаем редактирование
+          this.profileInputs.forEach((input) => {
+            input.setProps({ profileEditUserInfo: false });
           });
         } else {
           console.log('Данные содержат ошибки');
         }
-      }
+      },
     });
 
     this.page = new Page(
@@ -240,11 +336,13 @@ export class LoginView extends View {
         },
         title: 'Профиль пользователя',
         form: this.form,
-        editButton: editButton,
-        editPassword: editPassword,
-        link: link,
+        formPassword: this.formPwd,
+        editButton,
+        editPassword,
+        link,
+        hideForm: false,
         hideEditButtons: false,
-        passwordEditFormVisible: this.passwordEditFormVisible,
+        hideFormPassword: true,
       },
     );
 

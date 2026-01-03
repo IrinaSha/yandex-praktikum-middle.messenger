@@ -11,3 +11,15 @@ export function render(query: string, component: Component) {
 
   return root;
 }
+
+export function queryStringify(data: Record<string, unknown>): string {
+  if (typeof data !== 'object' || data === null) {
+    throw new Error('Data must be object');
+  }
+
+  const keys = Object.keys(data);
+
+  return keys.reduce((result, key, index) => {
+    return `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`;
+  }, '?');
+}

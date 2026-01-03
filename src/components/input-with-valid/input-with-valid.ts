@@ -9,16 +9,21 @@ import type { InputWithValidProps, ValidationType } from '../../services/types';
 
 export class InputWithValidComponent extends Component {
   validator: Validator;
+
   inputElement: InputElement;
 
-  constructor(tagName = 'div', inputClass = 'input-container-value', propsAndChildren: InputWithValidProps = {
-    name: '',
-    labelText: '',
-    inputType: '',
-    value: '',
-    errorText: '',
-    validationType: 'login'
-  }) {
+  constructor(
+    tagName = 'div',
+    inputClass = 'input-container-value',
+    propsAndChildren: InputWithValidProps = {
+      name: '',
+      labelText: '',
+      inputType: '',
+      value: '',
+      errorText: '',
+      validationType: 'login',
+    },
+  ) {
     const validator = new Validator();
 
     const processBlur = (validationType: ValidationType) => (e: Event) => {
@@ -34,11 +39,11 @@ export class InputWithValidComponent extends Component {
         class: inputClass,
         id: propsAndChildren.name,
         name: propsAndChildren.name,
-        type: propsAndChildren.inputType
+        type: propsAndChildren.inputType,
       },
       events: {
-        blur: processBlur(propsAndChildren.validationType)
-      }
+        blur: processBlur(propsAndChildren.validationType),
+      },
     });
 
     super(tagName, {
@@ -57,7 +62,7 @@ export class InputWithValidComponent extends Component {
 
   validate(): boolean {
     const value = this.getValue();
-    const validationType = this._props.validationType;
+    const { validationType } = this._props;
     const isValid = this.validator.checkValid(value, validationType);
 
     this.setProps({ noValid: !isValid });
@@ -69,7 +74,7 @@ export class InputWithValidComponent extends Component {
     return super.render(tmpl);
   }
 
-  renderTemplate(tmpl: string): DocumentFragment {
-    return super.render(tmpl);
+  renderTemplate(templateStr: string): DocumentFragment {
+    return super.render(templateStr);
   }
 }
