@@ -1,0 +1,66 @@
+.active {
+  background-color: var(--message-active);
+}
+
+.chat-item-container {
+  padding: 12px;
+  align-items: start;
+  width: 280px;
+  height: max-content;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  border-bottom: 1px solid var(--primary-border);
+}
+.chat-item-text-container {
+  display: flex;
+  flex-direction: column;
+  width: 193px;
+  margin: 12px 10px;
+  gap: 4px;
+}
+.chat-item-avatar {
+  width: 47px;
+  height: 47px;
+  background-color: var(--message-active);
+  border-radius: 36px;
+}
+.chat-item-title {
+  color: var(--primary-text);
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 13px;
+}
+.chat-item-text {
+  color: var(--primary-text);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 15px;
+  max-height: 30px;
+}
+.chat-item-info {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.chat-item-info-date {
+  color: var(--primary-blue);
+  font-size: 10px;
+  line-height: 10px;
+}
+.chat-item-info-new-num {
+  color: var(--primary-inverted-text);
+  background-color: #3369f3;
+  border-radius: 36px;
+  font-size: 10px;
+  line-height: 10px;
+  width: 12px;
+  height: 12px;
+  align-self: end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*# sourceMappingURL=chat-list-item.css.map */

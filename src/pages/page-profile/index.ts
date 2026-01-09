@@ -278,12 +278,6 @@ export class LoginView extends View {
           return;
         }
 
-        if (file.size > 5 * 1024 * 1024) {
-          alert('Файл слишком большой. Максимальный размер: 5 МБ');
-          customAvatar.clearFile();
-          return;
-        }
-
         if (!file.type.startsWith('image/')) {
           alert('Пожалуйста, выберите изображение');
           customAvatar.clearFile();

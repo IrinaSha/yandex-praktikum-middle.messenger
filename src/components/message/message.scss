@@ -1,0 +1,39 @@
+.message-container {
+  padding: 12px;
+  align-items: start;
+  border-radius: 12px;
+  border: 0;
+  width: 280px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+
+  &-inbox {
+    background-color: var(--message-background-inbox);
+  }
+
+  &-outbox {
+    background-color: var(--message-active);
+    align-self: end;
+  }
+
+  &-title {
+    color: var(--primary-text);
+    font-size: 13px;
+    line-height: 13px;
+  }
+
+  &-info {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-top: 4px;
+    align-self: end;
+
+    &-date {
+      color: var(--primary-blue);
+      font-size: 10px;
+      line-height: 10px;
+    }
+  }
+}

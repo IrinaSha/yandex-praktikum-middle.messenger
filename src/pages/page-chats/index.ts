@@ -9,6 +9,10 @@ import { Button } from '../../components/button/button';
 import { Validator } from '../../services/validator';
 import { InputWithValidComponent } from '../../components/input-with-valid/input-with-valid';
 import { Form } from '../../components/form/form';
+import { MessagesList } from '../../components/messages-list/messages-list';
+import { Message } from '../../components/message/message';
+import { ChatList } from '../../components/chat-list/chat-list';
+import {ChatListItem} from '../../components/chat-list-item/chat-list-item.ts';
 
 export class ChatsView extends View {
   validator: Validator;
@@ -20,6 +24,34 @@ export class ChatsView extends View {
   }
 
   createContent(): Component {
+    const messagesList = new MessagesList(
+      {
+        attrs: {
+          class: 'messages-list-container',
+        },
+        messages: [
+          new Message('div', { attrs: { class: 'message-container message-container-inbox'}, text: 'Привет! Как дела?', type: 'inbox', state: 'delivered', date: '12.12.25', time: '11:30' }),
+          new Message('div', { attrs: { class: 'message-container message-container-outbox'}, text: 'Привет! Все хорошо', type: 'outbox', state: 'read', date: '12.12.25', time: '11:55' }),
+          new Message('div', { attrs: { class: 'message-container message-container-outbox'}, text: 'Привет! А у тебя?', type: 'outbox', state: 'read', date: '12.12.25', time: '11:55' }),
+          new Message('div', { attrs: { class: 'message-container message-container-inbox'}, text: 'Нормально. Смотри, тут всплыл интересный кусок лунной космической истории — НАСА ' +
+              'в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну.', type: 'inbox', state: 'delivered', date: '12.12.25', time: '11:30' }),
+        ],
+      },
+    );
+
+    const chatList = new ChatList(
+      {
+        attrs: {
+          class: 'chat-list-container',
+        },
+        chats: [
+          new ChatListItem('div', { attrs: { class: 'chat-item-container'}, title: 'Роман Дряблов', text: 'Привет! Как дела?', newNum: 2, date: '11:30' }),
+          new ChatListItem('div', { attrs: { class: 'chat-item-container'}, title: 'Егор Лесников', text: 'Идем в театр?', newNum: 2, date: '12.12.25' }),
+          new ChatListItem('div', { attrs: { class: 'chat-item-container'}, title: 'Балтийский дом', text: 'Афиша спектаклей на следующую неделю', newNum: 2, date: 'Пт' }),
+        ],
+      },
+    );
+
     const link = new Link(
       'span',
       {
@@ -74,9 +106,11 @@ export class ChatsView extends View {
       'div',
       {
         attrs: {
-          class: 'pnl pnl__bordered',
+          class: 'pnl',
         },
         title: 'Сообщения',
+        chatList,
+        messagesList,
         form,
         link,
       },

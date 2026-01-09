@@ -10,6 +10,9 @@
   --primary-border: #eaeaea;
   --primary-link: #3369f3;
   --primary-shadow: 0 4px 8px rgb(0 0 0 / 14%);
+  --message-background-inbox: #f8f8f8;
+  --message-active: #e4edfd;
+  --chat-list-background: #fbfbfb;
 }
 
 .profile-avatar-container-image-container {
