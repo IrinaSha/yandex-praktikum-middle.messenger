@@ -4,7 +4,7 @@
 
 [Ссылка на макет figma](https://www.figma.com/design/Ej5Gn4JGcJ6ZnafLhGVBNw/messenger_shabliy?node-id=1-498&m=dev&t=ltNywIHgbU0NZVnH-1)
 
-[Ссылка на собранную версию Спринт 1](https://messenger-ishabliy.netlify.app/)
+[Ссылка на собранную версию Спринт 2](https://messenger-ishabliy.netlify.app/)
 
 ---
 
@@ -13,12 +13,12 @@
 Представляет собой многостраничное приложение, реализующее функции обмена сообщениями между пользователями
 При переходе по [ссылке](https://messenger-ishabliy.netlify.app/) можно ознакомиться со всеми доступными страницами.
 Проектом предусмотрены следующие страницы (ссылки на собранную версию):
-1) [Страница авторизации](https://messenger-ishabliy.netlify.app/pages/login)
-2) [Страница регистрации](https://messenger-ishabliy.netlify.app/pages/registration)
-3) [Страница чатов](https://messenger-ishabliy.netlify.app/pages/chats)
-4) [Страница профиля пользователя](https://messenger-ishabliy.netlify.app/pages/user-profile)
-5) [Страница ошибок 400](https://messenger-ishabliy.netlify.app/pages/error-400)
-6) [Страница ошибок 5**](https://messenger-ishabliy.netlify.app/pages/error-500)
+1) [Страница авторизации](https://messenger-ishabliy.netlify.app/pages/page-login/page.html)
+2) [Страница регистрации](https://messenger-ishabliy.netlify.app/pages/page-registration/page.html)
+3) [Страница чатов](https://messenger-ishabliy.netlify.app/pages/page-chats/page.html)
+4) [Страница профиля пользователя](https://messenger-ishabliy.netlify.app/pages/page-profile/page.html)
+5) [Страница ошибок 400](https://messenger-ishabliy.netlify.app/pages/page-error400/page.html)
+6) [Страница ошибок 5**](https://messenger-ishabliy.netlify.app/pages/page-error500/page.html)
 
 ### Предварительные требования
 
@@ -52,3 +52,8 @@
 "start": "npm run build && node ./server.js" (прописан в файле package.json можно запускать там)
 можно запускать через терминал 
 `npm start`
+
+Команды для запуска линтеров (прописан в файле package.json)
+"eslint": "eslint . --ext .ts --fix",
+"stylelint": "npx stylelint \"./src/**/**.scss\" --cache --fix",
+"lint": "npm run eslint && npm run stylelint"

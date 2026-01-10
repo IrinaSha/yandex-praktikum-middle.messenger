@@ -1,21 +1,50 @@
 .avatar-container {
-  position: relative;
+  align-self: center;
+}
+
+.file-avatar {
   display: inline-block;
 
-  &-label {
-    color: var(--primary-invertedText);
-    font-size: 13px;
-    line-height: 13px;
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  &__label {
+    display: block;
     cursor: pointer;
-    opacity: 0;
+    width: 130px;
+    height: 130px;
   }
 
-  &:hover &-label {
-    opacity: 1;
+  &__preview {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: var(--av-placeholder-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__text {
+    color: var(--primary-inverted-text);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 13px;
+    text-align: center;
+  }
+
+  &__input {
+    display: none;
   }
 }
+

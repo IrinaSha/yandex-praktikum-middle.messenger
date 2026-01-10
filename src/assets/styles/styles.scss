@@ -1,7 +1,19 @@
 @use 'fonts';
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
+}
+
+.app {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .pnl {
@@ -16,7 +28,7 @@ body {
   align-items: center;
 
   &__bordered {
-    padding: 50px 30px 30px 30px;
+    padding: 50px 30px 30px;
     border-radius: 12px;
     background-color: var(--primary-background);
     box-shadow: var(--primary-shadow);

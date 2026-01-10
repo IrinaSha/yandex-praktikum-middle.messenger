@@ -1,0 +1,7 @@
+/build
+**/*.min.js
+/node_modules
+/dist
+server.js
+vite.config.ts
+src/**/*.html

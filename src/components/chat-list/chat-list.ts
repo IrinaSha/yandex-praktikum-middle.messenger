@@ -1,0 +1,52 @@
+import { Component } from '../component';
+import type { ComponentProps } from '../../services/types';
+import { tmpl } from './tmpl';
+import './chat-list.scss';
+
+export class ChatList extends Component {
+  constructor(props: ComponentProps) {
+    super('div', props);
+  }
+
+  componentDidMount(): void {
+    this._attachChatItemHandlers();
+  }
+
+  componentDidUpdate(): boolean {
+    this._attachChatItemHandlers();
+
+    return true;
+  }
+
+  private _attachChatItemHandlers(): void {
+    const chatItems = this._lists.chats;
+
+    if (Array.isArray(chatItems)) {
+      chatItems.forEach((chatItem) => {
+        if (chatItem instanceof Component) {
+          chatItem.setProps({
+            onClick: (id: string) => this._handleChatItemClick(id),
+          });
+        }
+      });
+    }
+  }
+
+  private _handleChatItemClick(clickedId: string): void {
+    const chatItems = this._lists.chats;
+
+    if (Array.isArray(chatItems)) {
+      chatItems.forEach((chatItem) => {
+        if (chatItem instanceof Component) {
+          chatItem.setProps({
+            selected: chatItem.props.id === clickedId,
+          });
+        }
+      });
+    }
+  }
+
+  render(): DocumentFragment {
+    return super.render(tmpl);
+  }
+}
