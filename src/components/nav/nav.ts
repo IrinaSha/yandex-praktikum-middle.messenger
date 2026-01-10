@@ -1,32 +1,13 @@
 import { Component } from '../component';
 import { tmpl } from './tmpl';
+import type { ComponentProps } from '../../services/types';
 
 export class Nav extends Component {
-  constructor(props: any) {
+  constructor(props: ComponentProps) {
     super('nav', props);
   }
 
   render(): DocumentFragment {
     return super.render(tmpl);
   }
-
-  /* _addEvents() {
-        const { events = {} } = this._props;
-
-        this._element?.querySelectorAll('a').forEach((item: any) => {
-            Object.keys(events).forEach((event: string) => {
-                item.addEventListener(event, events[event]);
-            });
-
-            // @ts-ignore
-            /*item.addEventListener('click', (e) => {
-                console.log('link clicked');
-
-                e.preventDefault();
-                e.stopPropagation();
-            });
-        });
-
-        //super._addEvents();
-    } */
 }

@@ -3,26 +3,34 @@ import { queryStringify } from './utils';
 import { HTTP_METHODS } from './consts';
 
 export class HTTPTransport {
-  get = (url: string, options: HttpRequestOptions = {}): Promise<XMLHttpRequest> => {
-    return this.request(url, { ...options, method: HTTP_METHODS.GET }, options.timeout);
-  };
+  get = (url: string, options: HttpRequestOptions = {}): Promise<XMLHttpRequest> => this.request(
+    url,
+    { ...options, method: HTTP_METHODS.GET },
+    options.timeout,
+  );
 
-  post = (url: string, options: HttpRequestOptions = {}): Promise<XMLHttpRequest> => {
-    return this.request(url, { ...options, method: HTTP_METHODS.POST }, options.timeout);
-  };
+  post = (url: string, options: HttpRequestOptions = {}): Promise<XMLHttpRequest> => this.request(
+    url,
+    { ...options, method: HTTP_METHODS.POST },
+    options.timeout,
+  );
 
-  put = (url: string, options: HttpRequestOptions = {}): Promise<XMLHttpRequest> => {
-    return this.request(url, { ...options, method: HTTP_METHODS.PUT }, options.timeout);
-  };
+  put = (url: string, options: HttpRequestOptions = {}): Promise<XMLHttpRequest> => this.request(
+    url,
+    { ...options, method: HTTP_METHODS.PUT },
+    options.timeout,
+  );
 
-  delete = (url: string, options: HttpRequestOptions = {}): Promise<XMLHttpRequest> => {
-    return this.request(url, { ...options, method: HTTP_METHODS.DELETE }, options.timeout);
-  };
+  delete = (url: string, options: HttpRequestOptions = {}): Promise<XMLHttpRequest> => this.request(
+    url,
+    { ...options, method: HTTP_METHODS.DELETE },
+    options.timeout,
+  );
 
   request = (
     url: string,
     options: HttpRequestOptions = {},
-    timeout: number = 5000
+    timeout: number = 5000,
   ): Promise<XMLHttpRequest> => {
     const { headers = {}, method, data } = options;
 
@@ -39,7 +47,7 @@ export class HTTPTransport {
         method,
         isGet && !!data && typeof data === 'object' && !(data instanceof FormData)
           ? `${url}${queryStringify(data as Record<string, unknown>)}`
-          : url
+          : url,
       );
 
       Object.keys(headers).forEach((key) => {

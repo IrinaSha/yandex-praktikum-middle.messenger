@@ -10,7 +10,7 @@ export class Validator {
     message: /^.+$/,
   };
 
-  checkValid(value: any, validationType: ValidationType): boolean {
+  checkValid(value: never, validationType: ValidationType): boolean {
     const pattern = this.patterns[validationType];
 
     if (!pattern) {

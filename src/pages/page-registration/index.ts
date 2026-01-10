@@ -1,6 +1,3 @@
-import '../../assets/styles/styles.scss';
-import '../../assets/styles/variables.scss';
-
 import { View } from '../../view/view';
 import { Component } from '../../components/component';
 import { Link } from '../../components/link/link';
@@ -9,6 +6,10 @@ import { Button } from '../../components/button/button';
 import { Validator } from '../../services/validator';
 import { InputWithValidComponent } from '../../components/input-with-valid/input-with-valid';
 import { Form } from '../../components/form/form';
+import { tmpl } from './tmpl';
+
+import '../../assets/styles/styles.scss';
+import '../../assets/styles/variables.scss';
 
 export class LoginView extends View {
   validator: Validator;
@@ -139,6 +140,7 @@ export class LoginView extends View {
         pwdInput,
         pwdInputConfirm,
       ],
+      showSubmit: true,
       button: sendButton,
       onSubmit: (data: Record<string, string>, isValid: boolean) => {
         if (isValid) {
@@ -155,6 +157,7 @@ export class LoginView extends View {
         attrs: {
           class: 'app pnl-props-container-profile',
         },
+        template: tmpl,
         title: 'Регистрация',
         form,
         link,

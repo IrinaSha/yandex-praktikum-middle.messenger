@@ -1,13 +1,17 @@
 import { Component } from '../component';
 import { tmpl } from './tmpl';
+import type { ComponentProps } from '../../services/types';
 import './page.scss';
 
 export class Page extends Component {
   render(): DocumentFragment {
-    return super.render(tmpl);
+    const propsTmpl = this.props?.template?.toString();
+    const template = propsTmpl || tmpl;
+
+    return super.render(template);
   }
 
-  componentDidUpdate(oldProps: any, newProps: any): boolean {
+  componentDidUpdate(oldProps: ComponentProps, newProps: ComponentProps): boolean {
     return (
       oldProps.title !== newProps.title
       || oldProps.hideForm !== newProps.hideForm

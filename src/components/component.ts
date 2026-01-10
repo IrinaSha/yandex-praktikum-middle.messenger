@@ -6,7 +6,7 @@ import type {
   ComponentProps,
   BlockMeta,
   PropsValue,
-  ComponentList
+  ComponentList,
 } from '../services/types';
 
 export class Component {
@@ -21,7 +21,7 @@ export class Component {
 
   private _children: Record<string, Component>;
 
-  private _lists: Record<string, ComponentList>;
+  protected _lists: Record<string, ComponentList>;
 
   private _id = '';
 
@@ -51,16 +51,20 @@ export class Component {
     eventBus.emit(Component.EVENTS.INIT);
   }
 
-  get id(): string {
-      return this._id;
+  public get id(): string {
+    return this._id;
   }
 
-  init() {
+  public get props(): ComponentProps {
+    return this._props;
+  }
+
+  public init(): void {
     this._createResources();
     this._eventBus().emit(Component.EVENTS.FLOW_RENDER);
   }
 
-  show() {
+  public show(): void {
     const content = this.getContent();
 
     if (content) {
@@ -68,7 +72,7 @@ export class Component {
     }
   }
 
-  hide() {
+  public hide(): void {
     const content = this.getContent();
 
     if (content) {
@@ -76,11 +80,7 @@ export class Component {
     }
   }
 
-  /* updateProperty = (property: any) => {
-    this._props.find((prop) => prop)
-  } */
-
-  setProps = (nextProps: any) => {
+  public setProps = (nextProps: Record<string, unknown>): void => {
     if (!nextProps) {
       return;
     }
@@ -105,18 +105,18 @@ export class Component {
     }
   };
 
-  render(tmpl = ''): DocumentFragment {
+  public render(tmpl = ''): DocumentFragment {
     return this.compile(tmpl, this._props);
   }
 
-  compile(tmpl: string, props = this._props): DocumentFragment {
+  public compile(tmpl: string, props = this._props): DocumentFragment {
     const propsAndStubs = { ...props };
 
     Object.entries(this._children)?.forEach(([key, child]: [string, Component]) => {
       propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
     });
 
-    Object.entries(this._lists)?.forEach(([key]: any) => {
+    Object.entries(this._lists)?.forEach(([key]: [string, ComponentList]) => {
       propsAndStubs[key] = `<div data-id="__l_${key}"></div>`;
     });
 
@@ -161,19 +161,18 @@ export class Component {
     return fragment.content;
   }
 
-  getContent(): HTMLElement | undefined {
+  public getContent(): HTMLElement | undefined {
     return this._element;
   }
 
-  componentDidMount(): void {
-
+  public componentDidMount(): void {
   }
 
-  componentDidUpdate(oldProps: ComponentProps, newProps: ComponentProps): boolean {
+  public componentDidUpdate(oldProps: ComponentProps, newProps: ComponentProps): boolean {
     return oldProps !== newProps;
   }
 
-  dispatchComponentDidMount(): void {
+  public dispatchComponentDidMount(): void {
     this._eventBus().emit(Component.EVENTS.FLOW_CDM);
 
     if (Object.keys(this._children).length) {
@@ -214,13 +213,13 @@ export class Component {
     this._element = this._createDocumentElement(tagName);
   }
 
-  private _componentDidMount() {
+  private _componentDidMount(): void {
     this.componentDidMount();
 
-    Object.values(this._children).forEach((child: any) => child.dispatchComponentDidMount());
+    Object.values(this._children).forEach((child: Component) => child.dispatchComponentDidMount());
   }
 
-  private _componentDidUpdate(oldProps: any, newProps: any) {
+  private _componentDidUpdate(oldProps: ComponentProps, newProps: ComponentProps): void {
     const isUpdated = this.componentDidUpdate(oldProps, newProps);
 
     if (isUpdated) {
@@ -228,7 +227,7 @@ export class Component {
     }
   }
 
-  private _render() {
+  private _render(): void {
     this._removeEvents();
 
     const block = this.render();
@@ -274,7 +273,7 @@ export class Component {
     return element;
   }
 
-  private _addAttributes() {
+  private _addAttributes(): void {
     const { attrs = {} } = this._props;
 
     Object.entries(attrs).forEach(([key, value]) => {
@@ -282,7 +281,7 @@ export class Component {
     });
   }
 
-  private _addEvents() {
+  private _addEvents(): void {
     const { events = {} } = this._props;
 
     Object.keys(events).forEach((eventName) => {
@@ -290,7 +289,7 @@ export class Component {
     });
   }
 
-  private _removeEvents() {
+  private _removeEvents(): void {
     const { events = {} } = this._props;
 
     Object.keys(events).forEach((eventName) => {

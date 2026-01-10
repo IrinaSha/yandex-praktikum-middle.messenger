@@ -5,8 +5,4 @@ export class Link extends Component {
   render(): DocumentFragment {
     return super.render(tmpl);
   }
-
-  /* componentDidUpdate(oldProps: any, newProps: any): boolean {
-        return oldProps['title'] !== newProps['title'];
-    } */
 }

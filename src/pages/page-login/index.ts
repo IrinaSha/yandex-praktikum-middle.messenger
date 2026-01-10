@@ -71,6 +71,7 @@ export class LoginView extends View {
         class: 'login-form',
       },
       inputs: [loginInput, pwdInput],
+      showSubmit: true,
       button: sendButton,
       onSubmit: (data: Record<string, string>, isValid: boolean) => {
         if (isValid) {

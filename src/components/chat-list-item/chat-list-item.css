@@ -1,7 +1,3 @@
-.active {
-  background-color: var(--message-active);
-}
-
 .chat-item-container {
   padding: 12px;
   align-items: start;
@@ -11,6 +7,9 @@
   flex-direction: row;
   cursor: pointer;
   border-bottom: 1px solid var(--primary-border);
+}
+.chat-item-container.active {
+  background-color: var(--message-active);
 }
 .chat-item-text-container {
   display: flex;
@@ -51,7 +50,7 @@
 }
 .chat-item-info-new-num {
   color: var(--primary-inverted-text);
-  background-color: #3369f3;
+  background-color: var(--primary-link);
   border-radius: 36px;
   font-size: 10px;
   line-height: 10px;

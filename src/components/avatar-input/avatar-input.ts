@@ -3,36 +3,55 @@ import './avatar-input.scss';
 import { tmpl } from './tmpl';
 
 interface AvatarInputProps {
-  labelText?: string;
+  label?: string;
   inputId?: string;
+  inputName?: string;
   accept?: string;
+  avatar?: string;
   onChange?: (file: File | null) => void;
   attrs?: Record<string, string>;
-  events?: Record<string, (e: Event) => void>;
 }
 
 export class AvatarInput extends Component {
   private inputId: string;
+
   private fileInput: HTMLInputElement | null = null;
 
   constructor(props: AvatarInputProps = {}) {
     const {
-      labelText = 'Загрузить аватар',
+      label = 'Поменять аватар',
       inputId = 'avatarInput',
+      inputName = 'avatar',
       accept = 'image/*',
+      avatar = '',
       onChange,
       ...restProps
     } = props;
 
     super('div', {
       ...restProps,
-      labelText,
+      label,
       inputId,
+      inputName,
       accept,
-      onChange,
-      attrs: {
-        class: 'avatar-container',
-        ...props.attrs,
+      avatar,
+      events: {
+        change: (event: Event) => {
+          const target = event.target as HTMLInputElement;
+          if (target.id === inputId && target.files?.[0]) {
+            const file = target.files[0];
+
+            onChange?.(file);
+
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+              this.setProps({ avatar: e.target?.result as string });
+            };
+
+            reader.readAsDataURL(file);
+          }
+        },
       },
     });
 
@@ -41,20 +60,7 @@ export class AvatarInput extends Component {
 
   componentDidMount() {
     this.fileInput = this.getContent()?.querySelector(`#${this.inputId}`) || null;
-
-    if (this.fileInput && this._props.onChange) {
-      this.fileInput.addEventListener('change', this._handleFileChange);
-    }
   }
-
-  private _handleFileChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0] || null;
-
-    if (this._props.onChange) {
-      this._props.onChange(file);
-    }
-  };
 
   public openFileDialog() {
     this.fileInput?.click();
@@ -67,7 +73,12 @@ export class AvatarInput extends Component {
   public clearFile() {
     if (this.fileInput) {
       this.fileInput.value = '';
+      this.setProps({ avatar: '' });
     }
+  }
+
+  public setAvatar(url: string) {
+    this.setProps({ avatar: url });
   }
 
   render() {

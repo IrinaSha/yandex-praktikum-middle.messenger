@@ -1,71 +1,44 @@
-:root {
-  --primary-accent: #f00;
-  --primary-error: #ff2f2f;
-  --primary-blue: #3369f3;
-  --primary-background: #fff;
-  --primary-inverted-text: #fff;
-  --primary-title: #1e1e1e;
-  --primary-text: #1e1e1e;
-  --secondary-text: #999;
-  --primary-border: #eaeaea;
-  --primary-link: #3369f3;
-  --primary-shadow: 0 4px 8px rgb(0 0 0 / 14%);
-  --message-background-inbox: #f8f8f8;
-  --message-active: #e4edfd;
-  --chat-list-background: #fbfbfb;
+.avatar-container {
+  align-self: center;
 }
 
-.profile-avatar-container-image-container {
-  position: relative;
+.file-avatar {
   display: inline-block;
 }
-
-.profile-avatar-container-image {
+.file-avatar__label {
   display: block;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--primary-color, #3369f3);
-  transition: opacity 0.3s ease;
+  cursor: pointer;
+  width: 130px;
+  height: 130px;
 }
-
-.profile-avatar-container-input {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+.file-avatar__preview {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+.file-avatar__image {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.file-avatar__placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--av-placeholder-background);
   display: flex;
+  align-items: center;
   justify-content: center;
 }
-
-.avatar-container {
-  display: inline-block;
+.file-avatar__text {
+  color: var(--primary-inverted-text);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 13px;
+  text-align: center;
 }
-
-.avatar-container-label {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: var(--primary-color, #3369f3);
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(51, 105, 243, 0.3);
-}
-.avatar-container-label:hover {
-  background-color: var(--primary-color-dark, #2451cc);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(51, 105, 243, 0.4);
-}
-.avatar-container-label:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(51, 105, 243, 0.3);
-}
-
-input[type=file][hidden] {
+.file-avatar__input {
   display: none;
 }
 

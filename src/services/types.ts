@@ -3,7 +3,7 @@ import { HTTP_METHODS } from './consts';
 
 export type EventsTypes = Record<string, Callback[]>;
 
-export type Callback = (...args: unknown[]) => void;
+export type Callback = (...args: ComponentProps[]) => void;
 
 export type PropsAndChildren = {
   children: Record<string, Component>;
@@ -30,7 +30,7 @@ export type InputWithValidProps = {
   name: string;
   labelText: string;
   inputType: string;
-  value?: any;
+  value?: unknown;
   errorText?: string;
   validationType: ValidationType;
   noValid?: boolean;
@@ -46,12 +46,12 @@ export type HttpRequestOptions = {
   method?: HTTPMethod;
   data?: Record<string, PropsValue> | FormData | string;
   timeout?: number;
-}
+};
 
 export type ComponentProps = {
   events?: Record<string, EventListener>;
   attrs?: Record<string, string | number | boolean>;
-  [key: string]: PropsValue | Record<string, unknown> | EventListener | undefined;
+  [key: string]: PropsValue | Record<string, unknown> | EventListener | Function | undefined;
 };
 
 export type BlockMeta = {

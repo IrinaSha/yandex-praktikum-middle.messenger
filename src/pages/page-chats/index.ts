@@ -1,6 +1,3 @@
-import '../../assets/styles/styles.scss';
-import '../../assets/styles/variables.scss';
-
 import { View } from '../../view/view';
 import { Component } from '../../components/component';
 import { Link } from '../../components/link/link';
@@ -12,7 +9,11 @@ import { Form } from '../../components/form/form';
 import { MessagesList } from '../../components/messages-list/messages-list';
 import { Message } from '../../components/message/message';
 import { ChatList } from '../../components/chat-list/chat-list';
-import {ChatListItem} from '../../components/chat-list-item/chat-list-item.ts';
+import { ChatListItem } from '../../components/chat-list-item/chat-list-item';
+import { tmpl } from './tmpl';
+
+import '../../assets/styles/styles.scss';
+import '../../assets/styles/variables.scss';
 
 export class ChatsView extends View {
   validator: Validator;
@@ -23,6 +24,10 @@ export class ChatsView extends View {
     this.validator = new Validator();
   }
 
+  renderPage() {
+    super.renderPage();
+  }
+
   createContent(): Component {
     const messagesList = new MessagesList(
       {
@@ -30,11 +35,38 @@ export class ChatsView extends View {
           class: 'messages-list-container',
         },
         messages: [
-          new Message('div', { attrs: { class: 'message-container message-container-inbox'}, text: 'Привет! Как дела?', type: 'inbox', state: 'delivered', date: '12.12.25', time: '11:30' }),
-          new Message('div', { attrs: { class: 'message-container message-container-outbox'}, text: 'Привет! Все хорошо', type: 'outbox', state: 'read', date: '12.12.25', time: '11:55' }),
-          new Message('div', { attrs: { class: 'message-container message-container-outbox'}, text: 'Привет! А у тебя?', type: 'outbox', state: 'read', date: '12.12.25', time: '11:55' }),
-          new Message('div', { attrs: { class: 'message-container message-container-inbox'}, text: 'Нормально. Смотри, тут всплыл интересный кусок лунной космической истории — НАСА ' +
-              'в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну.', type: 'inbox', state: 'delivered', date: '12.12.25', time: '11:30' }),
+          new Message('div', {
+            attrs: { class: 'message-container message-container-inbox' },
+            text: 'Привет! Как дела?',
+            type: 'inbox',
+            state: 'delivered',
+            date: '12.12.25',
+            time: '11:30',
+          }),
+          new Message('div', {
+            attrs: { class: 'message-container message-container-outbox' },
+            text: 'Привет! Все хорошо',
+            type: 'outbox',
+            state: 'read',
+            date: '12.12.25',
+            time: '11:55',
+          }),
+          new Message('div', {
+            attrs: { class: 'message-container message-container-outbox' },
+            text: 'Привет! А у тебя?',
+            type: 'outbox',
+            state: 'read',
+            date: '12.12.25',
+            time: '11:55',
+          }),
+          new Message('div', {
+            attrs: { class: 'message-container message-container-inbox' },
+            text: 'Нормально. Смотри, тут всплыл интересный кусок лунной космической истории',
+            type: 'inbox',
+            state: 'delivered',
+            date: '12.12.25',
+            time: '11:30',
+          }),
         ],
       },
     );
@@ -45,9 +77,27 @@ export class ChatsView extends View {
           class: 'chat-list-container',
         },
         chats: [
-          new ChatListItem('div', { attrs: { class: 'chat-item-container'}, title: 'Роман Дряблов', text: 'Привет! Как дела?', newNum: 2, date: '11:30' }),
-          new ChatListItem('div', { attrs: { class: 'chat-item-container'}, title: 'Егор Лесников', text: 'Идем в театр?', newNum: 2, date: '12.12.25' }),
-          new ChatListItem('div', { attrs: { class: 'chat-item-container'}, title: 'Балтийский дом', text: 'Афиша спектаклей на следующую неделю', newNum: 2, date: 'Пт' }),
+          new ChatListItem('div', {
+            id: 'chat-1',
+            title: 'Роман Дряблов',
+            text: 'Привет! Как дела?',
+            newNum: 2,
+            date: '11:30',
+          }),
+          new ChatListItem('div', {
+            id: 'chat-2',
+            title: 'Егор Лесников',
+            text: 'Идем в театр?',
+            newNum: 2,
+            date: '12.12.25',
+          }),
+          new ChatListItem('div', {
+            id: 'chat-3',
+            title: 'Балтийский дом',
+            text: 'Афиша спектаклей на следующую неделю',
+            newNum: 2,
+            date: 'Пт',
+          }),
         ],
       },
     );
@@ -108,6 +158,7 @@ export class ChatsView extends View {
         attrs: {
           class: 'pnl',
         },
+        template: tmpl,
         title: 'Сообщения',
         chatList,
         messagesList,

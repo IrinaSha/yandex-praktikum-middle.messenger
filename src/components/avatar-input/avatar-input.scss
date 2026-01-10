@@ -1,57 +1,50 @@
-@import '../../assets/styles/variables.scss';
-
-.profile-avatar-container-image-container {
-  position: relative;
-  display: inline-block;
-}
-
-.profile-avatar-container-image {
-  display: block;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--primary-color, #3369f3);
-  transition: opacity 0.3s ease;
-}
-
-.profile-avatar-container-input {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
 .avatar-container {
-  display: inline-block;
+  align-self: center;
 }
 
-.avatar-container-label {
+.file-avatar {
   display: inline-block;
-  padding: 8px 16px;
-  background-color: var(--primary-color, #3369f3);
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(51, 105, 243, 0.3);
 
-  &:hover {
-    background-color: var(--primary-color-dark, #2451cc);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(51, 105, 243, 0.4);
+  &__label {
+    display: block;
+    cursor: pointer;
+    width: 130px;
+    height: 130px;
   }
 
-  &:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(51, 105, 243, 0.3);
+  &__preview {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: var(--av-placeholder-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__text {
+    color: var(--primary-inverted-text);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 13px;
+    text-align: center;
+  }
+
+  &__input {
+    display: none;
   }
 }
 
-input[type='file'][hidden] {
-  display: none;
-}

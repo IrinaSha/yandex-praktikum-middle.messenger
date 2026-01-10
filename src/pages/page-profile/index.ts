@@ -11,7 +11,7 @@ import {
   ProfileInputWithValidComponent,
 } from '../../components/profile-input-with-valid/profile-input-with-valid';
 import { FlatButton } from '../../components/flat-button/flat-button';
-import {AvatarInput} from '../../components/avatar-input/avatar-input.ts';
+import { AvatarInput } from '../../components/avatar-input/avatar-input';
 
 export class LoginView extends View {
   private profileInputs: ProfileInputWithValidComponent[] = [];
@@ -269,11 +269,13 @@ export class LoginView extends View {
       },
     });
 
-    const customAvatar = new AvatarInput('div', 'avatar-container', {
-      labelText: 'Изменить аватар',
+    const customAvatar = new AvatarInput({
+      attrs: {
+        class: 'avatar-container',
+      },
       inputId: 'customAvatarInput',
-      accept: 'image/png, image/jpeg, image/jpg',
-      onChange: (file) => {
+      inputName: 'avatar',
+      onChange: (file: File | null) => {
         if (!file) {
           return;
         }
@@ -281,16 +283,9 @@ export class LoginView extends View {
         if (!file.type.startsWith('image/')) {
           alert('Пожалуйста, выберите изображение');
           customAvatar.clearFile();
-          return;
+        } else {
+          console.log('Выбран файл:', file.name);
         }
-      },
-      events: {
-        click: () => {
-          console.log('Клик по контейнеру аватара');
-        },
-      },
-      attrs: {
-        'data-testid': 'avatar-input',
       },
     });
 
