@@ -16,6 +16,8 @@
     "@types/node": "^24.10.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-typescript": "^18.0.0",
     "postcss-scss": "^4.0.9",
     "sass": "^1.93.3",
     "stylelint": "^16.26.0",
@@ -26,7 +28,6 @@
     "vite-plugin-handlebars": "^2.0.0"
   },
   "dependencies": {
-    "eslint-config-airbnb-typescript": "^18.0.0",
     "express": "^5.1.0",
     "express-handlebars": "^8.0.2",
     "handlebars": "^4.7.8",
