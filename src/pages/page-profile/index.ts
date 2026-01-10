@@ -1,6 +1,3 @@
-import '../../assets/styles/styles.scss';
-import '../../assets/styles/variables.scss';
-
 import { View } from '../../view/view';
 import { Component } from '../../components/component';
 import { Link } from '../../components/link/link';
@@ -12,6 +9,10 @@ import {
 } from '../../components/profile-input-with-valid/profile-input-with-valid';
 import { FlatButton } from '../../components/flat-button/flat-button';
 import { AvatarInput } from '../../components/avatar-input/avatar-input';
+import { tmpl } from './tmpl';
+
+import '../../assets/styles/styles.scss';
+import '../../assets/styles/variables.scss';
 
 export class LoginView extends View {
   private profileInputs: ProfileInputWithValidComponent[] = [];
@@ -323,6 +324,7 @@ export class LoginView extends View {
         attrs: {
           class: 'app pnl-props-container-profile',
         },
+        template: tmpl,
         title: 'Профиль пользователя',
         form: this.form,
         formPassword: this.formPwd,

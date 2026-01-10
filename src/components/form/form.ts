@@ -22,13 +22,13 @@ export class Form extends Component {
       const data: Record<string, string> = {};
       let isValid = true;
 
-      // Валидация всех инпутов
       inputs.forEach((input) => {
         if (input instanceof InputWithValidComponent) {
+          const name = input.props.name?.toString() || '';
           const value = input.getValue();
           const isInputValid = input.validate();
 
-          data[input._props.name] = value;
+          data[name] = value;
 
           if (!isInputValid) {
             isValid = false;

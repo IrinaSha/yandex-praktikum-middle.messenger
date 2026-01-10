@@ -63,7 +63,7 @@ export class InputWithValidComponent extends Component {
   validate(): boolean {
     const value = this.getValue();
     const { validationType } = this._props;
-    const isValid = this.validator.checkValid(value, validationType);
+    const isValid = this.validator.checkValid(value, validationType as ValidationType);
 
     this.setProps({ noValid: !isValid });
 
