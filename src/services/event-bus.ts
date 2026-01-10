@@ -1,4 +1,4 @@
-import type { EventsTypes, Callback } from './types';
+import type {EventsTypes, Callback, ComponentProps} from './types';
 
 export class EventBus {
   private readonly events: EventsTypes;
@@ -31,7 +31,7 @@ export class EventBus {
     }
 
     this.events[event].forEach((callback: Callback) => {
-      callback(...args);
+      callback(...args as ComponentProps[]);
     });
   }
 }
