@@ -1,4 +1,4 @@
-import type {EventsTypes, Callback, ComponentProps} from './types';
+import type { EventsTypes, Callback, ComponentProps } from './types';
 
 export class EventBus {
   private readonly events: EventsTypes;
