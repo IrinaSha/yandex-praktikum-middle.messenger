@@ -10,7 +10,7 @@ import { Form } from '../../components/form/form';
 import '../../assets/styles/styles.scss';
 import '../../assets/styles/variables.scss';
 
-export class LoginView extends View {
+export class RegistrationView extends View {
   validator: Validator;
 
   constructor() {
@@ -19,7 +19,7 @@ export class LoginView extends View {
     this.validator = new Validator();
   }
 
-  createContent(): Component {
+  getContent(): Component {
     const link = new Link(
       'span',
       {
@@ -164,6 +164,6 @@ export class LoginView extends View {
   }
 }
 
-const view = new LoginView();
+const view = new RegistrationView();
 
 view.renderPage();

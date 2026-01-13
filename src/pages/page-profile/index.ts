@@ -14,7 +14,7 @@ import { tmpl } from './tmpl';
 import '../../assets/styles/styles.scss';
 import '../../assets/styles/variables.scss';
 
-export class LoginView extends View {
+export class ProfileView extends View {
   private profileInputs: ProfileInputWithValidComponent[] = [];
 
   private pwdInputs: ProfileInputWithValidComponent[] = [];
@@ -25,7 +25,7 @@ export class LoginView extends View {
 
   private formPwd?: Form;
 
-  createContent(): Component {
+  getContent(): Component {
     const link = new Link(
       'span',
       {
@@ -341,6 +341,6 @@ export class LoginView extends View {
   }
 }
 
-const view = new LoginView();
+const view = new ProfileView();
 
 view.renderPage();

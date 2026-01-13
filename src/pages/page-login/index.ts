@@ -19,7 +19,7 @@ export class LoginView extends View {
     this.validator = new Validator();
   }
 
-  createContent(): Component {
+  getContent(): Component {
     const link = new Link(
       'span',
       {

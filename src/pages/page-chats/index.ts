@@ -24,11 +24,11 @@ export class ChatsView extends View {
     this.validator = new Validator();
   }
 
-  renderPage() {
-    super.renderPage();
+  renderPage(): Element | null {
+    return super.renderPage();
   }
 
-  createContent(): Component {
+  getContent(): Component {
     const messagesList = new MessagesList(
       {
         attrs: {
@@ -168,7 +168,7 @@ export class ChatsView extends View {
     );
   }
 }
-
+/*
 const view = new ChatsView();
 
-view.renderPage();
+view.renderPage();*/
