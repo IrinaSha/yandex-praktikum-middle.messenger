@@ -341,6 +341,6 @@ export class ProfileView extends View {
   }
 }
 
-const view = new ProfileView();
+//const view = new ProfileView();
 
-view.renderPage();
+//view.renderPage();

@@ -9,27 +9,66 @@ import { Button } from '../../components/button/button';
 import { Validator } from '../../services/validator';
 import { InputWithValidComponent } from '../../components/input-with-valid/input-with-valid';
 import { Form } from '../../components/form/form';
+import { Router } from '../../services/router';
+import { userStore } from '../../stores/user-store';
 
 export class LoginView extends View {
   validator: Validator;
+  router: Router;
+  private unsubscribers: Array<() => void> = [];
 
   constructor() {
     super();
-
     this.validator = new Validator();
+    this.router = new Router('.app');
+
+    // Подписываемся на события store
+    this.unsubscribers.push(
+      userStore.on('user-logged-in', () => {
+        console.log('Пользователь вошел');
+        this.router.go('/messenger');
+      })
+    );
+
+    this.unsubscribers.push(
+      userStore.on('login-error', (error) => {
+        console.error('Ошибка входа:', error);
+        this.showError(error);
+      })
+    );
+  }
+
+  private showError(message: string): void {
+    const formElement = document.querySelector('.login-form');
+    if (!formElement) return;
+
+    // Удаляем предыдущую ошибку
+    const existingError = formElement.querySelector('.form-error');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Создаем блок ошибки
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'form-error';
+    errorDiv.textContent = message;
+    formElement.insertBefore(errorDiv, formElement.firstChild);
+
+    // Автоматически скрываем через 5 секунд
+    setTimeout(() => {
+      errorDiv.remove();
+      userStore.clearError();
+    }, 5000);
   }
 
   getContent(): Component {
-    const link = new Link(
-      'span',
-      {
-        attrs: {
-          class: 'nav-container text',
-        },
-        url: '../page-registration/page.html',
-        title: 'Нет аккаунта?',
+    const link = new Link('span', {
+      attrs: {
+        class: 'nav-container text',
       },
-    );
+      url: '/sign-up',
+      title: 'Нет аккаунта?',
+    });
 
     const loginInput = new InputWithValidComponent('div', 'input-container-value', {
       attrs: {
@@ -55,16 +94,13 @@ export class LoginView extends View {
       validationType: 'password',
     });
 
-    const sendButton = new Button(
-      'button',
-      {
-        attrs: {
-          class: 'btn-container',
-          type: 'submit',
-        },
-        btnText: 'Авторизоваться',
+    const sendButton = new Button('button', {
+      attrs: {
+        class: 'btn-container',
+        type: 'submit',
       },
-    );
+      btnText: 'Авторизоваться',
+    });
 
     const form = new Form('form', {
       attrs: {
@@ -73,29 +109,50 @@ export class LoginView extends View {
       inputs: [loginInput, pwdInput],
       showSubmit: true,
       button: sendButton,
-      onSubmit: (data: Record<string, string>, isValid: boolean) => {
-        if (isValid) {
-          console.log('Данные:', data);
-        } else {
+      onSubmit: async (data: Record<string, string>, isValid: boolean) => {
+        if (!isValid) {
           console.log('Данные невалидны');
+          return { success: false, error: 'Данные невалидны' };
+        }
+
+        console.log('Отправка данных:', data);
+
+        // Блокируем кнопку
+        const btn = sendButton.getContent() as HTMLButtonElement;
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Загрузка...';
+        }
+
+        try {
+          await userStore.signIn(data);
+          // Редирект произойдет автоматически через подписку на событие
+        } catch (error) {
+          console.error('Ошибка при входе:', error);
+        } finally {
+          // Разблокируем кнопку
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Авторизоваться';
+          }
         }
       },
     });
 
-    return new Page(
-      'div',
-      {
-        attrs: {
-          class: 'pnl pnl__bordered',
-        },
-        title: 'Вход',
-        form,
-        link,
+    return new Page('div', {
+      attrs: {
+        class: 'pnl pnl__bordered',
       },
-    );
+      title: 'Вход',
+      form,
+      link,
+    });
+  }
+
+  public hide(): void {
+    // Отписываемся при скрытии страницы
+    this.unsubscribers.forEach(unsubscribe => unsubscribe());
+    this.unsubscribers = [];
+    super.hide();
   }
 }
-
-const view = new LoginView();
-
-view.renderPage();

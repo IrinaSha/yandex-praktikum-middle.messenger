@@ -10,15 +10,19 @@ import { ChatsView } from './pages/page-chats';
 import { LoginView } from './pages/page-login';
 import { RegistrationView } from './pages/page-registration';
 import { ProfileView } from './pages/page-profile';
+import { userStore } from './stores/user-store.ts';
 
 const router = new Router('.app');
 
+router.setAuthCheck(async () => {
+  return await userStore.checkAuth();
+});
+
 router
-  .use('/', LoginView)
-  .use('/login', LoginView)
-  .use('/registration', RegistrationView)
-  .use('/chats', ChatsView)
-  .use('/profile', ProfileView)
+  .use('/', LoginView, false)
+  .use('/sign-up', RegistrationView, false)
+  .use('/messenger', ChatsView, true)
+  .use('/settings', ProfileView, true)
   .start();
 
 (window as any).router = router;

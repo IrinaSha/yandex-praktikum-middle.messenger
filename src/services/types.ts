@@ -1,5 +1,5 @@
 import { Component } from '../components/component';
-import { HTTP_METHODS } from './consts';
+import type { HTTP_METHODS } from './consts';
 
 export type EventsTypes = Record<string, Callback[]>;
 
@@ -39,14 +39,21 @@ export type InputWithValidProps = {
   visible?: boolean;
 };
 
-type HTTPMethod = typeof HTTP_METHODS[keyof typeof HTTP_METHODS];
-
 export type HttpRequestOptions = {
+  method?: HttpMethod;
   headers?: Record<string, string>;
-  method?: HTTPMethod;
   data?: Record<string, PropsValue> | FormData | string;
   timeout?: number;
-};
+  signal?: AbortSignal;
+  withCredentials?: boolean;
+  responseType?: XMLHttpRequestResponseType;
+}
+
+export interface HttpResponse<T = any> {
+  status: number;
+  reason?: string;
+  data?: T;
+}
 
 export type ComponentProps = {
   events?: Record<string, EventListener>;
@@ -58,3 +65,5 @@ export type BlockMeta = {
   tagName: string;
   propsAndChildren: Record<string, unknown>;
 };
+
+export type HttpMethod = (typeof HTTP_METHODS)[keyof typeof HTTP_METHODS];

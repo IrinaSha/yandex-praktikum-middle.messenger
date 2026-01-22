@@ -26,8 +26,9 @@ export class EventBus {
   }
 
   emit(event: string, ...args: unknown[]) {
-    if (!this.events[event]) {
-      throw new Error(`Нет события: ${event}`);
+    if (!this.events[event] || this.events[event].length === 0) {
+      console.warn(`Нет подписчиков на событие: ${event}`);
+      return;
     }
 
     this.events[event].forEach((callback: Callback) => {

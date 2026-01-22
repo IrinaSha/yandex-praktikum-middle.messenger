@@ -4,6 +4,7 @@ import { ErrorView } from '../view/view-error'; // Импортируем ErrorV
 
 function render(query: string, component: Component): HTMLElement | null {
   const root = document.querySelector(query);
+
   if (root) {
     root.innerHTML = '';
     const content = component.getContent();
@@ -11,6 +12,7 @@ function render(query: string, component: Component): HTMLElement | null {
       root.appendChild(content);
     }
   }
+
   return root as HTMLElement | null;
 }
 
@@ -18,9 +20,9 @@ export class Route {
   private _pathname: string;
   private _ViewClass: typeof View;
   private _view: View | null = null;
-  private _props: { rootQuery: string };
+  private _props: { rootQuery: string; protected?: boolean };
 
-  constructor(pathname: string, ViewClass: typeof View, props: { rootQuery: string }) {
+  constructor(pathname: string, ViewClass: typeof View, props: { rootQuery: string; protected?: boolean }) {
     this._pathname = pathname;
     this._ViewClass = ViewClass;
     this._props = props;
@@ -52,6 +54,10 @@ export class Route {
 
     this._view.show();
   }
+
+  public isProtected(): boolean {
+    return this._props.protected || false;
+  }
 }
 
 export class Router {
@@ -60,6 +66,7 @@ export class Router {
   private _rootQuery?: string;
   private _currentRoute: Route | null = null;
   private static __instance: Router;
+  private _checkAuthCallback?: () => Promise<boolean>;
 
   constructor(rootQuery: string) {
     if (Router.__instance) {
@@ -73,22 +80,39 @@ export class Router {
     Router.__instance = this;
   }
 
-  public use(pathname: string, ViewClass: typeof View): Router {
-    const route = new Route(pathname, ViewClass, { rootQuery: this._rootQuery || '' });
+  public use(pathname: string, ViewClass: typeof View, isProtected: boolean = false): Router {
+    const route = new Route(pathname, ViewClass, {
+      rootQuery: this._rootQuery || '',
+      protected: isProtected
+    });
     this.routes.push(route);
+
     return this;
   }
 
-  public start(): void {
+  public setAuthCheck(callback: () => Promise<boolean>): void {
+    this._checkAuthCallback = callback;
+  }
+
+  public async start(): Promise<void> {
+    // Проверяем авторизацию перед стартом
+    if (this._checkAuthCallback) {
+      const isAuthenticated = await this._checkAuthCallback();
+
+      // Если пользователь авторизован и находится на странице логина - редирект
+      if (isAuthenticated && window.location.pathname === '/') {
+        this.go('/messenger');
+        return;
+      }
+    }
+
     window.onpopstate = (event: PopStateEvent) => {
       const target = event.currentTarget as Window;
       this._onRoute(target.location.pathname);
     };
 
-    // Перехват кликов по ссылкам
     this._interceptLinks();
-
-    this._onRoute(window.location.pathname);
+    await this._onRoute(window.location.pathname);
   }
 
   private _interceptLinks(): void {
@@ -108,7 +132,7 @@ export class Router {
     });
   }
 
-  private _onRoute(pathname: string): void {
+  private async _onRoute(pathname: string): Promise<void> {
     const route = this.getRoute(pathname);
 
     if (!route) {
@@ -116,7 +140,21 @@ export class Router {
       return;
     }
 
-    if (this._currentRoute) {
+    // Проверка защищенных маршрутов
+    if (route.isProtected() && this._checkAuthCallback) {
+      const isAuthenticated = await this._checkAuthCallback();
+
+      if (!isAuthenticated) {
+        this.go('/');
+        return;
+      }
+    }
+
+    this._renderRoute(route);
+  }
+
+  private _renderRoute(route: Route): void {
+    if (this._currentRoute && this._currentRoute !== route) {
       this._currentRoute.leave();
     }
 

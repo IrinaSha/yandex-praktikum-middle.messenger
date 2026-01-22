@@ -164,6 +164,6 @@ export class RegistrationView extends View {
   }
 }
 
-const view = new RegistrationView();
+//const view = new RegistrationView();
 
-view.renderPage();
+//view.renderPage();
