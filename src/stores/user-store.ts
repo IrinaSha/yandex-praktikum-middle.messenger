@@ -1,5 +1,7 @@
 import { EventBus } from '../services/event-bus';
 import { UserApi } from '../api/user-api';
+import type { SignUpData } from '../api/user-api';
+import { ProfileApi } from '../api/profile-api';
 
 export type User = {
   id: number;
@@ -22,6 +24,7 @@ export class UserStore {
   private static __instance: UserStore;
   private eventBus: EventBus;
   private userApi: UserApi;
+  private profileApi: ProfileApi;
   private state: UserStoreState = {
     user: null,
     isLoading: false,
@@ -31,6 +34,7 @@ export class UserStore {
   private constructor() {
     this.eventBus = new EventBus();
     this.userApi = new UserApi();
+    this.profileApi = new ProfileApi();
   }
 
   public static getInstance(): UserStore {
@@ -62,7 +66,6 @@ export class UserStore {
     this.eventBus.emit('state-changed', this.state);
   }
 
-  // Проверка авторизации при старте приложения
   public async checkAuth(): Promise<boolean> {
     try {
       const user = await this.userApi.getUser();
@@ -96,11 +99,61 @@ export class UserStore {
 
     try {
       const user = await this.userApi.getUser();
+
       this.setState({ user, isLoading: false });
       this.eventBus.emit('user-fetched', user);
     } catch (error: any) {
       const errorMessage = error.reason || 'Ошибка получения данных';
+
       this.setState({ error: errorMessage, isLoading: false, user: null });
+      throw error;
+    }
+  }
+
+  public async updateProfile(data: SignUpData): Promise<void> {
+    this.setState({ isLoading: true, error: null });
+
+    try {
+      const user = await this.profileApi.updateProfile(data);
+
+      this.setState({ user, isLoading: false });
+      this.eventBus.emit('profile-updated', user);
+    } catch (error: any) {
+      const errorMessage = error.reason || 'Ошибка обновления профиля';
+
+      this.setState({ error: errorMessage, isLoading: false });
+      throw error;
+    }
+  }
+
+  public async updatePassword(data: { oldPassword: string, newPassword: string }): Promise<void> {
+    this.setState({ isLoading: true, error: null });
+
+    try {
+      const user = await this.profileApi.updatePassword(data);
+
+      this.setState({ user, isLoading: false });
+      this.eventBus.emit('password-updated', user);
+    } catch (error: any) {
+      const errorMessage = error.reason || 'Ошибка обновления пароля';
+
+      this.setState({ error: errorMessage, isLoading: false });
+      throw error;
+    }
+  }
+
+  public async updateAvatar(file: File): Promise<void> {
+    this.setState({ isLoading: true, error: null });
+
+    try {
+      const user = await this.profileApi.updateAvatar(file);
+
+      this.setState({ user, isLoading: false });
+      this.eventBus.emit('avatar-updated', user);
+    } catch (error: any) {
+      const errorMessage = error.reason || 'Ошибка обновления аватара';
+
+      this.setState({ error: errorMessage, isLoading: false });
       throw error;
     }
   }
@@ -110,10 +163,12 @@ export class UserStore {
 
     try {
       await this.userApi.logout();
+
       this.setState({ user: null, isLoading: false });
       this.eventBus.emit('user-logged-out');
     } catch (error: any) {
       const errorMessage = error.reason || 'Ошибка выхода';
+
       this.setState({ error: errorMessage, isLoading: false });
       throw error;
     }

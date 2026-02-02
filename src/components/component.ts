@@ -80,7 +80,7 @@ export class Component {
     }
   }
 
-  public setProps = (nextProps: Record<string, unknown>): void => {
+  /*public setProps = (nextProps: Record<string, unknown>): void => {
     if (!nextProps) {
       return;
     }
@@ -99,8 +99,34 @@ export class Component {
     }
 
     if (this._setUpdate) {
-      this._eventBus().emit(Component.EVENTS.FLOW_CDU, oldVal, nextProps);
+      this._eventBus().emit(Component.EVENTS.FLOW_CDU, oldVal, this._props);
 
+      this._setUpdate = false;
+    }
+  };*/
+
+  public setProps = (nextProps: Record<string, unknown>): void => {
+    if (!nextProps) {
+      return;
+    }
+
+    this._setUpdate = false;
+
+    // Сохраняем КОПИЮ старых props ДО изменения
+    const oldProps = { ...this._props };
+
+    const propsAndChildren = this._getChildren(nextProps);
+
+    if (Object.values(propsAndChildren?.props).length) {
+      Object.assign(this._props, propsAndChildren?.props);
+    }
+
+    if (Object.values(propsAndChildren?.children).length) {
+      Object.assign(this._children, propsAndChildren?.children);
+    }
+
+    if (this._setUpdate) {
+      this._eventBus().emit(Component.EVENTS.FLOW_CDU, oldProps, nextProps);
       this._setUpdate = false;
     }
   };
@@ -220,8 +246,9 @@ export class Component {
   }
 
   private _componentDidUpdate(oldProps: ComponentProps, newProps: ComponentProps): void {
+    console.log('Component._componentDidUpdate вызван:', { oldProps, newProps });
     const isUpdated = this.componentDidUpdate(oldProps, newProps);
-
+    console.log('componentDidUpdate вернул:', isUpdated);
     if (isUpdated) {
       this._render();
     }

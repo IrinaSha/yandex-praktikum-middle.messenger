@@ -55,6 +55,10 @@ export class InputWithValidComponent extends Component {
     this.inputElement = inputElement;
   }
 
+  getName(): string {
+    return this.props['name']?.toString() || '';
+  }
+
   getValue(): string {
     const inputEl = this.inputElement.getContent() as HTMLInputElement;
     return inputEl ? inputEl.value : '';
@@ -75,6 +79,17 @@ export class InputWithValidComponent extends Component {
   }
 
   renderTemplate(templateStr: string): DocumentFragment {
+    if (this.inputElement) {
+      const currentAttrs = this.inputElement.props.attrs || {};
+
+      this.inputElement.setProps({
+        attrs: {
+          ...currentAttrs,
+          value: this.props.value || ''
+        }
+      });
+    }
+
     return super.render(templateStr);
   }
 }

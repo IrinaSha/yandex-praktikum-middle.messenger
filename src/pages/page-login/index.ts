@@ -20,9 +20,8 @@ export class LoginView extends View {
   constructor() {
     super();
     this.validator = new Validator();
-    this.router = new Router('.app');
+    this.router = Router.getInstance('.app');
 
-    // Подписываемся на события store
     this.unsubscribers.push(
       userStore.on('user-logged-in', () => {
         console.log('Пользователь вошел');
@@ -40,21 +39,19 @@ export class LoginView extends View {
 
   private showError(message: string): void {
     const formElement = document.querySelector('.login-form');
+
     if (!formElement) return;
 
-    // Удаляем предыдущую ошибку
     const existingError = formElement.querySelector('.form-error');
     if (existingError) {
       existingError.remove();
     }
 
-    // Создаем блок ошибки
     const errorDiv = document.createElement('div');
     errorDiv.className = 'form-error';
     errorDiv.textContent = message;
     formElement.insertBefore(errorDiv, formElement.firstChild);
 
-    // Автоматически скрываем через 5 секунд
     setTimeout(() => {
       errorDiv.remove();
       userStore.clearError();
@@ -117,7 +114,6 @@ export class LoginView extends View {
 
         console.log('Отправка данных:', data);
 
-        // Блокируем кнопку
         const btn = sendButton.getContent() as HTMLButtonElement;
         if (btn) {
           btn.disabled = true;
@@ -126,11 +122,9 @@ export class LoginView extends View {
 
         try {
           await userStore.signIn(data);
-          // Редирект произойдет автоматически через подписку на событие
         } catch (error) {
           console.error('Ошибка при входе:', error);
         } finally {
-          // Разблокируем кнопку
           if (btn) {
             btn.disabled = false;
             btn.textContent = 'Авторизоваться';

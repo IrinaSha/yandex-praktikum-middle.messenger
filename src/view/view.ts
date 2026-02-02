@@ -1,3 +1,4 @@
+// view.ts
 import { Component } from '../components/component';
 import { render } from '../services/utils';
 
@@ -23,7 +24,6 @@ export class View {
 
   public show(): void {
     const content = this.getContent().getContent();
-
     if (content) {
       content.style.display = 'block';
     }
@@ -34,6 +34,18 @@ export class View {
 
     if (content) {
       content.style.display = 'none';
+    }
+  }
+
+  public rerender(page: Component | undefined): void {
+    const content = page?.getContent();
+
+    if (content) {
+      const root = document.querySelector('.app');
+      if (root) {
+        root.innerHTML = '';
+        root.appendChild(content);
+      }
     }
   }
 }

@@ -12,7 +12,7 @@ import { RegistrationView } from './pages/page-registration';
 import { ProfileView } from './pages/page-profile';
 import { userStore } from './stores/user-store.ts';
 
-const router = new Router('.app');
+const router = Router.getInstance('.app');
 
 router.setAuthCheck(async () => {
   return await userStore.checkAuth();

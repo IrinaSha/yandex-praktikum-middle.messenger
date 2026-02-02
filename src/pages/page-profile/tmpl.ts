@@ -1,5 +1,5 @@
 export const tmpl = `
-<h1>{{{title}}}</h1>
+<h1>{{{title}}} {{{login}}}</h1>
 <div class="{{#if hideForm}}hidden{{/if}}">
   {{{form}}}
 </div>
@@ -11,6 +11,6 @@ export const tmpl = `
   {{{editPassword}}}
 </div>
 <div>
-  {{{link}}}
+  {{{nav}}}
 </div>
 `;

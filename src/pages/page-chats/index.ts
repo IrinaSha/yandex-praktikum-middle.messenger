@@ -15,13 +15,17 @@ import { tmpl } from './tmpl';
 import '../../assets/styles/styles.scss';
 import '../../assets/styles/variables.scss';
 
+import { Router } from '../../services/router';
+
 export class ChatsView extends View {
   validator: Validator;
+  router: Router;
 
   constructor() {
     super();
 
     this.validator = new Validator();
+    this.router = Router.getInstance('.app');
   }
 
   renderPage(): Element | null {
@@ -106,10 +110,15 @@ export class ChatsView extends View {
       'span',
       {
         attrs: {
-          class: 'nav-container text',
+          class: 'link link-exit',
         },
-        url: '/',
-        title: 'Назад',
+        url: '/settings',
+        title: 'Профиль',
+        /*events: {
+          click: async(e: Event) => {
+            e.preventDefault();
+          }
+        }*/
       },
     );
 
@@ -168,7 +177,3 @@ export class ChatsView extends View {
     );
   }
 }
-/*
-const view = new ChatsView();
-
-view.renderPage();*/

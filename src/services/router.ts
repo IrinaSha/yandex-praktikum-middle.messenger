@@ -1,6 +1,6 @@
 import type { View } from '../view/view';
 import type { Component } from '../components/component';
-import { ErrorView } from '../view/view-error'; // Импортируем ErrorView
+import { ErrorView } from '../view/view-error';//избавиться!!!
 
 function render(query: string, component: Component): HTMLElement | null {
   const root = document.querySelector(query);
@@ -38,6 +38,7 @@ export class Route {
   public leave(): void {
     if (this._view) {
       this._view.hide();
+      this._view = null;
     }
   }
 
@@ -46,11 +47,11 @@ export class Route {
   }
 
   public render(): void {
-    if (!this._view) {
-      this._view = new this._ViewClass();
-      const component = this._view.getContent();
-      render(this._props.rootQuery, component);
-    }
+    this._view = new this._ViewClass();
+
+    const component = this._view.getContent();
+
+    render(this._props.rootQuery, component);
 
     this._view.show();
   }
@@ -68,16 +69,18 @@ export class Router {
   private static __instance: Router;
   private _checkAuthCallback?: () => Promise<boolean>;
 
-  constructor(rootQuery: string) {
-    if (Router.__instance) {
-      return Router.__instance;
-    }
-
+  private constructor(rootQuery: string) {
     this.routes = [];
     this.history = window.history;
     this._rootQuery = rootQuery;
+  }
 
-    Router.__instance = this;
+  public static getInstance(rootQuery: string = '.app'): Router {
+    if (!Router.__instance) {
+      Router.__instance = new Router(rootQuery);
+    }
+
+    return Router.__instance;
   }
 
   public use(pathname: string, ViewClass: typeof View, isProtected: boolean = false): Router {
@@ -95,12 +98,10 @@ export class Router {
   }
 
   public async start(): Promise<void> {
-    // Проверяем авторизацию перед стартом
     if (this._checkAuthCallback) {
       const isAuthenticated = await this._checkAuthCallback();
 
-      // Если пользователь авторизован и находится на странице логина - редирект
-      if (isAuthenticated && window.location.pathname === '/') {
+      if (isAuthenticated && (window.location.pathname === '/' || window.location.pathname === '/sign-up' )) {
         this.go('/messenger');
         return;
       }
@@ -117,17 +118,16 @@ export class Router {
 
   private _interceptLinks(): void {
     document.addEventListener('click', (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const link = target.closest('a');
+      const link = (event.target as HTMLElement).closest('a');
 
-      if (link && link.href) {
-        const url = new URL(link.href);
+      if (!link?.href) return;
 
-        // Проверяем, что это внутренняя ссылка
-        if (url.origin === window.location.origin) {
-          event.preventDefault();
-          this.go(url.pathname);
-        }
+      const url = new URL(link.href);
+
+      if (url.origin === window.location.origin) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.go(url.pathname);
       }
     });
   }
@@ -140,12 +140,16 @@ export class Router {
       return;
     }
 
-    // Проверка защищенных маршрутов
-    if (route.isProtected() && this._checkAuthCallback) {
+    if (this._checkAuthCallback) {
       const isAuthenticated = await this._checkAuthCallback();
 
-      if (!isAuthenticated) {
+      if (route.isProtected() && !isAuthenticated) {
         this.go('/');
+        return;
+      }
+
+      if (isAuthenticated && (pathname === '/' || pathname === '/sign-up')) {
+        this.go('/messenger');
         return;
       }
     }
@@ -163,13 +167,11 @@ export class Router {
   }
 
   private _render404(pathname: string): void {
-    // Очищаем текущий маршрут
     if (this._currentRoute) {
       this._currentRoute.leave();
       this._currentRoute = null;
     }
 
-    // Создаем и рендерим страницу ошибки
     const errorView = new ErrorView('404', `Страница "${pathname}" не найдена`);
     const root = document.querySelector(this._rootQuery || '.app');
 
@@ -181,7 +183,6 @@ export class Router {
       }
     }
 
-    // Обновляем title страницы
     document.title = '404 - Страница не найдена';
   }
 

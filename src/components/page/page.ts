@@ -12,11 +12,14 @@ export class Page extends Component {
   }
 
   componentDidUpdate(oldProps: ComponentProps, newProps: ComponentProps): boolean {
-    return (
-      oldProps.title !== newProps.title
-      || oldProps.hideForm !== newProps.hideForm
-      || oldProps.hideEditButtons !== newProps.hideEditButtons
-      || oldProps.hideFormPassword !== newProps.hideFormPassword
+    const shouldUpdate = (
+      oldProps.hideForm !== newProps.hideForm ||
+      oldProps.hideEditButtons !== newProps.hideEditButtons ||
+      oldProps.hideFormPassword !== newProps.hideFormPassword
     );
+
+    console.log('Page должен обновиться:', shouldUpdate);
+
+    return shouldUpdate;
   }
 }

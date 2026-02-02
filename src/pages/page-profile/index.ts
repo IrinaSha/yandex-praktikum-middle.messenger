@@ -13,6 +13,9 @@ import { tmpl } from './tmpl';
 
 import '../../assets/styles/styles.scss';
 import '../../assets/styles/variables.scss';
+import { userStore } from '../../stores/user-store.ts';
+import { BASE_URL } from '../../api/consts.ts';
+import { Nav } from '../../components/nav/nav';
 
 export class ProfileView extends View {
   private profileInputs: ProfileInputWithValidComponent[] = [];
@@ -25,15 +28,34 @@ export class ProfileView extends View {
 
   private formPwd?: Form;
 
+  private customAvatar?: AvatarInput;
+
   getContent(): Component {
-    const link = new Link(
-      'span',
+    const linkLogout = new Link(
+      'li',
       {
         attrs: {
           class: 'link link-exit',
         },
-        url: '/',
+        url: '/sign-up',
         title: 'Выйти',
+        events: {
+          click: async () => {
+            await userStore.logout();
+          }
+        }
+      },
+    );
+
+    const nav = new Nav(
+      {
+        attrs: {
+          class: 'nav',
+        },
+        links: [
+          new Link('li', { attrs: { class: 'link link-exit' }, url: '/', title: 'На главную' }),
+          linkLogout,
+        ],
       },
     );
 
@@ -47,7 +69,7 @@ export class ProfileView extends View {
       labelText: 'Почта',
       noValid: false,
       validationType: 'email',
-      value: 'pochta@yandex.ru',
+      value: '',
       profileEditUserInfo: false,
     });
 
@@ -61,7 +83,7 @@ export class ProfileView extends View {
       labelText: 'Логин',
       noValid: false,
       validationType: 'login',
-      value: 'Irina666',
+      value: '',
       profileEditUserInfo: false,
     });
 
@@ -75,7 +97,7 @@ export class ProfileView extends View {
       labelText: 'Имя',
       noValid: false,
       validationType: 'name',
-      value: 'Ирина',
+      value: '',
       profileEditUserInfo: false,
     });
 
@@ -89,7 +111,7 @@ export class ProfileView extends View {
       labelText: 'Фамилия',
       noValid: false,
       validationType: 'name',
-      value: 'Шаблий',
+      value: '',
       profileEditUserInfo: false,
     });
 
@@ -103,7 +125,7 @@ export class ProfileView extends View {
       labelText: 'Имя в чате',
       noValid: false,
       validationType: 'name',
-      value: 'Ирина (как в чате)',
+      value: '',
       profileEditUserInfo: false,
     });
 
@@ -117,7 +139,7 @@ export class ProfileView extends View {
       labelText: 'Телефон',
       noValid: false,
       validationType: 'phone',
-      value: '88888888888',
+      value: '',
       profileEditUserInfo: false,
     });
 
@@ -184,17 +206,37 @@ export class ProfileView extends View {
       events: {
         click: (e: Event) => {
           e.preventDefault();
+          e.stopPropagation();
 
           this.page?.setProps({
             hideForm: false,
             hideEditButtons: true,
             hideFormPassword: true,
           });
+
+          const user = userStore.getUser();
+
+          if (user) {
+            this.profileInputs.forEach((input) => {
+              const name = input.getName();
+
+              if (name && name in user) {
+                const value = user[name as keyof typeof user];
+
+                input.setProps({
+                  attrs: {
+                    ...input.props.attrs,
+                    value: value || '',
+                  },
+                  profileEditUserInfo: true
+                });
+              }
+            });
+          }
+
           this.form?.setProps({ showSubmit: true });
 
-          this.profileInputs.forEach((input) => {
-            input.setProps({ profileEditUserInfo: true });
-          });
+          this.rerender(this.page);
         },
       },
     });
@@ -209,6 +251,7 @@ export class ProfileView extends View {
       events: {
         click: (e: Event) => {
           e.preventDefault();
+          e.stopPropagation();
 
           this.page?.setProps({
             hideForm: true,
@@ -217,6 +260,8 @@ export class ProfileView extends View {
           });
 
           this.formPwd?.setProps({ showSubmit: true });
+
+          this.rerender(this.page);
         },
       },
     });
@@ -250,42 +295,58 @@ export class ProfileView extends View {
       inputs: [pwdOldInput, pwdInput, pwdInputConfirm],
       button: sendButtonPwd,
       showSubmit: false,
-      onSubmit: (data: Record<string, string>, isValid: boolean) => {
+      onSubmit: async (data: Record<string, string>, isValid: boolean) => {
         if (isValid) {
           console.log('Данные:', data);
+          try {
+            debugger;
 
-          this.page?.setProps({
-            hideForm: false,
-            hideEditButtons: false,
-            hideFormPassword: true,
-          });
-          this.formPwd?.setProps({ showSubmit: false });
+            await userStore.updatePassword({ oldPassword: data.old_password, newPassword: data.password });
 
-          this.pwdInputs.forEach((input) => {
-            input.setProps({ profileEditUserInfo: false });
-          });
+            this.page?.setProps({
+              hideForm: false,
+              hideEditButtons: false,
+              hideFormPassword: true,
+            });
+            this.formPwd?.setProps({ showSubmit: false });
+
+            this.pwdInputs.forEach((input) => {
+              input.setProps({ profileEditUserInfo: false });
+            });
+          } catch (error: any) {
+            console.error('Ошибка обновления профиля:', error);
+            alert(error.reason || 'Не удалось обновить профиль');
+          }
         } else {
           console.log('Данные содержат ошибки');
         }
       },
     });
 
-    const customAvatar = new AvatarInput({
+    this.customAvatar = new AvatarInput({
       attrs: {
         class: 'avatar-container',
       },
       inputId: 'customAvatarInput',
       inputName: 'avatar',
-      onChange: (file: File | null) => {
+      onChange: async (file: File | null) => {
         if (!file) {
           return;
         }
 
         if (!file.type.startsWith('image/')) {
           alert('Пожалуйста, выберите изображение');
-          customAvatar.clearFile();
-        } else {
-          console.log('Выбран файл:', file.name);
+          this.customAvatar?.clearFile();
+          return;
+        }
+
+        try {
+          await userStore.updateAvatar(file);
+          console.log('Аватар успешно обновлен');
+        } catch (error: any) {
+          console.error('Ошибка обновления аватара:', error);
+          alert(error.reason || 'Не удалось обновить аватар');
+          this.customAvatar?.clearFile();
         }
       },
     });
@@ -294,24 +355,38 @@ export class ProfileView extends View {
       attrs: {
         class: 'login-form',
       },
-      avatar: customAvatar,
+      avatar: this.customAvatar,
       inputs: [emailInput, fNameInput, loginInput, sNameInput, displayNameInput, phoneInput],
       button: sendButton,
       showSubmit: false,
-      onSubmit: (data: Record<string, string>, isValid: boolean) => {
+      onSubmit: async (data: Record<string, string>, isValid: boolean) => {
         if (isValid) {
-          console.log('Данные:', data);
+          try {
+            await userStore.updateProfile({
+              first_name: data.first_name,
+              second_name: data.second_name,
+              display_name: data.display_name,
+              login: data.login,
+              email: data.email,
+              phone: data.phone,
+              password: ''
+            });
+            console.log('Профиль успешно обновлен. Данные:', data);
 
-          this.page?.setProps({
-            hideForm: false,
-            hideEditButtons: false,
-            hideFormPassword: true,
-          });
-          this.form?.setProps({ showSubmit: false });
+            this.page?.setProps({
+              hideForm: false,
+              hideEditButtons: false,
+              hideFormPassword: true,
+            });
+            this.form?.setProps({ showSubmit: false });
 
-          this.profileInputs.forEach((input) => {
-            input.setProps({ profileEditUserInfo: false });
-          });
+            this.profileInputs.forEach((input) => {
+              input.setProps({ profileEditUserInfo: false });
+            });
+          } catch (error: any) {
+            console.error('Ошибка обновления профиля:', error);
+            alert(error.reason || 'Не удалось обновить профиль');
+          }
         } else {
           console.log('Данные содержат ошибки');
         }
@@ -326,21 +401,50 @@ export class ProfileView extends View {
         },
         template: tmpl,
         title: 'Профиль пользователя',
+        login: '',
         form: this.form,
         formPassword: this.formPwd,
         editButton,
         editPassword,
-        link,
+        nav,
         hideForm: false,
         hideEditButtons: false,
         hideFormPassword: true,
       },
     );
 
+    userStore.on('state-changed', () => {
+      this.updateUserData();
+    });
+
+    userStore.fetchUser()
+      .catch((error) => {
+        console.error('Ошибка загрузки данных пользователя:', error);
+      });
+
     return this.page;
   }
+
+  private updateUserData(): void {
+    const user = userStore.getUser();
+
+    if (!user) {
+      return;
+    }
+
+    this.page?.setProps({login: user.login});
+
+    this.profileInputs.forEach((input) => {
+      const name = input.getName();
+
+      if (name && name in user) {
+        input.setProps({ value: user[name as keyof typeof user] });
+      }
+    });
+
+    if (user.avatar && this.customAvatar) {
+      const avatarUrl = `${BASE_URL}/resources${user.avatar}`;
+      this.customAvatar.setProps({ avatar: avatarUrl });
+    }
+  }
 }
-
-//const view = new ProfileView();
-
-//view.renderPage();
