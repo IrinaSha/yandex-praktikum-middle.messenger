@@ -21,7 +21,7 @@ export class Component {
 
   private _children: Record<string, Component>;
 
-  protected _lists: Record<string, ComponentList>;
+  _lists: Record<string, ComponentList>;
 
   private _id = '';
 
@@ -80,31 +80,6 @@ export class Component {
     }
   }
 
-  /*public setProps = (nextProps: Record<string, unknown>): void => {
-    if (!nextProps) {
-      return;
-    }
-
-    this._setUpdate = false;
-    const oldVal = { ...this._props };
-
-    const propsAndChildren = this._getChildren(nextProps);
-
-    if (Object.values(propsAndChildren?.props).length) {
-      Object.assign(this._props, propsAndChildren?.props);
-    }
-
-    if (Object.values(propsAndChildren?.children).length) {
-      Object.assign(this._props, propsAndChildren?.children);
-    }
-
-    if (this._setUpdate) {
-      this._eventBus().emit(Component.EVENTS.FLOW_CDU, oldVal, this._props);
-
-      this._setUpdate = false;
-    }
-  };*/
-
   public setProps = (nextProps: Record<string, unknown>): void => {
     if (!nextProps) {
       return;
@@ -112,7 +87,6 @@ export class Component {
 
     this._setUpdate = false;
 
-    // Сохраняем КОПИЮ старых props ДО изменения
     const oldProps = { ...this._props };
 
     const propsAndChildren = this._getChildren(nextProps);
@@ -123,6 +97,10 @@ export class Component {
 
     if (Object.values(propsAndChildren?.children).length) {
       Object.assign(this._children, propsAndChildren?.children);
+    }
+
+    if (Object.values(propsAndChildren?.lists).length) {
+      Object.assign(this._lists, propsAndChildren?.lists);
     }
 
     if (this._setUpdate) {
@@ -254,7 +232,7 @@ export class Component {
     }
   }
 
-  private _render(): void {
+  protected _render(): void {
     this._removeEvents();
 
     const block = this.render();

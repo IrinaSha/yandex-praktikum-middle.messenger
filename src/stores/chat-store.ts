@@ -1,5 +1,7 @@
 import { EventBus } from '../services/event-bus';
 import { ChatApi } from '../api/chat-api';
+import { WSTransport, WSTransportEvents } from '../services/ws-transport';
+import { userStore } from './user-store';
 import type {
   Chat,
   CreateChatData,
@@ -10,7 +12,7 @@ import type {
 
 export interface ChatWithUsers extends Chat {
   users: ChatUser[];
-  messages: any[]; // Позже добавим тип для сообщений
+  messages: any[];
 }
 
 type ChatStoreState = {
@@ -24,6 +26,7 @@ export class ChatStore {
   private static __instance: ChatStore;
   private eventBus: EventBus;
   private chatApi: ChatApi;
+  private transport: WSTransport | null = null;
   private state: ChatStoreState = {
     chats: new Map(),
     currentChatId: null,
@@ -43,6 +46,70 @@ export class ChatStore {
     return ChatStore.__instance;
   }
 
+  private async connectToChat(chatId: number) {
+    if (this.transport) {
+      this.transport.close();
+    }
+
+    try {
+      const { token } = await this.chatApi.getChatToken(chatId);
+      const userId = userStore.getUser()?.id;
+      const url = `wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`;
+
+      this.transport = new WSTransport(url, new EventBus());
+
+      this.transport.on(WSTransportEvents.Connected, () => {
+        this.transport?.send({ type: 'get old', content: '0' });
+      });
+
+      this.transport.on(WSTransportEvents.Message, (data) => {
+        this.handleNewMessages(chatId, data);
+      });
+
+      await this.transport.connect();
+    } catch (e) {
+      console.error('WS Connection error', e);
+    }
+  }
+
+  private handleNewMessages(chatId: number, data: any) {
+    const chat = this.state.chats.get(chatId);
+    if (!chat) return;
+
+    let newMessages = Array.isArray(data) ? data.reverse() : [data];
+
+    // Фильтруем технические сообщения, если они просочились
+    newMessages = newMessages.filter(m => m.type === 'message' || !m.type);
+
+    const updatedChat = {
+      ...chat,
+      messages: Array.isArray(data) ? newMessages : [...chat.messages, ...newMessages]
+    };
+
+    const newChats = new Map(this.state.chats);
+    newChats.set(chatId, updatedChat);
+    this.setState({ chats: newChats });
+    this.eventBus.emit('messages-updated', chatId);
+  }
+
+  public sendMessage(content: string) {
+    this.transport?.send({
+      type: 'message',
+      content
+    });
+  }
+
+  public async setCurrentChat(chatId: number | null): Promise<void> {
+    this.setState({ currentChatId: chatId });
+    if (chatId) {
+      await this.connectToChat(chatId);
+    } else {
+      this.transport?.close();
+      this.transport = null;
+    }
+    this.eventBus.emit('current-chat-changed', chatId);
+  }
+
   public on(event: string, callback: (data?: any) => void): () => void {
     this.eventBus.on(event, callback);
     return () => this.eventBus.off(event, callback);
@@ -55,28 +122,12 @@ export class ChatStore {
     };
   }
 
-  public getChats(): ChatWithUsers[] {
-    return Array.from(this.state.chats.values());
-  }
-
   public getChat(chatId: number): ChatWithUsers | undefined {
     return this.state.chats.get(chatId);
   }
 
-  public getCurrentChat(): ChatWithUsers | null {
-    if (this.state.currentChatId === null) {
-      return null;
-    }
-    return this.state.chats.get(this.state.currentChatId) || null;
-  }
-
   public getCurrentChatId(): number | null {
     return this.state.currentChatId;
-  }
-
-  public setCurrentChat(chatId: number | null): void {
-    this.setState({ currentChatId: chatId });
-    this.eventBus.emit('current-chat-changed', chatId);
   }
 
   private setState(newState: Partial<ChatStoreState>): void {
@@ -230,6 +281,18 @@ export class ChatStore {
     }
   }
 
+  public async getChatToken(chatId: number): Promise<{ token: string }> {
+    try {
+      const tokenData = await this.chatApi.getChatToken(chatId);
+      this.eventBus.emit('chat-token', { chatId, token: tokenData.token });
+      return tokenData;
+    } catch (error: any) {
+      const errorMessage = error.reason || 'Ошибка получения токена';
+      this.eventBus.emit('chat-token-error', errorMessage);
+      throw error;
+    }
+  }
+
   public clearError(): void {
     this.setState({ error: null });
   }
@@ -242,6 +305,9 @@ export class ChatStore {
       error: null,
     });
   }
+  public getChats = () => Array.from(this.state.chats.values());
+
+  public getCurrentChat = () => this.state.currentChatId ? this.state.chats.get(this.state.currentChatId) : null;
 }
 
 export const chatStore = ChatStore.getInstance();

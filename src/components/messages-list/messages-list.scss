@@ -1,7 +1,8 @@
 .messages-list-container {
   width: 800px;
-  height: 400px;
+  max-height: 800px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow-y: auto;
 }

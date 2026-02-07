@@ -37,7 +37,7 @@ export class View {
     }
   }
 
-  public rerender(page: Component | undefined): void {
+  public rerender(page: Component | undefined | null): void {
     const content = page?.getContent();
 
     if (content) {

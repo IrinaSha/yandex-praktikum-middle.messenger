@@ -299,7 +299,6 @@ export class ProfileView extends View {
         if (isValid) {
           console.log('Данные:', data);
           try {
-            debugger;
 
             await userStore.updatePassword({ oldPassword: data.old_password, newPassword: data.password });
 

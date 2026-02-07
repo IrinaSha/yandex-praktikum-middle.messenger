@@ -120,4 +120,8 @@ export class ChatApi extends ApiBase {
       },
     });
   }
+
+  public getChatToken(chatId: number): Promise<{ token: string }> {
+    return this.post<{ token: string }>(`/token/${chatId}`);
+  }
 }
