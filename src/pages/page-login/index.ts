@@ -14,7 +14,9 @@ import { userStore } from '../../stores/user-store';
 
 export class LoginView extends View {
   validator: Validator;
+
   router: Router;
+
   private unsubscribers: Array<() => void> = [];
 
   constructor() {
@@ -26,14 +28,14 @@ export class LoginView extends View {
       userStore.on('user-logged-in', () => {
         console.log('Пользователь вошел');
         this.router.go('/messenger');
-      })
+      }),
     );
 
     this.unsubscribers.push(
       userStore.on('login-error', (error) => {
         console.error('Ошибка входа:', error);
         this.showError(error);
-      })
+      }),
     );
   }
 
@@ -107,29 +109,29 @@ export class LoginView extends View {
       showSubmit: true,
       button: sendButton,
       onSubmit: async (data: Record<string, string>, isValid: boolean) => {
-        if (!isValid) {
-          console.log('Данные невалидны');
-          return { success: false, error: 'Данные невалидны' };
-        }
+        if (isValid) {
+          const btn = sendButton.getContent() as HTMLButtonElement;
 
-        console.log('Отправка данных:', data);
-
-        const btn = sendButton.getContent() as HTMLButtonElement;
-        if (btn) {
-          btn.disabled = true;
-          btn.textContent = 'Загрузка...';
-        }
-
-        try {
-          await userStore.signIn(data);
-        } catch (error) {
-          console.error('Ошибка при входе:', error);
-        } finally {
           if (btn) {
-            btn.disabled = false;
-            btn.textContent = 'Авторизоваться';
+            btn.disabled = true;
+            btn.textContent = 'Загрузка...';
+          }
+
+          try {
+            await userStore.signIn(data);
+
+            return { success: true };
+          } catch (error) {
+            console.error('Ошибка при входе:', error);
+          } finally {
+            if (btn) {
+              btn.disabled = false;
+              btn.textContent = 'Авторизоваться';
+            }
           }
         }
+
+        return { success: false };
       },
     });
 
@@ -144,8 +146,7 @@ export class LoginView extends View {
   }
 
   public hide(): void {
-    // Отписываемся при скрытии страницы
-    this.unsubscribers.forEach(unsubscribe => unsubscribe());
+    this.unsubscribers.forEach((unsubscribe) => unsubscribe());
     this.unsubscribers = [];
     super.hide();
   }

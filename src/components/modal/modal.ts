@@ -19,23 +19,23 @@ export class Modal extends Component {
         click: () => {
           const input = this.getContent()?.querySelector('#modal-input') as HTMLInputElement;
           props.onConfirm(input.value);
-        }
-      }
+        },
+      },
     });
 
     const cancelBtn = new Button('button', {
       attrs: { class: 'btn-container btn-secondary' },
       btnText: 'Отмена',
       events: {
-        click: () => props.onClose()
-      }
+        click: () => props.onClose(),
+      },
     });
 
     super('div', {
       ...props,
       submitBtn,
       cancelBtn,
-      attrs: { class: 'modal' }
+      attrs: { class: 'modal' },
     });
   }
 

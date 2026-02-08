@@ -11,28 +11,28 @@ export abstract class ApiBase {
 
   protected get<T = any>(
     endpoint: string = '',
-    options?: HttpRequestOptions
+    options?: HttpRequestOptions,
   ): Promise<T> {
     return this.transport.get<T>(endpoint, options);
   }
 
   protected post<T = any>(
     endpoint: string = '',
-    options?: HttpRequestOptions
+    options?: HttpRequestOptions,
   ): Promise<T> {
     return this.transport.post<T>(endpoint, options);
   }
 
   protected put<T = any>(
     endpoint: string = '',
-    options?: HttpRequestOptions
+    options?: HttpRequestOptions,
   ): Promise<T> {
     return this.transport.put<T>(endpoint, options);
   }
 
   protected delete<T = any>(
     endpoint: string = '',
-    options?: HttpRequestOptions
+    options?: HttpRequestOptions,
   ): Promise<T> {
     return this.transport.delete<T>(endpoint, options);
   }

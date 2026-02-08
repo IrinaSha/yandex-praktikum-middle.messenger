@@ -13,13 +13,11 @@ export class Page extends Component {
 
   componentDidUpdate(oldProps: ComponentProps, newProps: ComponentProps): boolean {
     const shouldUpdate = (
-      oldProps.hideForm !== newProps.hideForm ||
-      oldProps.hideEditButtons !== newProps.hideEditButtons ||
-      oldProps.hideFormPassword !== newProps.hideFormPassword ||
-      oldProps.messagesSectionClass !== newProps.messagesSectionClass
+      oldProps.hideForm !== newProps.hideForm
+      || oldProps.hideEditButtons !== newProps.hideEditButtons
+      || oldProps.hideFormPassword !== newProps.hideFormPassword
+      || oldProps.messagesSectionClass !== newProps.messagesSectionClass
     );
-
-    console.log('Page должен обновиться:', shouldUpdate);
 
     return shouldUpdate;
   }

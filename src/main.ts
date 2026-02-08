@@ -10,13 +10,11 @@ import { ChatsView } from './pages/page-chats';
 import { LoginView } from './pages/page-login';
 import { RegistrationView } from './pages/page-registration';
 import { ProfileView } from './pages/page-profile';
-import { userStore } from './stores/user-store.ts';
+import { userStore } from './stores/user-store';
 
 const router = Router.getInstance('.app');
 
-router.setAuthCheck(async () => {
-  return await userStore.checkAuth();
-});
+router.setAuthCheck(async () => userStore.checkAuth());
 
 router
   .use('/', LoginView, false)

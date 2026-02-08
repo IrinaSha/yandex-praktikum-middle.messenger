@@ -12,21 +12,8 @@ export class ChatList extends Component {
     this._attachChatItemHandlers();
   }
 
-  /*componentDidUpdate(): boolean {
-    this._attachChatItemHandlers();
-
-    return true;
-  }*/
-
-  componentDidUpdate(oldProps: any, newProps: any): boolean {
-
-    const oldChats = this._lists.chats;
-    const newChats = (newProps as any).chats;
-
-   // if (oldChats !== newChats) {
-      this._render(); // Принудительный рендер при изменении списка
-    //}
-
+  componentDidUpdate(): boolean {
+    this._render();
     this._attachChatItemHandlers();
     return true;
   }
@@ -58,7 +45,6 @@ export class ChatList extends Component {
           });
 
           if (selected && typeof chatItem.props.onSelect === 'function') {
-            // @ts-ignore
             chatItem.props.onSelect(clickedId);
           }
         }

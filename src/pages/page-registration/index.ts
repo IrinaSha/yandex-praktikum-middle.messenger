@@ -11,11 +11,13 @@ import type { SignUpData } from '../../api/user-api';
 
 import '../../assets/styles/styles.scss';
 import '../../assets/styles/variables.scss';
-import { Router } from '../../services/router.ts';
+import { Router } from '../../services/router';
 
 export class RegistrationView extends View {
   validator: Validator;
+
   userApi: UserApi;
+
   router: Router;
 
   constructor() {
@@ -33,7 +35,7 @@ export class RegistrationView extends View {
         attrs: {
           class: 'nav-container text',
         },
-        url: '../page-chats/page.html',
+        url: '/',
         title: 'Войти',
       },
     );
@@ -172,7 +174,6 @@ export class RegistrationView extends View {
 
             console.log('Регистрация успешна:', response);
             this.router.go('/messenger');
-
           } catch (error) {
             alert('Ошибка регистрации. Попробуйте снова.');
           }
@@ -196,6 +197,6 @@ export class RegistrationView extends View {
   }
 }
 
-//const view = new RegistrationView();
+// const view = new RegistrationView();
 
-//view.renderPage();
+// view.renderPage();

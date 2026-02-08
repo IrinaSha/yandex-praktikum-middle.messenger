@@ -5,11 +5,11 @@ import { WSTransport, WSTransportEvents } from '../services/ws-transport';
 import { userStore } from './user-store';
 import type {
   Chat,
-  CreateChatData,
   ChatUser,
   GetChatsParams,
-  GetChatUsersParams
+  GetChatUsersParams,
 } from '../api/chat-api';
+import { WS_URL } from '../services/consts';
 
 export interface ChatWithUsers extends Chat {
   users: ChatUser[];
@@ -21,14 +21,19 @@ type ChatStoreState = {
   currentChatId: number | null;
   isLoading: boolean;
   error: string | null;
-}
+};
 
 export class ChatStore {
   private static __instance: ChatStore;
+
   private eventBus: EventBus;
+
   private chatApi: ChatApi;
+
   private profileApi: ProfileApi;
+
   private transport: WSTransport | null = null;
+
   private state: ChatStoreState = {
     chats: new Map(),
     currentChatId: null,
@@ -57,7 +62,7 @@ export class ChatStore {
     try {
       const { token } = await this.chatApi.getChatToken(chatId);
       const userId = userStore.getUser()?.id;
-      const url = `wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`;
+      const url = `${WS_URL}${userId}/${chatId}/${token}`;
 
       this.transport = new WSTransport(url, new EventBus());
 
@@ -81,11 +86,11 @@ export class ChatStore {
 
     let newMessages = Array.isArray(data) ? data.reverse() : [data];
 
-    newMessages = newMessages.filter(m => m.type === 'message' || !m.type);
+    newMessages = newMessages.filter((m) => m.type === 'message' || !m.type);
 
     const updatedChat = {
       ...chat,
-      messages: Array.isArray(data) ? newMessages : [...chat.messages, ...newMessages]
+      messages: Array.isArray(data) ? newMessages : [...chat.messages, ...newMessages],
     };
 
     const newChats = new Map(this.state.chats);
@@ -97,7 +102,7 @@ export class ChatStore {
   public sendMessage(content: string) {
     this.transport?.send({
       type: 'message',
-      content
+      content,
     });
   }
 
@@ -145,7 +150,7 @@ export class ChatStore {
 
       const chatsMap = new Map<number, ChatWithUsers>();
 
-      chats.forEach(chat => {
+      chats.forEach((chat) => {
         const existingChat = this.state.chats.get(chat.id);
         chatsMap.set(chat.id, {
           ...chat,
@@ -168,7 +173,7 @@ export class ChatStore {
     this.setState({ isLoading: true, error: null });
 
     try {
-      const response = await this.chatApi.createChat({ title });
+      const response = await this.chatApi.createChat(title);
 
       // Обновляем список чатов после создания
       await this.fetchChats();
@@ -187,7 +192,7 @@ export class ChatStore {
 
   public async fetchChatUsers(
     chatId: number,
-    params: GetChatUsersParams = {}
+    params: GetChatUsersParams = {},
   ): Promise<void> {
     this.setState({ isLoading: true, error: null });
 
@@ -217,36 +222,8 @@ export class ChatStore {
     }
   }
 
-  public async deleteChat(chatId: number): Promise<void> {
-    this.setState({ isLoading: true, error: null });
-
-    try {
-      await this.chatApi.deleteChat(chatId);
-
-      const newChats = new Map(this.state.chats);
-      newChats.delete(chatId);
-
-      const newCurrentChatId = this.state.currentChatId === chatId
-        ? null
-        : this.state.currentChatId;
-
-      this.setState({
-        chats: newChats,
-        currentChatId: newCurrentChatId,
-        isLoading: false
-      });
-
-      this.eventBus.emit('chat-deleted', chatId);
-    } catch (error: any) {
-      const errorMessage = error.reason || 'Ошибка удаления чата';
-      this.setState({ error: errorMessage, isLoading: false });
-      this.eventBus.emit('chat-delete-error', errorMessage);
-      throw error;
-    }
-  }
-
   public async addUserToChat(userLogin: string): Promise<void> {
-    this.setState({ isLoading: true, error: null })
+    this.setState({ isLoading: true, error: null });
 
     const chatId = this.getCurrentChatId();
 
@@ -264,7 +241,7 @@ export class ChatStore {
       return;
     }
 
-    const userId =  users[0].id;
+    const userId = users[0].id;
 
     try {
       await this.chatApi.addUserToChat(chatId, userId);
@@ -299,7 +276,7 @@ export class ChatStore {
       return;
     }
 
-    const userId =  users[0].id;
+    const userId = users[0].id;
 
     try {
       await this.chatApi.removeUserFromChat(chatId, userId);
@@ -315,33 +292,11 @@ export class ChatStore {
     }
   }
 
-  public async getChatToken(chatId: number): Promise<{ token: string }> {
-    try {
-      const tokenData = await this.chatApi.getChatToken(chatId);
-      this.eventBus.emit('chat-token', { chatId, token: tokenData.token });
-      return tokenData;
-    } catch (error: any) {
-      const errorMessage = error.reason || 'Ошибка получения токена';
-      this.eventBus.emit('chat-token-error', errorMessage);
-      throw error;
-    }
-  }
-
-  public clearError(): void {
-    this.setState({ error: null });
-  }
-
-  public clear(): void {
-    this.setState({
-      chats: new Map(),
-      currentChatId: null,
-      isLoading: false,
-      error: null,
-    });
-  }
   public getChats = () => Array.from(this.state.chats.values());
 
-  public getCurrentChat = () => this.state.currentChatId ? this.state.chats.get(this.state.currentChatId) : null;
+  public getCurrentChat = () => (
+    this.state.currentChatId ? this.state.chats.get(this.state.currentChatId) : null
+  );
 }
 
 export const chatStore = ChatStore.getInstance();

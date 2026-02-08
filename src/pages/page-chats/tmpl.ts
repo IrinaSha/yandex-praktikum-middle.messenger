@@ -1,13 +1,16 @@
 export const tmpl = `
-<div class="chat-header">
-  <h1>{{title}}</h1>
-  {{{link}}}
-</div>
 <div class="chat-page-container">
   <div class="chat-list-container">
-    {{{addChatBtn}}}
+    <div class="chat-header">
+      <h1>{{title}}</h1>
+      {{{link}}}
+    </div>
+    <div class="chat-toolbar">
+      {{{addChatBtn}}}
+    </div>
     {{{chatList}}}
   </div>
+
   <div class="messages-section {{messagesSectionClass}}">
     <div class="chat-toolbar">
       <div class="chat-toolbar__header">
@@ -18,8 +21,14 @@ export const tmpl = `
         {{{removeUserBtn}}}
       </div>
     </div>
-    {{{messagesList}}}
-    {{{form}}}
+
+    <div class="messages-list-wrapper">
+      {{{messagesList}}}
+    </div>
+
+    <div class="chat-input-footer">
+      {{{form}}}
+    </div>
   </div>
 </div>
 `;

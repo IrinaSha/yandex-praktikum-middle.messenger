@@ -21,10 +21,6 @@ export interface Chat {
   } | null;
 }
 
-export interface CreateChatData {
-  title: string;
-}
-
 export interface CreateChatResponse {
   id: number;
 }
@@ -52,51 +48,18 @@ export class ChatApi extends ApiBase {
   }
 
   public getChats(params: GetChatsParams = {}): Promise<Chat[]> {
-    const queryParams = new URLSearchParams();
-
-    if (params.offset !== undefined) {
-      queryParams.append('offset', params.offset.toString());
-    }
-    if (params.limit !== undefined) {
-      queryParams.append('limit', params.limit.toString());
-    }
-    if (params.title) {
-      queryParams.append('title', params.title);
-    }
-
-    const query = queryParams.toString();
-    const endpoint = query ? `?${query}` : '';
-
-    return this.get<Chat[]>(endpoint);
+    return this.get<Chat[]>('', { data: params });
   }
 
   public createChat(title: string): Promise<CreateChatResponse> {
-    return this.post<CreateChatResponse>('', { title: title });
+    return this.post<CreateChatResponse>('', { data: { title } });
   }
 
   public getChatUsers(
     chatId: number,
-    params: GetChatUsersParams = {}
+    params: GetChatUsersParams = {},
   ): Promise<ChatUser[]> {
-    const queryParams = new URLSearchParams();
-
-    if (params.offset !== undefined) {
-      queryParams.append('offset', params.offset.toString());
-    }
-    if (params.limit !== undefined) {
-      queryParams.append('limit', params.limit.toString());
-    }
-    if (params.name) {
-      queryParams.append('name', params.name);
-    }
-    if (params.email) {
-      queryParams.append('email', params.email);
-    }
-
-    const query = queryParams.toString();
-    const endpoint = `/${chatId}/users${query ? `?${query}` : ''}`;
-
-    return this.get<ChatUser[]>(endpoint);
+    return this.get<ChatUser[]>(`/${chatId}/users`, { data: params });
   }
 
   public addUserToChat(chatId: number, userId: number): Promise<any> {

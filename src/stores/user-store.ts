@@ -12,19 +12,23 @@ export type User = {
   avatar: string | null;
   phone: string;
   email: string;
-}
+};
 
 type UserStoreState = {
   user: User | null;
   isLoading: boolean;
   error: string | null;
-}
+};
 
 export class UserStore {
   private static __instance: UserStore;
+
   private eventBus: EventBus;
+
   private userApi: UserApi;
+
   private profileApi: ProfileApi;
+
   private state: UserStoreState = {
     user: null,
     isLoading: false,

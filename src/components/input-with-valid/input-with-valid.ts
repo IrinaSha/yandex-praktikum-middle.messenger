@@ -56,7 +56,7 @@ export class InputWithValidComponent extends Component {
   }
 
   getName(): string {
-    return this.props['name']?.toString() || '';
+    return this.props.name?.toString() || '';
   }
 
   getValue(): string {
@@ -85,8 +85,8 @@ export class InputWithValidComponent extends Component {
       this.inputElement.setProps({
         attrs: {
           ...currentAttrs,
-          value: this.props.value || ''
-        }
+          value: this.props.value || '',
+        },
       });
     }
 

@@ -1,76 +1,18 @@
 import type { View } from '../view/view';
-import type { Component } from '../components/component';
-import { ErrorView } from '../view/view-error';//избавиться!!!
-
-function render(query: string, component: Component): HTMLElement | null {
-  const root = document.querySelector(query);
-
-  if (root) {
-    root.innerHTML = '';
-    const content = component.getContent();
-    if (content) {
-      root.appendChild(content);
-    }
-  }
-
-  return root as HTMLElement | null;
-}
-
-export class Route {
-  private _pathname: string;
-  private _ViewClass: typeof View;
-  private _view: View | null = null;
-  private _props: { rootQuery: string; protected?: boolean };
-
-  constructor(pathname: string, ViewClass: typeof View, props: { rootQuery: string; protected?: boolean }) {
-    this._pathname = pathname;
-    this._ViewClass = ViewClass;
-    this._props = props;
-  }
-
-  public navigate(pathname: string): void {
-    if (this.match(pathname)) {
-      this._pathname = pathname;
-      this.render();
-    }
-  }
-
-  public leave(): void {
-    if (this._view) {
-      this._view.hide();
-      this._view = null;
-    }
-  }
-
-  public match(pathname: string): boolean {
-    //return this._pathname === pathname;
-
-    const routeRegex = new RegExp(`^${this._pathname.replace(/:[^\s/]+/g, '([^/]+)')}$`);
-
-    return routeRegex.test(pathname);
-  }
-
-  public render(): void {
-    this._view = new this._ViewClass();
-
-    const component = this._view.getContent();
-
-    render(this._props.rootQuery, component);
-
-    this._view.show();
-  }
-
-  public isProtected(): boolean {
-    return this._props.protected || false;
-  }
-}
+import { ErrorView } from '../view/view-error';
+import { Route } from './route';
 
 export class Router {
   private routes: Route[] = [];
+
   private history?: History;
+
   private _rootQuery?: string;
+
   private _currentRoute: Route | null = null;
+
   private static __instance: Router;
+
   private _checkAuthCallback?: () => Promise<boolean>;
 
   private constructor(rootQuery: string) {
@@ -90,7 +32,7 @@ export class Router {
   public use(pathname: string, ViewClass: typeof View, isProtected: boolean = false): Router {
     const route = new Route(pathname, ViewClass, {
       rootQuery: this._rootQuery || '',
-      protected: isProtected
+      protected: isProtected,
     });
     this.routes.push(route);
 
@@ -105,7 +47,10 @@ export class Router {
     if (this._checkAuthCallback) {
       const isAuthenticated = await this._checkAuthCallback();
 
-      if (isAuthenticated && (window.location.pathname === '/' || window.location.pathname === '/sign-up' )) {
+      if (isAuthenticated && (
+        window.location.pathname === '/'
+          || window.location.pathname === '/sign-up'
+      )) {
         this.go('/messenger');
         return;
       }
@@ -124,15 +69,18 @@ export class Router {
     document.addEventListener('click', (event: MouseEvent) => {
       const link = (event.target as HTMLElement).closest('a');
 
-      if (!link?.href) return;
-
-      const url = new URL(link.href);
-
-      if (url.origin === window.location.origin) {
-        event.preventDefault();
-        event.stopPropagation();
-        this.go(url.pathname);
+      if (!link) {
+        return;
       }
+
+      const href = link.getAttribute('href');
+
+      if (!href || (href.startsWith('http') && !href.includes(window.location.host))) {
+        return;
+      }
+
+      event.preventDefault();
+      this.go(href);
     });
   }
 
@@ -158,11 +106,9 @@ export class Router {
       }
     }
 
-    this._renderRoute(route);
-  }
+    const hasParams = this._currentRoute && (this._currentRoute as any)._pathname.includes(':');
 
-  private _renderRoute(route: Route): void {
-    if (this._currentRoute && this._currentRoute !== route) {
+    if (this._currentRoute && this._currentRoute !== route && !hasParams) {
       this._currentRoute.leave();
     }
 
@@ -197,7 +143,9 @@ export class Router {
       return {};
     }
 
-    const values = window.location.pathname.match(new RegExp(`^${(route as any)._pathname.replace(/:[^\s/]+/g, '([^/]+)')}$`));
+    const values = window.location.pathname.match(
+      new RegExp(`^${(route as any)._pathname.replace(/:[^\s/]+/g, '([^/]+)')}$`),
+    );
     const keys = (route as any)._pathname.match(/:[^\s/]+/g);
 
     if (!values || !keys) {
@@ -224,6 +172,6 @@ export class Router {
   }
 
   private getRoute(pathname: string): Route | undefined {
-    return this.routes.find(route => route.match(pathname));
+    return this.routes.find((route) => route.match(pathname));
   }
 }

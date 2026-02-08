@@ -1,4 +1,10 @@
-import { HTTP_METHODS, HTTP_ERROR_MESSAGES, MIN_SUCCESS_REQUEST_STATUS, MAX_SUCCESS_REQUEST_STATUS, DEFAULT_TIMEOUT } from './consts';
+import {
+  HTTP_METHODS,
+  HTTP_ERROR_MESSAGES,
+  MIN_SUCCESS_REQUEST_STATUS,
+  MAX_SUCCESS_REQUEST_STATUS,
+  DEFAULT_TIMEOUT,
+} from './consts';
 import type { HttpMethod, HttpRequestOptions } from './types';
 
 export class HTTPTransport {
@@ -9,13 +15,18 @@ export class HTTPTransport {
   }
 
   public get = this.createMethod(HTTP_METHODS.GET);
+
   public post = this.createMethod(HTTP_METHODS.POST);
+
   public put = this.createMethod(HTTP_METHODS.PUT);
+
   public delete = this.createMethod(HTTP_METHODS.DELETE);
 
   private createMethod(method: HttpMethod) {
-    return <T = unknown>(url: string, options: HttpRequestOptions = {}): Promise<T> =>
-      this.request<T>(url, { ...options, method });
+    return <T = unknown>(
+      url: string,
+      options: HttpRequestOptions = {},
+    ): Promise<T> => this.request<T>(url, { ...options, method });
   }
 
   private request<Response>(url: string, options: HttpRequestOptions): Promise<Response> {
@@ -26,7 +37,7 @@ export class HTTPTransport {
       signal,
       timeout = DEFAULT_TIMEOUT,
       withCredentials = true,
-      responseType = 'json'
+      responseType = 'json',
     } = options;
 
     return new Promise<Response>((resolve, reject) => {
@@ -48,7 +59,7 @@ export class HTTPTransport {
           const statusGroup = status as keyof typeof HTTP_ERROR_MESSAGES;
           const message = HTTP_ERROR_MESSAGES[statusGroup];
 
-          reject({ status, reason: xhr.response?.reason || message });
+          reject(new Error(message));
         }
       };
 

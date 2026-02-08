@@ -10,10 +10,12 @@ export enum WSTransportEvents {
 
 export class WSTransport {
   private socket: WebSocket | null = null;
+
   private pingInterval: number = 30000;
+
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
-  //@ts-ignore
+  // @ts-ignore
   constructor(private url: string, private eventBus: EventBus) {
 
   }

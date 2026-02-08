@@ -47,7 +47,7 @@ export type HttpRequestOptions = {
   signal?: AbortSignal;
   withCredentials?: boolean;
   responseType?: XMLHttpRequestResponseType;
-}
+};
 
 export interface HttpResponse<T = any> {
   status: number;

@@ -1,6 +1,6 @@
 import { ApiBase } from './api-base';
 import type { User } from '../stores/user-store';
-import type {SignUpData} from './user-api.ts';
+import type { SignUpData } from './user-api';
 
 export interface ProfileData {
   first_name: string;
@@ -37,7 +37,7 @@ export class ProfileApi extends ApiBase {
   public searchUsersByLogin(login: string): Promise<User[]> {
     return this.post('/search', {
       data: {
-        login: login
+        login,
       },
     });
   }

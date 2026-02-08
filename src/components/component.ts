@@ -224,9 +224,8 @@ export class Component {
   }
 
   private _componentDidUpdate(oldProps: ComponentProps, newProps: ComponentProps): void {
-    console.log('Component._componentDidUpdate вызван:', { oldProps, newProps });
     const isUpdated = this.componentDidUpdate(oldProps, newProps);
-    console.log('componentDidUpdate вернул:', isUpdated);
+
     if (isUpdated) {
       this._render();
     }

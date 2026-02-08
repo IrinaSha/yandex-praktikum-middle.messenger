@@ -13,8 +13,8 @@ import { tmpl } from './tmpl';
 
 import '../../assets/styles/styles.scss';
 import '../../assets/styles/variables.scss';
-import { userStore } from '../../stores/user-store.ts';
-import { BASE_URL } from '../../api/consts.ts';
+import { userStore } from '../../stores/user-store';
+import { BASE_URL } from '../../api/consts';
 import { Nav } from '../../components/nav/nav';
 
 export class ProfileView extends View {
@@ -42,8 +42,8 @@ export class ProfileView extends View {
         events: {
           click: async () => {
             await userStore.logout();
-          }
-        }
+          },
+        },
       },
     );
 
@@ -228,7 +228,7 @@ export class ProfileView extends View {
                     ...input.props.attrs,
                     value: value || '',
                   },
-                  profileEditUserInfo: true
+                  profileEditUserInfo: true,
                 });
               }
             });
@@ -299,8 +299,10 @@ export class ProfileView extends View {
         if (isValid) {
           console.log('Данные:', data);
           try {
-
-            await userStore.updatePassword({ oldPassword: data.old_password, newPassword: data.password });
+            await userStore.updatePassword({
+              oldPassword: data.old_password,
+              newPassword: data.password,
+            });
 
             this.page?.setProps({
               hideForm: false,
@@ -368,7 +370,7 @@ export class ProfileView extends View {
               login: data.login,
               email: data.email,
               phone: data.phone,
-              password: ''
+              password: '',
             });
             console.log('Профиль успешно обновлен. Данные:', data);
 
@@ -431,7 +433,7 @@ export class ProfileView extends View {
       return;
     }
 
-    this.page?.setProps({login: user.login});
+    this.page?.setProps({ login: user.login });
 
     this.profileInputs.forEach((input) => {
       const name = input.getName();

@@ -23,10 +23,15 @@ import { Modal } from '../../components/modal/modal';
 
 export class ChatsView extends View {
   validator: Validator;
+
   router: Router;
+
   private chatListComponent: ChatList | null = null;
+
   private page: Page | null = null;
+
   private messagesList: MessagesList | null = null;
+
   private unsubscribe: Array<() => void> = [];
 
   constructor() {
@@ -35,26 +40,29 @@ export class ChatsView extends View {
     this.validator = new Validator();
     this.router = Router.getInstance();
 
+    window.addEventListener('popstate', () => this.syncChatWithUrl());
+
     this.loadInitialData();
     this.setupSubscriptions();
+  }
+
+  private async syncChatWithUrl() {
+    const params = this.router.getParams();
+
+    if (params.chatId) {
+      const chatId = parseInt(params.chatId, 10);
+      if (chatStore.getCurrentChat()?.id !== chatId) {
+        await chatStore.setCurrentChat(chatId);
+      }
+    } else {
+      await chatStore.setCurrentChat(null);
+    }
   }
 
   private async loadInitialData(): Promise<void> {
     try {
       await chatStore.fetchChats();
-
-      const params = this.router.getParams();
-
-      if (params.chatId) {
-        const chatId = parseInt(params.chatId, 10);
-        const chats = chatStore.getChats();
-
-        const chatExists = chats.find(c => c.id === chatId);
-
-        if (chatExists) {
-          await chatStore.setCurrentChat(chatId);
-        }
-      }
+      await this.syncChatWithUrl();
     } catch (error) {
       console.error('Ошибка загрузки чатов:', error);
     }
@@ -64,31 +72,31 @@ export class ChatsView extends View {
     this.unsubscribe.push(
       chatStore.on('messages-updated', () => {
         this.updateMessagesList();
-      })
+      }),
     );
 
     this.unsubscribe.push(
       chatStore.on('chats-fetched', () => {
         this.updateChatList();
-      })
+      }),
     );
 
     this.unsubscribe.push(
       chatStore.on('chat-created', () => {
         this.updateChatList();
-      })
+      }),
     );
 
     this.unsubscribe.push(
       chatStore.on('chat-deleted', () => {
         this.updateChatList();
-      })
+      }),
     );
 
     this.unsubscribe.push(
       chatStore.on('chats-fetch-error', (error) => {
         console.error('Ошибка при загрузке чатов:', error);
-      })
+      }),
     );
   }
 
@@ -115,11 +123,11 @@ export class ChatsView extends View {
         newNum: chat.unread_count,
         date: this.formatTime(lastMessage?.time),
         onSelect: async (id: string) => {
-          const selectedChat = chatStore.getChats().find(c => c.id.toString() === id);
+          const selectedChat = chatStore.getChats().find((c) => c.id.toString() === id);
           if (selectedChat) {
             await this.handleChatClick(selectedChat);
           }
-        }
+        },
       });
     });
   }
@@ -135,7 +143,7 @@ export class ChatsView extends View {
     if (messageDate.toDateString() === today.toDateString()) {
       return messageDate.toLocaleTimeString('ru-RU', {
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
       });
     }
 
@@ -153,8 +161,11 @@ export class ChatsView extends View {
   }
 
   private async handleChatClick(chat: Chat): Promise<void> {
-    this.router.go(`/messenger/${chat.id}`);
-    await chatStore.setCurrentChat(chat.id);
+    const targetUrl = `/messenger/${chat.id}`;
+    if (window.location.pathname !== targetUrl) {
+      this.router.go(targetUrl);
+      await chatStore.setCurrentChat(chat.id);
+    }
   }
 
   private updateMessagesList(): void {
@@ -164,7 +175,7 @@ export class ChatsView extends View {
       if (this.page) {
         this.page.setProps({
           messagesSectionClass: 'hidden',
-          currentChatTitle: ''
+          currentChatTitle: '',
         });
         this.rerender(this.page);
       }
@@ -173,7 +184,7 @@ export class ChatsView extends View {
     }
 
     const user = userStore.getUser();
-    const messages = currentChat.messages.map(message => {
+    const messages = currentChat.messages.map((message) => {
       const isOutgoing = user?.id === message.user_id;
 
       return new Message('div', {
@@ -190,7 +201,7 @@ export class ChatsView extends View {
     if (this.page) {
       this.page.setProps({
         messagesSectionClass: '',
-        currentChatTitle: currentChat.title
+        currentChatTitle: currentChat.title,
       });
     }
 
@@ -282,7 +293,7 @@ export class ChatsView extends View {
 
     const form = new Form('form', {
       attrs: {
-        class: 'login-form form-section',
+        class: 'message-form login-form',
       },
       inputs: [messageInput],
       button: sendButton,
@@ -313,13 +324,13 @@ export class ChatsView extends View {
           action: async (login) => {
             try {
               await chatStore.addUserToChat(login);
-              alert('В чат добавлен ' + login);
-            } catch(error) {
-              alert('Ошибка добавления пользователя - ' + error);
+              alert(`В чат добавлен ${login}`);
+            } catch (error) {
+              alert(`Ошибка добавления пользователя - ${error}`);
             }
-          }
-        })
-      }
+          },
+        }),
+      },
     });
 
     const removeUserBtn = new Button('button', {
@@ -332,18 +343,18 @@ export class ChatsView extends View {
           action: async (login) => {
             try {
               await chatStore.removeUsersFromChat(login);
-              alert('Из чата удален ' + login);
-            } catch(error) {
-              alert('Ошибка добавления пользователя - ' + error);
+              alert(`Из чата удален ${login}`);
+            } catch (error) {
+              alert(`Ошибка добавления пользователя - ${error}`);
             }
-          }
-        })
-      }
+          },
+        }),
+      },
     });
 
     const addChatBtn = new Button('button', {
       attrs: { class: 'btn-container', type: 'button' },
-      btnText: '+ Новый чат',
+      btnText: 'Новый чат',
       events: {
         click: () => this.openModal({
           title: 'Создать чат',
@@ -351,13 +362,13 @@ export class ChatsView extends View {
           action: async (title) => {
             try {
               await chatStore.createChat(title);
-              alert('Создан чат ' + title);
-            } catch(error) {
-              alert('Ошибка добавления пользователя - ' + error);
+              alert(`Создан чат ${title}`);
+            } catch (error) {
+              alert(`Ошибка добавления пользователя - ${error}`);
             }
-          }
-        })
-      }
+          },
+        }),
+      },
     });
 
     this.page = new Page(
@@ -393,7 +404,7 @@ export class ChatsView extends View {
           this.closeModal();
         }
       },
-      onClose: () => this.closeModal()
+      onClose: () => this.closeModal(),
     });
 
     document.body.appendChild(modal.getContent()!);
@@ -407,9 +418,9 @@ export class ChatsView extends View {
   }
 
   destroy(): void {
-    this.unsubscribe.forEach(unsub => unsub());
+    this.unsubscribe.forEach((unsub) => unsub());
     this.unsubscribe = [];
     this.chatListComponent = null;
-    this.page = null
+    this.page = null;
   }
 }
