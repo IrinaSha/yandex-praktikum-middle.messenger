@@ -1,7 +1,6 @@
 import { EventBus } from './event-bus';
 import { WSTransportEvents } from './consts';
 
-
 export class WSTransport {
   private socket: WebSocket | null = null;
 
@@ -63,7 +62,6 @@ export class WSTransport {
     socket.addEventListener('message', (message) => {
       try {
         const data = JSON.parse(message.data);
-        // Игнорируем технические сообщения типа 'pong'
         if (data.type === 'pong') {
           return;
         }

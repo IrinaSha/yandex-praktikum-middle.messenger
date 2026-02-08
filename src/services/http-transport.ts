@@ -50,7 +50,7 @@ export class HTTPTransport {
         signal.addEventListener('abort', () => xhr.abort());
       }
 
-      xhr.onload = function () {
+      xhr.onload = function (): void {
         const status = xhr.status || 0;
 
         if (status >= MIN_SUCCESS_REQUEST_STATUS && status <= MAX_SUCCESS_REQUEST_STATUS) {

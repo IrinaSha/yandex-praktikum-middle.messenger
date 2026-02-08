@@ -10,14 +10,14 @@ export abstract class ApiBase {
   }
 
   protected get<T = string
-      | number
-      | boolean
-      | null
-      | undefined
-      | symbol
-      | []
-      | Record<string, unknown>
-      | unknown[]>(
+  | number
+  | boolean
+  | null
+  | undefined
+  | symbol
+  | []
+  | Record<string, unknown>
+  | unknown[]>(
     endpoint: string = '',
     options?: HttpRequestOptions,
   ): Promise<T> {
@@ -25,14 +25,14 @@ export abstract class ApiBase {
   }
 
   protected post<T = string
-      | number
-      | boolean
-      | null
-      | undefined
-      | symbol
-      | []
-      | Record<string, unknown>
-      | unknown[]>(
+  | number
+  | boolean
+  | null
+  | undefined
+  | symbol
+  | []
+  | Record<string, unknown>
+  | unknown[]>(
     endpoint: string = '',
     options?: HttpRequestOptions,
   ): Promise<T> {
@@ -40,14 +40,14 @@ export abstract class ApiBase {
   }
 
   protected put<T = string
-      | number
-      | boolean
-      | null
-      | undefined
-      | symbol
-      | []
-      | Record<string, unknown>
-      | unknown[]>(
+  | number
+  | boolean
+  | null
+  | undefined
+  | symbol
+  | []
+  | Record<string, unknown>
+  | unknown[]>(
     endpoint: string = '',
     options?: HttpRequestOptions,
   ): Promise<T> {
@@ -55,14 +55,14 @@ export abstract class ApiBase {
   }
 
   protected delete<T = string
-      | number
-      | boolean
-      | null
-      | undefined
-      | symbol
-      | []
-      | Record<string, unknown>
-      | unknown[]>(
+  | number
+  | boolean
+  | null
+  | undefined
+  | symbol
+  | []
+  | Record<string, unknown>
+  | unknown[]>(
     endpoint: string = '',
     options?: HttpRequestOptions,
   ): Promise<T> {

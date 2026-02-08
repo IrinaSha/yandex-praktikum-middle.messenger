@@ -13,7 +13,7 @@ export class ChatList extends Component {
   }
 
   componentDidUpdate(): boolean {
-    //this._render();
+    // this._render();
     this._attachChatItemHandlers();
     return true;
   }
