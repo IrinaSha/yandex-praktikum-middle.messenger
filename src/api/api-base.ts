@@ -9,28 +9,60 @@ export abstract class ApiBase {
     this.transport = new HTTPTransport(`${BASE_URL}${path}`);
   }
 
-  protected get<T = any>(
+  protected get<T = string
+      | number
+      | boolean
+      | null
+      | undefined
+      | symbol
+      | []
+      | Record<string, unknown>
+      | unknown[]>(
     endpoint: string = '',
     options?: HttpRequestOptions,
   ): Promise<T> {
     return this.transport.get<T>(endpoint, options);
   }
 
-  protected post<T = any>(
+  protected post<T = string
+      | number
+      | boolean
+      | null
+      | undefined
+      | symbol
+      | []
+      | Record<string, unknown>
+      | unknown[]>(
     endpoint: string = '',
     options?: HttpRequestOptions,
   ): Promise<T> {
     return this.transport.post<T>(endpoint, options);
   }
 
-  protected put<T = any>(
+  protected put<T = string
+      | number
+      | boolean
+      | null
+      | undefined
+      | symbol
+      | []
+      | Record<string, unknown>
+      | unknown[]>(
     endpoint: string = '',
     options?: HttpRequestOptions,
   ): Promise<T> {
     return this.transport.put<T>(endpoint, options);
   }
 
-  protected delete<T = any>(
+  protected delete<T = string
+      | number
+      | boolean
+      | null
+      | undefined
+      | symbol
+      | []
+      | Record<string, unknown>
+      | unknown[]>(
     endpoint: string = '',
     options?: HttpRequestOptions,
   ): Promise<T> {

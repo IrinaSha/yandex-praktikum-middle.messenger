@@ -13,7 +13,7 @@ export class ChatList extends Component {
   }
 
   componentDidUpdate(): boolean {
-    this._render();
+    //this._render();
     this._attachChatItemHandlers();
     return true;
   }
@@ -45,7 +45,9 @@ export class ChatList extends Component {
           });
 
           if (selected && typeof chatItem.props.onSelect === 'function') {
-            chatItem.props.onSelect(clickedId);
+            const selectEvent = new CustomEvent('select', { detail: { id: clickedId } });
+
+            (chatItem.props.onSelect as (event: Event) => void)(selectEvent);
           }
         }
       });

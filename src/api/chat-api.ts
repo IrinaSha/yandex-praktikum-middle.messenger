@@ -1,5 +1,6 @@
 import { ApiBase } from './api-base';
 import type { User } from '../stores/user-store';
+import type { PropsValue } from '../services/types';
 
 export interface Chat {
   id: number;
@@ -33,6 +34,7 @@ export interface GetChatsParams {
   offset?: number;
   limit?: number;
   title?: string;
+  [key: string]: PropsValue;
 }
 
 export interface GetChatUsersParams {
@@ -40,6 +42,7 @@ export interface GetChatUsersParams {
   limit?: number;
   name?: string;
   email?: string;
+  [key: string]: PropsValue;
 }
 
 export class ChatApi extends ApiBase {

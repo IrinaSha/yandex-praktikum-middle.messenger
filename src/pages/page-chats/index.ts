@@ -122,8 +122,10 @@ export class ChatsView extends View {
         text: lastMessage?.content || 'Нет сообщений',
         newNum: chat.unread_count,
         date: this.formatTime(lastMessage?.time),
-        onSelect: async (id: string) => {
+        onSelect: async (event: Event) => {
+          const id = event instanceof CustomEvent ? event.detail.id : '';
           const selectedChat = chatStore.getChats().find((c) => c.id.toString() === id);
+
           if (selectedChat) {
             await this.handleChatClick(selectedChat);
           }

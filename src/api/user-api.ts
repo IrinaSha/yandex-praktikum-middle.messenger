@@ -1,5 +1,6 @@
 import { ApiBase } from './api-base';
 import type { User } from '../stores/user-store';
+import type { PropsValue } from '../services/types';
 
 export interface SignUpData {
   first_name: string;
@@ -9,6 +10,7 @@ export interface SignUpData {
   email: string;
   password: string;
   phone: string;
+  [key: string]: PropsValue;
 }
 
 export class UserApi extends ApiBase {

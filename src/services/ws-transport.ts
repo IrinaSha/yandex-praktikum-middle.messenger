@@ -1,12 +1,6 @@
 import { EventBus } from './event-bus';
+import { WSTransportEvents } from './consts';
 
-// @ts-ignore
-export enum WSTransportEvents {
-  Connected = 'connected',
-  Error = 'error',
-  Message = 'message',
-  Close = 'close',
-}
 
 export class WSTransport {
   private socket: WebSocket | null = null;
@@ -15,9 +9,13 @@ export class WSTransport {
 
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
-  // @ts-ignore
-  constructor(private url: string, private eventBus: EventBus) {
+  private url: string;
 
+  private eventBus: EventBus;
+
+  constructor(url: string, eventBus: EventBus) {
+    this.url = url;
+    this.eventBus = eventBus;
   }
 
   public connect(): Promise<void> {

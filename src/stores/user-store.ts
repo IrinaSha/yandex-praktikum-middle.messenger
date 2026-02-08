@@ -90,8 +90,8 @@ export class UserStore {
       await this.userApi.signIn(data);
       await this.fetchUser();
       this.eventBus.emit('user-logged-in', this.state.user);
-    } catch (error: any) {
-      const errorMessage = error.reason || 'Ошибка входа';
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка входа';
       this.setState({ error: errorMessage, isLoading: false });
       this.eventBus.emit('login-error', errorMessage);
       throw error;
@@ -106,8 +106,8 @@ export class UserStore {
 
       this.setState({ user, isLoading: false });
       this.eventBus.emit('user-fetched', user);
-    } catch (error: any) {
-      const errorMessage = error.reason || 'Ошибка получения данных';
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка получения данных';
 
       this.setState({ error: errorMessage, isLoading: false, user: null });
       throw error;
@@ -122,8 +122,8 @@ export class UserStore {
 
       this.setState({ user, isLoading: false });
       this.eventBus.emit('profile-updated', user);
-    } catch (error: any) {
-      const errorMessage = error.reason || 'Ошибка обновления профиля';
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка обновления профиля';
 
       this.setState({ error: errorMessage, isLoading: false });
       throw error;
@@ -138,8 +138,8 @@ export class UserStore {
 
       this.setState({ user, isLoading: false });
       this.eventBus.emit('password-updated', user);
-    } catch (error: any) {
-      const errorMessage = error.reason || 'Ошибка обновления пароля';
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка обновления пароля';
 
       this.setState({ error: errorMessage, isLoading: false });
       throw error;
@@ -154,8 +154,8 @@ export class UserStore {
 
       this.setState({ user, isLoading: false });
       this.eventBus.emit('avatar-updated', user);
-    } catch (error: any) {
-      const errorMessage = error.reason || 'Ошибка обновления аватара';
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка обновления аватара';
 
       this.setState({ error: errorMessage, isLoading: false });
       throw error;
@@ -170,8 +170,8 @@ export class UserStore {
 
       this.setState({ user: null, isLoading: false });
       this.eventBus.emit('user-logged-out');
-    } catch (error: any) {
-      const errorMessage = error.reason || 'Ошибка выхода';
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Ошибка выхода';
 
       this.setState({ error: errorMessage, isLoading: false });
       throw error;

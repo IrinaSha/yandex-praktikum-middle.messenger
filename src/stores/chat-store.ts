@@ -1,7 +1,7 @@
 import { EventBus } from '../services/event-bus';
 import { ChatApi } from '../api/chat-api';
 import { ProfileApi } from '../api/profile-api';
-import { WSTransport, WSTransportEvents } from '../services/ws-transport';
+import { WSTransport } from '../services/ws-transport';
 import { userStore } from './user-store';
 import type {
   Chat,
@@ -9,7 +9,7 @@ import type {
   GetChatsParams,
   GetChatUsersParams,
 } from '../api/chat-api';
-import { WS_URL } from '../services/consts';
+import { WS_URL, WSTransportEvents } from '../services/consts';
 
 export interface ChatWithUsers extends Chat {
   users: ChatUser[];

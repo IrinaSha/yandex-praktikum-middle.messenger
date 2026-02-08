@@ -14,6 +14,14 @@ export const HTTP_ERROR_MESSAGES = {
   500: 'Internal Server Error',
 } as const;
 
+
+export const WSTransportEvents = {
+  Connected: 'connected',
+  Error: 'error',
+  Message: 'message',
+  Close:'close',
+} as const;
+
 export const MIN_SUCCESS_REQUEST_STATUS = 200;
 export const MAX_SUCCESS_REQUEST_STATUS = 299;
 export const DEFAULT_TIMEOUT = 5000;

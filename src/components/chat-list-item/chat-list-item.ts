@@ -14,6 +14,7 @@ export interface ChatListItemProps extends ComponentProps {
   newNum?: number;
   selected?: boolean;
   onClick?: (id: string) => void;
+  onSelect?: (id: Event) => Promise<void>;
 }
 
 export class ChatListItem extends Component {
