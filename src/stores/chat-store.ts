@@ -1,5 +1,6 @@
 import { EventBus } from '../services/event-bus';
 import { ChatApi } from '../api/chat-api';
+import { ProfileApi } from '../api/profile-api';
 import { WSTransport, WSTransportEvents } from '../services/ws-transport';
 import { userStore } from './user-store';
 import type {
@@ -26,6 +27,7 @@ export class ChatStore {
   private static __instance: ChatStore;
   private eventBus: EventBus;
   private chatApi: ChatApi;
+  private profileApi: ProfileApi;
   private transport: WSTransport | null = null;
   private state: ChatStoreState = {
     chats: new Map(),
@@ -37,6 +39,7 @@ export class ChatStore {
   private constructor() {
     this.eventBus = new EventBus();
     this.chatApi = new ChatApi();
+    this.profileApi = new ProfileApi();
   }
 
   public static getInstance(): ChatStore {
@@ -78,7 +81,6 @@ export class ChatStore {
 
     let newMessages = Array.isArray(data) ? data.reverse() : [data];
 
-    // Фильтруем технические сообщения, если они просочились
     newMessages = newMessages.filter(m => m.type === 'message' || !m.type);
 
     const updatedChat = {
@@ -162,11 +164,11 @@ export class ChatStore {
     }
   }
 
-  public async createChat(data: CreateChatData): Promise<number> {
+  public async createChat(title: string): Promise<number> {
     this.setState({ isLoading: true, error: null });
 
     try {
-      const response = await this.chatApi.createChat(data);
+      const response = await this.chatApi.createChat({ title });
 
       // Обновляем список чатов после создания
       await this.fetchChats();
@@ -243,17 +245,33 @@ export class ChatStore {
     }
   }
 
-  public async addUsersToChat(chatId: number, userIds: number[]): Promise<void> {
-    this.setState({ isLoading: true, error: null });
+  public async addUserToChat(userLogin: string): Promise<void> {
+    this.setState({ isLoading: true, error: null })
+
+    const chatId = this.getCurrentChatId();
+
+    if (!chatId) {
+      this.eventBus.emit('add-users-error', 'чат не найден');
+
+      return;
+    }
+
+    const users = await this.profileApi.searchUsersByLogin(userLogin);
+
+    if (!users || users.length === 0) {
+      this.eventBus.emit('add-users-error', 'пользователь не найден');
+
+      return;
+    }
+
+    const userId =  users[0].id;
 
     try {
-      await this.chatApi.addUsersToChat(chatId, userIds);
-
-      // Обновляем список пользователей чата
+      await this.chatApi.addUserToChat(chatId, userId);
       await this.fetchChatUsers(chatId);
 
       this.setState({ isLoading: false });
-      this.eventBus.emit('users-added-to-chat', { chatId, userIds });
+      this.eventBus.emit('users-added-to-chat', { chatId, userId });
     } catch (error: any) {
       const errorMessage = error.reason || 'Ошибка добавления пользователей';
       this.setState({ error: errorMessage, isLoading: false });
@@ -262,17 +280,33 @@ export class ChatStore {
     }
   }
 
-  public async removeUsersFromChat(chatId: number, userIds: number[]): Promise<void> {
+  public async removeUsersFromChat(userLogin: string): Promise<void> {
     this.setState({ isLoading: true, error: null });
 
-    try {
-      await this.chatApi.removeUsersFromChat(chatId, userIds);
+    const chatId = this.getCurrentChatId();
 
-      // Обновляем список пользователей чата
+    if (!chatId) {
+      this.eventBus.emit('add-users-error', 'чат не найден');
+
+      return;
+    }
+
+    const users = await this.profileApi.searchUsersByLogin(userLogin);
+
+    if (!users || users.length === 0) {
+      this.eventBus.emit('add-users-error', 'пользователь не найден');
+
+      return;
+    }
+
+    const userId =  users[0].id;
+
+    try {
+      await this.chatApi.removeUserFromChat(chatId, userId);
       await this.fetchChatUsers(chatId);
 
       this.setState({ isLoading: false });
-      this.eventBus.emit('users-removed-from-chat', { chatId, userIds });
+      this.eventBus.emit('users-removed-from-chat', { chatId, userId });
     } catch (error: any) {
       const errorMessage = error.reason || 'Ошибка удаления пользователей';
       this.setState({ error: errorMessage, isLoading: false });

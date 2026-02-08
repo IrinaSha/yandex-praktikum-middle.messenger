@@ -43,7 +43,11 @@ export class Route {
   }
 
   public match(pathname: string): boolean {
-    return this._pathname === pathname;
+    //return this._pathname === pathname;
+
+    const routeRegex = new RegExp(`^${this._pathname.replace(/:[^\s/]+/g, '([^/]+)')}$`);
+
+    return routeRegex.test(pathname);
   }
 
   public render(): void {
@@ -184,6 +188,26 @@ export class Router {
     }
 
     document.title = '404 - Страница не найдена';
+  }
+
+  public getParams(): Record<string, string> {
+    const route = this.getRoute(window.location.pathname);
+
+    if (!route) {
+      return {};
+    }
+
+    const values = window.location.pathname.match(new RegExp(`^${(route as any)._pathname.replace(/:[^\s/]+/g, '([^/]+)')}$`));
+    const keys = (route as any)._pathname.match(/:[^\s/]+/g);
+
+    if (!values || !keys) {
+      return {};
+    }
+
+    return keys.reduce((acc: any, key: string, i: number) => {
+      acc[key.substring(1)] = values[i + 1];
+      return acc;
+    }, {});
   }
 
   public go(pathname: string): void {

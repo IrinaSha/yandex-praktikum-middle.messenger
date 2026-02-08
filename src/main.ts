@@ -21,8 +21,9 @@ router.setAuthCheck(async () => {
 router
   .use('/', LoginView, false)
   .use('/sign-up', RegistrationView, false)
-  .use('/messenger', ChatsView, true)
   .use('/settings', ProfileView, true)
+  .use('/messenger', ChatsView, true)
+  .use('/messenger/:chatId', ChatsView, true)
   .start();
 
 (window as any).router = router;

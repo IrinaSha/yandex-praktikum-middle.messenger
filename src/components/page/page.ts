@@ -15,7 +15,8 @@ export class Page extends Component {
     const shouldUpdate = (
       oldProps.hideForm !== newProps.hideForm ||
       oldProps.hideEditButtons !== newProps.hideEditButtons ||
-      oldProps.hideFormPassword !== newProps.hideFormPassword
+      oldProps.hideFormPassword !== newProps.hideFormPassword ||
+      oldProps.messagesSectionClass !== newProps.messagesSectionClass
     );
 
     console.log('Page должен обновиться:', shouldUpdate);

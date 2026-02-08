@@ -70,8 +70,8 @@ export class ChatApi extends ApiBase {
     return this.get<Chat[]>(endpoint);
   }
 
-  public createChat(data: CreateChatData): Promise<CreateChatResponse> {
-    return this.post<CreateChatResponse>('', { data });
+  public createChat(title: string): Promise<CreateChatResponse> {
+    return this.post<CreateChatResponse>('', { title: title });
   }
 
   public getChatUsers(
@@ -99,23 +99,19 @@ export class ChatApi extends ApiBase {
     return this.get<ChatUser[]>(endpoint);
   }
 
-  public deleteChat(chatId: number): Promise<any> {
-    return this.delete('', { data: { chatId } });
-  }
-
-  public addUsersToChat(chatId: number, userIds: number[]): Promise<any> {
+  public addUserToChat(chatId: number, userId: number): Promise<any> {
     return this.put('/users', {
       data: {
-        users: userIds,
+        users: [userId],
         chatId,
       },
     });
   }
 
-  public removeUsersFromChat(chatId: number, userIds: number[]): Promise<any> {
+  public removeUserFromChat(chatId: number, userId: number): Promise<any> {
     return this.delete('/users', {
       data: {
-        users: userIds,
+        users: [userId],
         chatId,
       },
     });

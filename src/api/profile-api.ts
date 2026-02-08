@@ -33,4 +33,12 @@ export class ProfileApi extends ApiBase {
       data: formData,
     });
   }
+
+  public searchUsersByLogin(login: string): Promise<User[]> {
+    return this.post('/search', {
+      data: {
+        login: login
+      },
+    });
+  }
 }
