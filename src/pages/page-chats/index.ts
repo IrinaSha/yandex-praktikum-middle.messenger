@@ -182,7 +182,7 @@ export class ChatsView extends View {
         this.rerender(this.page);
       }
 
-                    return;
+      return;
     }
 
     const user = userStore.getUser();
@@ -201,7 +201,7 @@ export class ChatsView extends View {
     this.messagesList.setProps({ messages });
 
     if (this.page) {
-                    this.page.setProps({
+      this.page.setProps({
         messagesSectionClass: '',
         currentChatTitle: currentChat.title,
       });
