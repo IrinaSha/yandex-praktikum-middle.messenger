@@ -11,7 +11,12 @@
     "preview": "vite preview",
     "eslint": "eslint . --ext .ts --fix",
     "stylelint": "npx stylelint \"./src/**/**.scss\" --cache --fix",
-    "lint": "npm run eslint && npm run stylelint"
+    "lint": "npm run eslint && npm run stylelint",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.ts": "eslint --fix",
+    "*.scss": "stylelint --fix"
   },
   "overrides": {
     "esbuild": "0.25.0"
@@ -22,6 +27,8 @@
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-typescript": "^18.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "postcss-scss": "^4.0.9",
     "sass": "^1.93.3",
     "stylelint": "^16.26.0",
