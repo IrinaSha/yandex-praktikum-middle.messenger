@@ -191,7 +191,7 @@ export class ChatsView extends View {
 
       return new Message('div', {
         attrs: { class: `message-container message-container-${isOutgoing ? 'outbox' : 'inbox'}` },
-        text: message.content, // Стор уже подготовил данные
+        text: message.content,
         type: isOutgoing ? 'outbox' : 'inbox',
         state: message.is_read ? 'delivered' : 'received',
         date: this.formatDateTime(message.time),
@@ -201,7 +201,7 @@ export class ChatsView extends View {
     this.messagesList.setProps({ messages });
 
     if (this.page) {
-      this.page.setProps({
+                    this.page.setProps({
         messagesSectionClass: '',
         currentChatTitle: currentChat.title,
       });
