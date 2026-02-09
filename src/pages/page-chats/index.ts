@@ -182,7 +182,7 @@ export class ChatsView extends View {
         this.rerender(this.page);
       }
 
-      return;
+                    return;
     }
 
     const user = userStore.getUser();
