@@ -58,3 +58,4 @@ dist-ssr
 /src/assets/styles/styles.css.map
 /src/assets/styles/variables.css
 /src/assets/styles/variables.css.map
+/coverage/
