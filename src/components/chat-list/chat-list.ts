@@ -13,8 +13,8 @@ export class ChatList extends Component {
   }
 
   componentDidUpdate(): boolean {
+    // this._render();
     this._attachChatItemHandlers();
-
     return true;
   }
 
@@ -38,9 +38,17 @@ export class ChatList extends Component {
     if (Array.isArray(chatItems)) {
       chatItems.forEach((chatItem) => {
         if (chatItem instanceof Component) {
+          const selected = chatItem.props.id === clickedId;
+
           chatItem.setProps({
-            selected: chatItem.props.id === clickedId,
+            selected,
           });
+
+          if (selected && typeof chatItem.props.onSelect === 'function') {
+            const selectEvent = new CustomEvent('select', { detail: { id: clickedId } });
+
+            (chatItem.props.onSelect as (event: Event) => void)(selectEvent);
+          }
         }
       });
     }

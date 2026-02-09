@@ -4,21 +4,30 @@
 
 [Ссылка на макет figma](https://www.figma.com/design/Ej5Gn4JGcJ6ZnafLhGVBNw/messenger_shabliy?node-id=1-498&m=dev&t=ltNywIHgbU0NZVnH-1)
 
-[Ссылка на собранную версию Спринт 2](https://messenger-ishabliy.netlify.app/)
+[Ссылка на собранную версию Спринт 3](https://messenger-shabliy.netlify.app/) Но у меня ни в какую не грузится хотя собрано на нетлифай
+![img.png](img.png)
 
 ---
 
 ## Описание
 
 Представляет собой многостраничное приложение, реализующее функции обмена сообщениями между пользователями
-При переходе по [ссылке](https://messenger-ishabliy.netlify.app/) можно ознакомиться со всеми доступными страницами.
-Проектом предусмотрены следующие страницы (ссылки на собранную версию):
-1) [Страница авторизации](https://messenger-ishabliy.netlify.app/pages/page-login/page.html)
-2) [Страница регистрации](https://messenger-ishabliy.netlify.app/pages/page-registration/page.html)
-3) [Страница чатов](https://messenger-ishabliy.netlify.app/pages/page-chats/page.html)
-4) [Страница профиля пользователя](https://messenger-ishabliy.netlify.app/pages/page-profile/page.html)
-5) [Страница ошибок 400](https://messenger-ishabliy.netlify.app/pages/page-error400/page.html)
-6) [Страница ошибок 5**](https://messenger-ishabliy.netlify.app/pages/page-error500/page.html)
+При переходе по [ссылке](https://messenger-shabliy.netlify.app/) будет осуществлен переход к странице авторизации, если пользователь
+уже авторизован то будет осуществлен переход к странице чатов. 
+
+В приложении предусмотрен роутинг:
+1) .use('/', LoginView, false)
+2) .use('/sign-up', RegistrationView, false)
+3) .use('/settings', ProfileView, true)
+4) .use('/messenger', ChatsView, true)
+5) .use('/messenger/:chatId', ChatsView, true)
+
+а именно переход на следующие страницы
+1) [Страница авторизации](https://messenger-shabliy.netlify.app/) стартовая страница, если пользователь 
+уже авторизован то будет осуществлен переход к странице чатов
+2) [Страница регистрации](https://messenger-shabliy.netlify.app/sign-up)
+3) [Страница чатов](https://messenger-shabliy.netlify.app/messenger)
+4) [Страница профиля пользователя](https://messenger-shabliy.netlify.app/settings)
 
 ### Предварительные требования
 

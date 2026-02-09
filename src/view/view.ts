@@ -1,12 +1,51 @@
+// view.ts
 import { Component } from '../components/component';
 import { render } from '../services/utils';
 
-export abstract class View {
-  public renderPage(): void {
-    const content = this.createContent();
+export class View {
+  private _content: Component | null = null;
 
-    render('.app', content);
+  public renderPage(): Element | null {
+    const content = this.getContent();
+
+    return render('.app', content);
   }
 
-  public abstract createContent(): Component;
+  public getContent(): Component {
+    if (!this._content) {
+      this._content = this.render();
+    }
+    return this._content;
+  }
+
+  protected render(): Component {
+    return new Component();
+  }
+
+  public show(): void {
+    const content = this.getContent().getContent();
+    if (content) {
+      content.style.display = 'block';
+    }
+  }
+
+  public hide(): void {
+    const content = this.getContent().getContent();
+
+    if (content) {
+      content.style.display = 'none';
+    }
+  }
+
+  public rerender(page: Component | undefined | null): void {
+    const content = page?.getContent();
+
+    if (content) {
+      const root = document.querySelector('.app');
+      if (root) {
+        root.innerHTML = '';
+        root.appendChild(content);
+      }
+    }
+  }
 }

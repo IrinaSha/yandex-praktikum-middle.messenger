@@ -15,7 +15,7 @@ export class ErrorView extends View {
     this.errorText = errorText;
   }
 
-  createContent(): Component {
+  getContent(): Component {
     const link = new Link(
       'span',
       {

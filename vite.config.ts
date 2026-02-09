@@ -6,6 +6,7 @@ export default defineConfig({
   root: resolve(__dirname, 'src'),
   server: {
     port: 3000,
+    historyApiFallback: true,
   },
   build: {
     outDir: resolve(__dirname, 'dist'),
@@ -30,8 +31,8 @@ export default defineConfig({
         fname: 'Ирина',
         sname: 'Шаблий',
         dname: 'Ирина89',
-        email: 'rozova.ia@yandex.ru',
-        phone: '+7 (904) 330-66-28',
+        email: 'shabliy11111111111111111@yandex.ru',
+        phone: '+7 (111) 111-11-11',
         errorCode400: '404',
         errorText400: 'Не туда попали',
         errorCode500: '500',

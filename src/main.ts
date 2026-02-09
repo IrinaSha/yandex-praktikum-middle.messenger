@@ -5,43 +5,23 @@ import './components/button/button.scss';
 import './components/flat-button/flat-button.scss';
 import './components/nav/nav.scss';
 
-import { Component } from './components/component';
-import { Layout } from './components/layout/layout';
-import { Nav } from './components/nav/nav';
-import { Link } from './components/link/link';
-import { View } from './view/view';
+import { Router } from './services/router';
+import { ChatsView } from './pages/page-chats';
+import { LoginView } from './pages/page-login';
+import { RegistrationView } from './pages/page-registration';
+import { ProfileView } from './pages/page-profile';
+import { userStore } from './stores/user-store';
 
-export class MainView extends View {
-  createContent(): Component {
-    const nav = new Nav(
-      {
-        attrs: {
-          class: 'nav',
-        },
-        links: [
-          new Link('li', { url: '/pages/page-error400/page.html', title: 'Ошибка 4**' }),
-          new Link('li', { url: '/pages/page-error500/page.html', title: 'Ошибка 5**' }),
-          new Link('li', { url: '/pages/page-login/page.html', title: 'Авторизация' }),
-          new Link('li', { url: '/pages/page-registration/page.html', title: 'Регистрация' }),
-          new Link('li', { url: '/pages/page-chats/page.html', title: 'Чаты' }),
-          new Link('li', { url: '/pages/page-profile/page.html', title: 'Профиль пользователя' }),
-        ],
-      },
-    );
+const router = Router.getInstance('.app');
 
-    return new Layout(
-      'div',
-      {
-        attrs: {
-          class: 'layout',
-        },
-        title: 'Главная страница',
-        nav,
-      },
-    );
-  }
-}
+router.setAuthCheck(async () => userStore.checkAuth());
 
-const view = new MainView();
+router
+  .use('/', LoginView, false)
+  .use('/sign-up', RegistrationView, false)
+  .use('/settings', ProfileView, true)
+  .use('/messenger', ChatsView, true)
+  .use('/messenger/:chatId', ChatsView, true)
+  .start();
 
-view.renderPage();
+(window as any).router = router;

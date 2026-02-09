@@ -1,7 +1,14 @@
 .messages-list-container {
   width: 800px;
-  height: 400px;
+  max-height: 800px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.messages-list-container::-webkit-scrollbar {
+  display: none;
 }

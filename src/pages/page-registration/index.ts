@@ -6,27 +6,36 @@ import { Button } from '../../components/button/button';
 import { Validator } from '../../services/validator';
 import { InputWithValidComponent } from '../../components/input-with-valid/input-with-valid';
 import { Form } from '../../components/form/form';
+import { UserApi } from '../../api/user-api';
+import type { SignUpData } from '../../api/user-api';
 
 import '../../assets/styles/styles.scss';
 import '../../assets/styles/variables.scss';
+import { Router } from '../../services/router';
 
-export class LoginView extends View {
+export class RegistrationView extends View {
   validator: Validator;
+
+  userApi: UserApi;
+
+  router: Router;
 
   constructor() {
     super();
 
     this.validator = new Validator();
+    this.userApi = new UserApi();
+    this.router = Router.getInstance('.app');
   }
 
-  createContent(): Component {
+  getContent(): Component {
     const link = new Link(
       'span',
       {
         attrs: {
           class: 'nav-container text',
         },
-        url: '../page-chats/page.html',
+        url: '/',
         title: 'Войти',
       },
     );
@@ -141,9 +150,33 @@ export class LoginView extends View {
       ],
       showSubmit: true,
       button: sendButton,
-      onSubmit: (data: Record<string, string>, isValid: boolean) => {
+      onSubmit: async (data: Record<string, string>, isValid: boolean) => {
         if (isValid) {
           console.log('Данные:', data);
+
+          if (data.password !== data.confirm_password) {
+            alert('Пароли не совпадают');
+
+            return;
+          }
+
+          const signUpData: SignUpData = {
+            first_name: data.first_name,
+            second_name: data.second_name,
+            login: data.login,
+            email: data.email,
+            password: data.password,
+            phone: data.phone,
+          };
+
+          try {
+            const response = await this.userApi.signUp(signUpData);
+
+            console.log('Регистрация успешна:', response);
+            this.router.go('/messenger');
+          } catch (error) {
+            alert('Ошибка регистрации. Попробуйте снова.');
+          }
         } else {
           console.log('Данные содержат ошибки');
         }
@@ -164,6 +197,6 @@ export class LoginView extends View {
   }
 }
 
-const view = new LoginView();
+// const view = new RegistrationView();
 
-view.renderPage();
+// view.renderPage();
