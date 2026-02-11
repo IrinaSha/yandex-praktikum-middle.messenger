@@ -1,5 +1,5 @@
 import {
-  describe, expect, jest, test, beforeEach,
+  describe, expect, jest, it, beforeEach,
 } from '@jest/globals';
 import { ApiBase } from './api-base';
 import { ResourcesApi } from './resources-api';
@@ -15,7 +15,7 @@ describe('ResourcesApi', () => {
     api = new ResourcesApi();
   });
 
-  test('should call get with correct path', async () => {
+  it('should call get with correct path', async () => {
     const getSpy = jest
       .spyOn(ApiBase.prototype as any, 'get')
       .mockResolvedValue(MOCK_GET_RESULT);

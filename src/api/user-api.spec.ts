@@ -1,5 +1,5 @@
 import {
-  describe, expect, jest, test, beforeEach,
+  describe, expect, jest, beforeEach, it,
 } from '@jest/globals';
 import { ApiBase } from './api-base';
 import { UserApi } from './user-api';
@@ -29,7 +29,7 @@ describe('UserApi', () => {
     (api as any).baseUrl = API_BASE_URL;
   });
 
-  test('should call signIn', async () => {
+  it('should call signIn', async () => {
     const mockData = { login: MOCK_LOGIN, password: MOCK_PASSWORD };
     const postSpy = jest
       .spyOn(ApiBase.prototype as any, 'post')
@@ -41,7 +41,7 @@ describe('UserApi', () => {
     expect(result).toEqual({});
   });
 
-  test('should call signUp', async () => {
+  it('should call signUp', async () => {
     const mockData = {
       login: MOCK_LOGIN,
       password: MOCK_PASSWORD,
@@ -62,7 +62,7 @@ describe('UserApi', () => {
     expect(result).toEqual({ id: MOCK_USER_ID });
   });
 
-  test('should call getUser', async () => {
+  it('should call getUser', async () => {
     const mockUser = { id: MOCK_USER_ID, login: MOCK_LOGIN };
 
     const getSpy = jest
@@ -75,7 +75,7 @@ describe('UserApi', () => {
     expect(result).toEqual(mockUser);
   });
 
-  test('should call logout', async () => {
+  it('should call logout', async () => {
     const postSpy = jest
       .spyOn(ApiBase.prototype as any, 'post')
       .mockResolvedValue(MOCK_OK);

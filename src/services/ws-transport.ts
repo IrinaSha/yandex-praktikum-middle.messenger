@@ -24,13 +24,13 @@ export class WSTransport {
 
     return new Promise((resolve, reject) => {
       this.eventBus.on(WSTransportEvents.Connected, () => resolve());
-      this.eventBus.on(WSTransportEvents.Error, (reject));
+      this.eventBus.on(WSTransportEvents.Error, () => reject(new Error('Connection error')));
     });
   }
 
   public send(data: any): void {
-    if (!this.socket) {
-      throw new Error('Socket is not connected');
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+      throw new Error('Connection is not established');
     }
 
     this.socket.send(JSON.stringify(data));
@@ -42,6 +42,7 @@ export class WSTransport {
 
   public close(): void {
     this.socket?.close();
+    this.stopPing();
   }
 
   private subscribe(socket: WebSocket) {
@@ -62,7 +63,7 @@ export class WSTransport {
     socket.addEventListener('message', (message) => {
       try {
         const data = JSON.parse(message.data);
-        if (data.type === 'pong') {
+        if (data?.type === 'pong') {
           return;
         }
         this.eventBus.emit(WSTransportEvents.Message, data);
