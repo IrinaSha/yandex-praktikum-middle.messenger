@@ -1,17 +1,26 @@
 {
-    "extends": ["airbnb-base", "airbnb-typescript/base"],
-    "parserOptions": {
-        "project": "./tsconfig.json"
-    },
-    "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
-    "rules": {
-        "max-len": [2, 100],
-        "import/prefer-default-export": "off",
-        "class-methods-use-this": "off",
-        "no-underscore-dangle": "off",
-        "no-param-reassign": "off",
-        "@typescript-eslint/no-unused-vars": 2,
-        "@typescript-eslint/lines-between-class-members": ["error", "always"]
+  "extends": ["airbnb-base", "airbnb-typescript/base"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "max-len": [2, 100],
+    "import/prefer-default-export": "off",
+    "class-methods-use-this": "off",
+    "no-underscore-dangle": "off",
+    "no-param-reassign": "off",
+    "@typescript-eslint/no-unused-vars": 2,
+    "@typescript-eslint/lines-between-class-members": ["error", "always"]
+  },
+  "overrides": [
+    {
+      "files": ["*.spec.ts", "*.test.ts"],
+      "rules": {
+        "max-classes-per-file": "off",
+        "@typescript-eslint/no-useless-constructor": "off"
+      }
     }
+  ]
 }

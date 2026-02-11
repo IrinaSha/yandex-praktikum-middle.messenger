@@ -22,7 +22,7 @@ describe('Route', () => {
     expect(route.match('/other')).toBe(false);
   });
 
-  /* it('match(): should match dynamic params like /users/:id', () => {
+  it('match(): should match dynamic params like /users/:id', () => {
     const ViewClass: any = class {};
     const route = new Route('/users/:id', ViewClass, { rootQuery: ROOT_QUERY });
 
@@ -178,5 +178,4 @@ describe('Route', () => {
     const route3 = new Route('/c', ViewClass, { rootQuery: ROOT_QUERY, protected: false });
     expect(route3.isProtected()).toBe(false);
   });
-*/
 });
