@@ -17,6 +17,7 @@ export const tmpl = `
         <span class="chat-toolbar__title">{{currentChatTitle}}</span>
       </div>
       <div class="chat-toolbar__actions">
+        {{{deleteChatBtn}}}
         {{{addUserBtn}}}
         {{{removeUserBtn}}}
       </div>

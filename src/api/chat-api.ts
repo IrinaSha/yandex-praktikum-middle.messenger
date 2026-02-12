@@ -83,6 +83,14 @@ export class ChatApi extends ApiBase {
     });
   }
 
+  public deleteChat(chatId: number): Promise<any> {
+    return this.delete('', {
+      data: {
+        chatId,
+      },
+    });
+  }
+
   public getChatToken(chatId: number): Promise<{ token: string }> {
     return this.post<{ token: string }>(`/token/${chatId}`);
   }

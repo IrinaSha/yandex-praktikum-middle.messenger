@@ -191,7 +191,7 @@ export class ChatsView extends View {
 
       return new Message('div', {
         attrs: { class: `message-container message-container-${isOutgoing ? 'outbox' : 'inbox'}` },
-        text: message.content, // Стор уже подготовил данные
+        text: message.content,
         type: isOutgoing ? 'outbox' : 'inbox',
         state: message.is_read ? 'delivered' : 'received',
         date: this.formatDateTime(message.time),
@@ -293,6 +293,28 @@ export class ChatsView extends View {
       },
     );
 
+    const deleteChatBtn = new Button('button', {
+      attrs: { class: 'btn-container btn-danger', type: 'button' },
+      btnText: 'Удалить чат',
+      events: {
+        click: async () => {
+          const currentChat = chatStore.getCurrentChat();
+          if (!currentChat) {
+            alert('Чат не выбран');
+            return;
+          }
+
+          try {
+            await chatStore.deleteChat(currentChat.id);
+            this.router.go('/messenger');
+            alert('Чат успешно удален');
+          } catch (error: any) {
+            alert('Нет прав для удаления чата');
+          }
+        },
+      },
+    });
+
     const form = new Form('form', {
       attrs: {
         class: 'message-form login-form',
@@ -384,6 +406,7 @@ export class ChatsView extends View {
         currentChatTitle: currentChat?.title || '',
         chatList: this.chatListComponent,
         messagesList: this.messagesList,
+        deleteChatBtn,
         addUserBtn,
         removeUserBtn,
         addChatBtn,
