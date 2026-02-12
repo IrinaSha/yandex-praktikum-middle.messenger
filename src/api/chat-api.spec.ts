@@ -135,6 +135,19 @@ describe('ChatApi', () => {
     });
   });
 
+  describe('removeChat', () => {
+    it('should remove chat', async () => {
+      const chatId = 10499;
+      mockTransportInstance.delete.mockResolvedValueOnce({ response: null });
+
+      await api.deleteChat(chatId);
+
+      expect(mockTransportInstance.delete).toHaveBeenCalledWith('', {
+        data: { chatId },
+      });
+    });
+  });
+
   describe('getChatToken', () => {
     it('should get chat token', async () => {
       const chatId = 1;

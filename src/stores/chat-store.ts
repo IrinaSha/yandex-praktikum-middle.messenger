@@ -175,7 +175,6 @@ export class ChatStore {
     try {
       const response = await this.chatApi.createChat(title);
 
-      // Обновляем список чатов после создания
       await this.fetchChats();
 
       this.setState({ isLoading: false });
@@ -186,6 +185,41 @@ export class ChatStore {
       const errorMessage = error.reason || 'Ошибка создания чата';
       this.setState({ error: errorMessage, isLoading: false });
       this.eventBus.emit('chat-create-error', errorMessage);
+      throw error;
+    }
+  }
+
+  public async deleteChat(chatId: number): Promise<void> {
+    this.setState({ isLoading: true, error: null });
+
+    try {
+      await this.chatApi.deleteChat(chatId);
+
+      const newChats = new Map(this.state.chats);
+      newChats.delete(chatId);
+
+      const newCurrentChatId = this.state.currentChatId === chatId ? null
+        : this.state.currentChatId;
+
+      this.setState({ chats: newChats, currentChatId: newCurrentChatId, isLoading: false });
+
+      if (this.state.currentChatId === null) {
+        this.transport?.close();
+        this.transport = null;
+      }
+
+      this.eventBus.emit('chat-deleted', chatId);
+    } catch (error: any) {
+      let errorMessage = 'Ошибка удаления чата';
+
+      if (error.status === 403) {
+        errorMessage = 'Нет прав для удаления чата';
+      } else if (error.reason) {
+        errorMessage = error.reason;
+      }
+
+      this.setState({ error: errorMessage, isLoading: false });
+      this.eventBus.emit('chat-delete-error', errorMessage);
       throw error;
     }
   }

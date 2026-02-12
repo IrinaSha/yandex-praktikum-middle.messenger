@@ -7,6 +7,7 @@ export default {
   testEnvironment: 'jsdom',
   testMatch: ['**/?(*.)+(spec|test).ts'],
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '\\.(css|scss|sass|less)$': 'identity-obj-proxy',
+    '\\.(jpg|jpeg|png|gif|svg|woff|woff2)$': '<rootDir>/__mocks__/fileMock.js',
   },
 };

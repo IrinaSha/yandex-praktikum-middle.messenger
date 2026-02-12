@@ -293,6 +293,28 @@ export class ChatsView extends View {
       },
     );
 
+    const deleteChatBtn = new Button('button', {
+      attrs: { class: 'btn-container btn-danger', type: 'button' },
+      btnText: 'Удалить чат',
+      events: {
+        click: async () => {
+          const currentChat = chatStore.getCurrentChat();
+          if (!currentChat) {
+            alert('Чат не выбран');
+            return;
+          }
+
+          try {
+            await chatStore.deleteChat(currentChat.id);
+            this.router.go('/messenger');
+            alert('Чат успешно удален');
+          } catch (error: any) {
+            alert('Нет прав для удаления чата');
+          }
+        },
+      },
+    });
+
     const form = new Form('form', {
       attrs: {
         class: 'message-form login-form',
@@ -384,6 +406,7 @@ export class ChatsView extends View {
         currentChatTitle: currentChat?.title || '',
         chatList: this.chatListComponent,
         messagesList: this.messagesList,
+        deleteChatBtn,
         addUserBtn,
         removeUserBtn,
         addChatBtn,
