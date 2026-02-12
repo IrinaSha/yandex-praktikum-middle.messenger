@@ -21,10 +21,11 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowJs": true
   },
   "ts-node": {
     "esm": true
   },
-  "include": ["src"]
+  "include": ["src", "*.js"]
 }
